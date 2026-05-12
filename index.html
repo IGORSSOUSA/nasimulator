@@ -552,31 +552,39 @@
             characters.forEach(char => {
                 const nameLower = char.name.toLowerCase();
                 if (rewardText.includes(nameLower)) return;
-                if (reqText.includes(nameLower) || reqText.includes(nameLower.split(' ')[0])) {
+                
+                // Evita que nomes muito curtos tragam falsos positivos
+                if (reqText.includes(nameLower) || (nameLower.split(' ')[0].length > 3 && reqText.includes(nameLower.split(' ')[0]))) {
                     if (!mandatoryChars.includes(char)) mandatoryChars.push(char);
                 }
             });
 
             let groupChars = [];
             if (reqText.includes('any ') || reqText.includes('qualquer ')) {
-                const keywords = ['uchiha', 'hyuuga', 'sand', 'sound', 'akatsuki', 'leaf', 'mist', 'minato'];
+                // Adicionei jounin e jinchuuriki para cobrir outras missões!
+                const keywords = ['uchiha', 'hyuuga', 'sand', 'sound', 'akatsuki', 'leaf', 'mist', 'minato', 'jounin', 'jinchuuriki'];
                 keywords.forEach(kw => {
                     if (reqText.includes(kw)) {
                         const matches = characters.filter(c => 
                             !rewardText.includes(c.name.toLowerCase()) && !mandatoryChars.includes(c) &&
                             ((c.lore && c.lore.toLowerCase().includes(kw)) || c.name.toLowerCase().includes(kw))
                         );
-                        groupChars = [...groupChars, ...matches];
+                        // Pega apenas os 6 primeiros para não gerar 10 times de uma vez só
+                        groupChars = [...groupChars, ...matches.slice(0, 6)];
                     }
                 });
             }
 
-            let allRequired = [...mandatoryChars];
+            // 🐛 O BUG ESTAVA AQUI! Agora ele junta os obrigatórios com a Akatsuki/Clãs!
+            let allRequired = [...new Set([...mandatoryChars, ...groupChars])];
+            
             let teams = [];
             let tempPool = [...allRequired];
 
             while (tempPool.length > 0 || (teams.length === 0)) {
                 let currentTeam = tempPool.splice(0, 3);
+                
+                // Preenche vagas vazias com suportes (apenas se faltar gente)
                 if (currentTeam.length < 3) {
                     const healers = characters.filter(c => 
                         !rewardText.includes(c.name.toLowerCase()) && !allRequired.includes(c) && !currentTeam.includes(c) &&
