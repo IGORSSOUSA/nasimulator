@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naruto Arena - Simulador Master Definitivo</title>
+    <style>
+        :root {
+            --bg-color: #121212; --panel-bg: #1e1e1e; --text-color: #e0e0e0;
+            --accent-color: #d15615; --border-color: #333;
+            --ally-color: #4caf50; --enemy-color: #f44336; --mission-color: #9c27b0;
+            --reward-color: #ffeb3b;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        h1, h2, h3 { color: var(--accent-color); margin-top: 0; }
+
+        .main-tabs { display: flex; gap: 10px; width: 100%; max-width: 1200px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 15px; font-size: 1.2em; font-weight: bold; background: var(--panel-bg); color: #888; border: 1px solid var(--border-color); cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .tab-btn.active { color: #fff; border-color: var(--accent-color); background: #2a1610; }
+        .tab-btn:hover { background: #222; }
+
+        .view-section { display: none; width: 100%; max-width: 1200px; flex-direction: column; align-items: center; }
+        .view-section.active { display: flex; }
+
+        .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; background-color: var(--panel-bg); padding: 15px 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px; box-sizing: border-box; flex-wrap: wrap; gap: 10px;}
+        .controls { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        input, select { background-color: #333; color: #fff; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; outline: none; }
+        .split-layout { display: flex; gap: 20px; width: 100%; }
+        
+        .team-switch { display: flex; gap: 10px; background: #000; padding: 5px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .team-btn { padding: 8px 15px; border: none; background: none; color: #888; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .team-btn.active-ally { background-color: var(--ally-color); color: #fff; }
+        .team-btn.active-enemy { background-color: var(--enemy-color); color: #fff; }
+        .flags { display: flex; gap: 10px; }
+        .flag-btn { font-size: 1.5em; cursor: pointer; background: none; border: none; filter: grayscale(100%); transition: 0.2s; }
+        .flag-btn.active, .flag-btn:hover { filter: grayscale(0%); transform: scale(1.1); }
+
+        .boards-container { display: flex; width: 100%; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .board { flex: 1; background-color: var(--panel-bg); padding: 20px; border-radius: 8px; text-align: center; border: 2px solid transparent; min-width: 300px; }
+        .board.ally { border-color: var(--ally-color); }
+        .board.enemy { border-color: var(--enemy-color); }
+        .team-slots { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+        .slot { width: 80px; height: 80px; border: 2px dashed var(--border-color); background-color: #000; display: flex; align-items: center; justify-content: center; cursor: pointer; background-size: cover; background-position: center; transition: 0.2s; }
+        .slot:hover { opacity: 0.7; border-color: #fff; }
+
+        .reports-container { display: flex; width: 100%; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .report-box { flex: 1; background-color: #1a1a2e; padding: 20px; border: 1px solid #16213e; border-radius: 8px; box-sizing: border-box; display: none; min-width: 300px; max-height: 500px; overflow-y: auto;}
+        .report-box h2 { border-bottom: 1px solid #0f3460; padding-bottom: 10px; margin-bottom: 15px;}
+        #synergy-panel { border-color: var(--ally-color); background-color: #172618; }
+        #synergy-panel h2 { color: var(--ally-color); border-color: #2e4a30;}
+        #battle-panel { border-color: #e94560; }
+        #battle-panel h2 { color: #e94560; }
+        .strat-stars { font-size: 1.5em; letter-spacing: 2px; float: right; margin-top: -45px;}
+        .strat-section { margin-bottom: 10px; font-size: 0.95em; line-height: 1.5; color: #ddd; }
+        .strat-good { color: #4caf50; font-weight: bold; }
+        .strat-bad { color: #f44336; font-weight: bold; }
+        
+        .combo-box { background: #0f1911; border-left: 3px solid var(--ally-color); padding: 12px; margin-bottom: 10px; border-radius: 4px; font-size: 0.9em; line-height: 1.6;}
+        .turn-1 { color: #ffeb3b; font-weight: bold; }
+        .turn-2 { color: #ff9800; font-weight: bold; }
+        .skill-inline { display: inline-flex; align-items: center; gap: 5px; vertical-align: middle; background: #000; padding: 2px 6px; border-radius: 4px; border: 1px solid #333; margin: 0 2px;}
+        .skill-inline img { width: 20px; height: 20px; border: 1px solid #000; border-radius: 2px; }
+        .skill-inline strong { color: #fff; font-weight: bold; }
+
+        .roster-panel { flex: 1; background-color: var(--panel-bg); padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; max-height: 60vh; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 5px; }
+        .char-portrait { width: 60px; height: 60px; background-color: #000; border: 2px solid var(--border-color); cursor: pointer; background-size: cover; background-position: center; transition: 0.1s; }
+        .char-portrait:hover { transform: scale(1.1); border-color: var(--accent-color); z-index: 10; }
+        .char-portrait.selected-ally { border-color: var(--ally-color); opacity: 0.4; }
+        .char-portrait.selected-enemy { border-color: var(--enemy-color); opacity: 0.4; }
+
+        .details-panel { flex: 1.5; background-color: var(--panel-bg); padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; max-height: 60vh; overflow-y: auto; }
+        .details-header { display: flex; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;}
+        .details-header img { width: 80px; height: 80px; border: 2px solid var(--accent-color); flex-shrink: 0;}
+        .details-lore { font-size: 0.9em; color: #bbb; line-height: 1.4; margin-top: 5px; }
+        
+        .skill-item { background-color: #2a2a2a; padding: 10px; border-radius: 4px; border-left: 4px solid var(--accent-color); display: flex; gap: 15px; margin-bottom: 10px;}
+        .skill-img { width: 50px; height: 50px; border: 1px solid #000; flex-shrink: 0; }
+        .skill-info { flex: 1; }
+        .skill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .skill-name { font-weight: bold; color: #fff; }
+        .skill-chakra img { width: 15px; height: 15px; margin-left: 2px; vertical-align: middle; }
+        .skill-desc { font-size: 0.85em; color: #bbb; margin-bottom: 8px; }
+        .skill-meta { font-size: 0.85em; color: #888; border-top: 1px dashed #444; padding-top: 5px; }
+
+        /* --- MISSÕES --- */
+        .mission-header { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 20px; text-align: center; }
+        .mission-header img { width: 220px; border: 3px solid var(--mission-color); border-radius: 8px; box-shadow: 0 0 15px rgba(156, 39, 176, 0.3); }
+        .mission-item { background: #2a2a2a; padding: 10px; margin-bottom: 10px; border-left: 4px solid var(--mission-color); cursor: pointer; border-radius: 4px; }
+        .mission-item.active { background: #1f1124; border-color: var(--mission-color); }
+        .reward-box { background: #1a1a00; border: 1px solid var(--reward-color); padding: 15px; border-radius: 8px; margin: 15px 0; display: flex; align-items: center; gap: 20px; }
+        .reward-box img { width: 80px; height: 80px; border: 2px solid var(--reward-color); border-radius: 4px; background-color: #000; }
+        
+        .rec-slots { display: flex; gap: 15px; margin-top: 15px; justify-content: center; }
+        .rec-slot { width: 80px; height: 80px; border: 2px solid var(--mission-color); border-radius: 4px; background-size: cover; display: flex; align-items: flex-end; justify-content: center;}
+        .rec-name { background: rgba(0,0,0,0.8); width: 100%; text-align: center; font-size: 0.7em; padding: 2px 0; }
+        .strat-summary { background: #0d1117; border-left: 4px solid var(--ally-color); padding: 15px; border-radius: 4px; margin-top: 15px; font-size: 0.95em; line-height: 1.5; color: #ccc; }
+        .btn-simulate { background: var(--mission-color); color: #fff; border: none; padding: 12px 25px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-top: 15px; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div class="main-tabs">
+        <button class="tab-btn active" onclick="switchTab('arena')">⚔️ Simulador de Combate</button>
+        <button class="tab-btn" onclick="switchTab('missions')">📜 Missões Ninja</button>
+    </div>
+
+    <div id="view-arena" class="view-section active">
+        <div class="top-bar">
+            <div class="controls">
+                <input type="text" id="search-input" placeholder="Buscar personagem..." oninput="filterRoster()">
+                <select id="class-filter" onchange="filterRoster()">
+                    <option value="ALL">Todas as Classes</option>
+                    <optgroup label="Tipos de Habilidade">
+                        <option value="Physical">Físico (Physical)</option>
+                        <option value="Chakra">Chakra</option>
+                        <option value="Mental">Mental</option>
+                        <option value="Affliction">Aflição (Affliction)</option>
+                    </optgroup>
+                    <optgroup label="Distância">
+                        <option value="Melee">Corpo-a-corpo (Melee)</option>
+                        <option value="Ranged">Distância (Ranged)</option>
+                    </optgroup>
+                    <optgroup label="Persistência">
+                        <option value="Instant">Instantâneo (Instant)</option>
+                        <option value="Action">Ação (Action)</option>
+                        <option value="Control">Controle (Control)</option>
+                    </optgroup>
+                </select>
+
+                <div class="team-switch">
+                    <button class="team-btn active-ally" id="btn-ally" onclick="setMode('ally')">Recrutar: SEU TIME</button>
+                    <button class="team-btn" id="btn-enemy" onclick="setMode('enemy')">Recrutar: INIMIGOS</button>
+                </div>
+            </div>
+            <div class="flags">
+                <button class="flag-btn active" id="btn-br" onclick="setLang('br')">🇧🇷</button>
+                <button class="flag-btn" id="btn-en" onclick="setLang('en')">🇺🇸</button>
+                <button class="flag-btn" id="btn-es" onclick="setLang('es')">🇪🇸</button>
+            </div>
+        </div>
+
+        <div class="boards-container">
+            <div class="board ally"><h2 style="color: var(--ally-color);">Seu Time</h2><div class="team-slots" id="ally-slots"></div></div>
+            <div class="board enemy"><h2 style="color: var(--enemy-color);">Time Inimigo</h2><div class="team-slots" id="enemy-slots"></div></div>
+        </div>
+
+        <div class="reports-container">
+            <div class="report-box" id="synergy-panel">
+                <h2>⭐ Inteligência Aliada</h2>
+                <div class="strat-stars" id="strat-stars">☆☆☆☆☆</div>
+                <div id="strat-content"></div>
+                <div id="combo-content" style="margin-top: 20px;"></div>
+            </div>
+            <div class="report-box" id="battle-panel">
+                <h2>⚔️ Assessor Tático (Vs Inimigo)</h2>
+                <div style="display: flex; gap: 15px; flex-direction: column;">
+                    <div class="strat-section" id="report-target"></div>
+                    <div class="strat-section" id="report-turn1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="split-layout">
+            <div class="roster-panel">
+                <h3>Personagens</h3>
+                <div class="grid" id="roster-grid"></div>
+            </div>
+            <div class="details-panel" id="details-panel">
+                <h3 style="text-align: center; color: #555; margin-top: 50px;">Selecione um personagem</h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-missions" class="view-section">
+        <div class="top-bar" style="background: #1f1124; border-color: var(--mission-color);">
+            <div class="controls"><input type="text" id="search-mission" placeholder="Buscar missão..." oninput="filterMissions()"></div>
+        </div>
+        <div class="split-layout">
+            <div class="roster-panel" id="mission-list"></div>
+            <div class="details-panel" id="mission-details">
+                <h3 style="text-align: center; color: #555; margin-top: 50px;">Selecione uma missão na lista</h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="dados.js"></script>
+    <script src="missoes.js"></script>
+
+    <script>
+        // ==========================================
+        // VARIÁVEIS GLOBAIS E TRADUÇÃO
+        // ==========================================
+        let allyTeam = [];
+        let enemyTeam = [];
+        let selectMode = 'ally'; 
+        let currentLang = 'br';
+        let filteredCharacters = [];
+
+        if(typeof missions === 'undefined') window.missions = [];
+
+        const i18n = {
+            br: { ui_none: "Nenhum", ui_cd: "Recarga:", words: {"deals": "causa", "damage": "de dano", "enemy": "inimigo", "enemies": "inimigos", "Physical": "Físico", "Melee": "Corpo-a-corpo", "Instant": "Instantâneo", "requires": "requer", "turns": "turnos", "stun": "atordoa", "health": "pontos de vida"} },
+            en: { ui_none: "None", ui_cd: "Cooldown:", words: {} },
+            es: { ui_none: "Ninguno", ui_cd: "Recarga:", words: {"deals": "inflige", "damage": "de daño", "enemy": "enemigo", "enemies": "enemigos", "Physical": "Físico", "Melee": "Cuerpo-a-cuerpo", "Instant": "Instantáneo"} }
+        };
+
+        function translateText(text) {
+            if (currentLang === 'en' || !text) return text;
+            let newText = text;
+            for (const [eng, loc] of Object.entries(i18n[currentLang].words)) {
+                newText = newText.replace(new RegExp(`\\b${eng}\\b`, 'gi'), loc);
+            }
+            return newText;
+        }
+
+        function init() {
+            if(typeof characters !== 'undefined') {
+                filteredCharacters = [...characters];
+                renderRoster(); renderTeams();
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(`view-${tabId}`).classList.add('active');
+            if(tabId === 'missions') renderMissionsList();
+        }
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            const detailName = document.querySelector('.details-header h2');
+            if(detailName) {
+                const char = characters.find(c => c.name === detailName.innerText);
+                if(char) showDetails(char);
+            }
+        }
+
+        function setMode(mode) {
+            selectMode = mode;
+            document.getElementById('btn-ally').classList.toggle('active-ally', mode === 'ally');
+            document.getElementById('btn-enemy').classList.toggle('active-enemy', mode === 'enemy');
+        }
+
+        // ==========================================
+        // ARENA: LISTAGEM E FILTRO DE CLASSES
+        // ==========================================
+        function filterRoster() {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const filter = document.getElementById('class-filter').value;
+            filteredCharacters = characters.filter(char => {
+                const matchName = char.name.toLowerCase().includes(search);
+                // Filtro de Classes Ativo
+                const matchClass = filter === 'ALL' || char.skills.some(s => s.classes.some(c => c.replace('*', '').trim() === filter));
+                return matchName && matchClass;
+            });
+            renderRoster();
+        }
+
+        function renderRoster() {
+            const grid = document.getElementById('roster-grid');
+            grid.innerHTML = '';
+            filteredCharacters.forEach(char => {
+                const div = document.createElement('div');
+                div.className = 'char-portrait';
+                if(allyTeam.some(t => t.id === char.id)) div.classList.add('selected-ally');
+                if(enemyTeam.some(t => t.id === char.id)) div.classList.add('selected-enemy');
+                div.style.backgroundImage = `url('${char.img}')`;
+                div.onmouseenter = () => showDetails(char);
+                div.onclick = () => toggleSelection(char);
+                grid.appendChild(div);
+            });
+        }
+
+        function renderTeams() {
+            const draw = (teamArr, containerId, type) => {
+                const c = document.getElementById(containerId);
+                c.innerHTML = '';
+                for(let i=0; i<3; i++) {
+                    const s = document.createElement('div');
+                    s.className = 'slot';
+                    if(teamArr[i]) {
+                        s.style.backgroundImage = `url('${teamArr[i].img}')`;
+                        s.onclick = () => {
+                            if(type === 'ally') allyTeam.splice(i,1); else enemyTeam.splice(i,1);
+                            renderRoster(); renderTeams();
+                        };
+                    }
+                    c.appendChild(s);
+                }
+            };
+            draw(allyTeam, 'ally-slots', 'ally');
+            draw(enemyTeam, 'enemy-slots', 'enemy');
+            
+            // Chama a inteligência sempre que o time atualiza
+            generateSynergy();
+            analyzeBattle();
+        }
+
+        function showDetails(char) {
+            const loc = i18n[currentLang];
+            let skillsHtml = char.skills.map(skill => {
+                const chakras = skill.chakra_cost_images.map(img => `<img src="${img}">`).join('');
+                const cooldownText = skill.cooldown === 'None' ? loc.ui_none : skill.cooldown;
+                const classesText = skill.classes.length > 0 ? skill.classes.map(c => translateText(c.replace('*',''))).join(', ') + '.' : 'None.';
+
+                return `<div class="skill-item">
+                    <img src="${skill.img}" class="skill-img" onerror="this.src='https://via.placeholder.com/50?text=S'">
+                    <div class="skill-info">
+                        <div class="skill-header"><span class="skill-name">${skill.name}</span><span>${chakras || '<span style="color:#888;">0</span>'}</span></div>
+                        <div class="skill-desc">${translateText(skill.description)}</div>
+                        <div class="skill-meta"><span style="margin-right:15px"><strong>${loc.ui_cd}</strong> ${cooldownText}</span><span><strong>Classes:</strong> ${classesText}</span></div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            const loreText = char.lore ? char.lore.replace(char.name, '').replace('More about', '').trim() : "Descrição não disponível.";
+            
+            document.getElementById('details-panel').innerHTML = `
+                <div class="details-header">
+                    <img src="${char.img}">
+                    <div><h2>${char.name}</h2><div class="details-lore">${translateText(loreText)}</div></div>
+                </div>${skillsHtml}`;
+        }
+
+        function toggleSelection(char) {
+            if(selectMode === 'ally' && !allyTeam.includes(char) && !enemyTeam.includes(char) && allyTeam.length < 3) allyTeam.push(char);
+            if(selectMode === 'enemy' && !enemyTeam.includes(char) && !allyTeam.includes(char) && enemyTeam.length < 3) enemyTeam.push(char);
+            renderRoster(); renderTeams();
+        }
+
+        // ==========================================
+        // ARENA: INTELIGÊNCIA ALIADA (COMPLETA)
+        // ==========================================
+        function generateSynergy() {
+            const panel = document.getElementById('synergy-panel');
+            const content = document.getElementById('strat-content');
+            const comboContent = document.getElementById('combo-content');
+            const starsUI = document.getElementById('strat-stars');
+
+            if(allyTeam.length < 3) { panel.style.display = 'none'; return; }
+            panel.style.display = 'block';
+            
+            let score = 2; let pros = []; let cons = [];
+            let classCount = { Physical: 0, Mental: 0, Chakra: 0, Affliction: 0 };
+            
+            allyTeam.forEach(char => char.skills.forEach(skill => skill.classes.forEach(c => {
+                let cl = c.replace('*', '').trim();
+                if(classCount[cl] !== undefined) classCount[cl]++;
+            })));
+            
+            if (classCount.Physical > 4) { score++; pros.push("Alto Dano Físico Bruto"); }
+            if (classCount.Mental > 2) { score++; pros.push("Forte Controle Mental"); }
+            if (classCount.Chakra > 5) { score++; pros.push("Ninjutsu Massivo (Burst)"); }
+            if (classCount.Physical >= 4 && classCount.Chakra <= 1) { cons.push("Vulnerável a Contra-Ataques Físicos"); score--; }
+            
+            score = Math.max(1, Math.min(5, score));
+            let starsHTML = "";
+            for(let i=0; i<5; i++) starsHTML += i < score ? "★" : "☆";
+            starsUI.style.color = score <= 2 ? "#f44336" : (score === 3 ? "#ffeb3b" : "#4caf50");
+            starsUI.innerText = starsHTML;
+            
+            content.innerHTML = `
+                <div class="strat-section"><strong>Vantagens:</strong> ${pros.join(', ') || 'Equipe neutra'}</div>
+                <div class="strat-section"><strong>Riscos:</strong> ${cons.join(', ') || 'Nenhum grave'}</div>
+            `;
+
+            // MOTOR DE COMBOS COM IMAGENS
+            let comboHtml = `<h3 style="color:var(--ally-color); border-bottom: 1px solid #333; padding-bottom:5px; margin-top:20px;">🔄 Guia de Rotação (Combos)</h3>`;
+
+            const getSkillInlineHtml = (skillObj) => {
+                return `<span class="skill-inline"><img src="${skillObj.img}"><strong>${skillObj.name}</strong></span>`;
+            };
+
+            allyTeam.forEach(char => {
+                let setupSkillsMap = new Map(); let finishers = []; let defensives = []; let attacks = [];
+
+                char.skills.forEach(skill => {
+                    let desc = skill.description;
+                    let isPartOfComboChain = false; 
+                    
+                    char.skills.forEach(otherSkill => {
+                        if (skill.name !== otherSkill.name && desc.includes(`'${otherSkill.name}'`)) {
+                            isPartOfComboChain = true;
+                            setupSkillsMap.set(otherSkill.name, otherSkill);
+                            finishers.push({ finisherObj: skill, setupObj: otherSkill });
+                        }
+                    });
+
+                    if (!isPartOfComboChain) {
+                        let ldesc = desc.toLowerCase();
+                        if (ldesc.includes('damage reduction') || ldesc.includes('invulnerable') || ldesc.includes('destructible defense')) {
+                            defensives.push(skill);
+                        } else if (ldesc.includes('damage') || ldesc.includes('stun')) {
+                            attacks.push(skill);
+                        }
+                    }
+                });
+
+                comboHtml += `<div class="combo-box">`;
+                comboHtml += `<strong style="color:#fff; font-size: 1.1em; display:block; margin-bottom:5px; border-bottom:1px solid #333; padding-bottom:3px;">${char.name}</strong>`;
+                
+                if (finishers.length > 0) {
+                    let setupSkillsHtml = Array.from(setupSkillsMap.values()).map(s => getSkillInlineHtml(s)).join(' / ');
+                    let finisherSkillsHtml = finishers.map(f => getSkillInlineHtml(f.finisherObj)).join(' / ');
+                    comboHtml += `<div><span class="turn-1">Turno 1 (Setup):</span> Priorize usar ${setupSkillsHtml}.</div>`;
+                    comboHtml += `<div style="margin-top:4px;"><span class="turn-2">Em seguida:</span> Libere ${finisherSkillsHtml} para dano máximo.</div>`;
+                } else if (defensives.length > 0 && attacks.length > 0) {
+                    comboHtml += `<div><span class="turn-1">Abertura:</span> Use ${getSkillInlineHtml(defensives[0])} para se proteger.</div>`;
+                    comboHtml += `<div style="margin-top:4px;"><span class="turn-2">Pressão:</span> Ataque com ${attacks.map(s => getSkillInlineHtml(s)).join(' ou ')}.</div>`;
+                } else if (defensives.length > 0) {
+                    comboHtml += `<div><span class="turn-1">Foco Tanque:</span> Mantenha ${getSkillInlineHtml(defensives[0])} ativo para absorver dano.</div>`;
+                } else if (attacks.length > 0) {
+                    comboHtml += `<div><span class="turn-1">Foco DPS:</span> Use ${attacks.map(s => getSkillInlineHtml(s)).join(' / ')} sempre que tiver chakra.</div>`;
+                } else {
+                    comboHtml += `<div><span class="turn-1">Tático:</span> Use as habilidades básicas conforme a necessidade da partida.</div>`;
+                }
+                comboHtml += `</div>`;
+            });
+            comboContent.innerHTML = comboHtml;
+        }
+
+        // ==========================================
+        // ARENA: ASSESSOR TÁTICO INIMIGO (COMPLETO)
+        // ==========================================
+        function analyzeBattle() {
+            const reportUI = document.getElementById('battle-panel');
+            if(allyTeam.length !== 3 || enemyTeam.length !== 3) { reportUI.style.display = 'none'; return; }
+            reportUI.style.display = 'block';
+
+            // 1. AMEAÇAS
+            let threats = enemyTeam.map(enemy => {
+                let score = 0; let traits = [];
+                enemy.skills.forEach(skill => {
+                    let desc = skill.description.toLowerCase();
+                    if(/\b(heal|heals|healing|restores)\b/.test(desc)) { score += 20; if(!traits.includes('Sustain/Cura')) traits.push('Sustain/Cura'); }
+                    if(/\b(stun|stuns|stunned)\b/.test(desc)) { score += 15; if(!traits.includes('Controle (Stun)')) traits.push('Controle (Stun)'); }
+                    if(/(piercing|affliction)/.test(desc)) { score += 10; if(!traits.includes('Dano Inevitável')) traits.push('Dano Inevitável'); }
+                });
+                if(score === 0) { score += 8; traits.push('Agressor de Dano'); }
+                return { char: enemy, score, traits };
+            });
+            threats.sort((a, b) => b.score - a.score);
+            let primaryTarget = threats[0];
+
+            document.getElementById('report-target').innerHTML = `
+                <h3 style="color:#ff5722; margin-top:0; border-bottom: 1px solid #333; padding-bottom:5px;">🎯 Ordem de Eliminação</h3>
+                <p><strong>Alvo 1:</strong> <span style="color:#ff5722; font-weight:bold;">${primaryTarget.char.name}</span><br>
+                <span style="color:#bbb; font-size:0.9em;">Ameaça: ${primaryTarget.traits.join(', ')}. Não deixe este personagem vivo.</span></p>
+                <p><strong>Alvo 2:</strong> ${threats[1].char.name}</p>
+                <p><strong>Alvo 3:</strong> ${threats[2].char.name}</p>
+            `;
+
+            // 2. GUIA DO TURNO 1
+            let defensiveSetups = []; let aggressiveSetups = [];
+            allyTeam.forEach(ally => {
+                ally.skills.forEach(skill => {
+                    let desc = skill.description.toLowerCase();
+                    if(skill.cooldown === 'None' || skill.cooldown === '1' || skill.cooldown === '0') {
+                        if(desc.includes('damage reduction') || desc.includes('invulnerable') || desc.includes('destructible defense')) {
+                            defensiveSetups.push(`<strong>${skill.name}</strong> (${ally.name})`);
+                        }
+                        if(desc.includes('deals') && desc.includes('damage')) {
+                            aggressiveSetups.push(`<strong>${skill.name}</strong> (${ally.name})`);
+                        }
+                    }
+                });
+            });
+
+            let turnHtml = `<h3 style="color:#4caf50; margin-top:20px; border-bottom: 1px solid #333; padding-bottom:5px;">⏱️ Guia do 1º Turno</h3>`;
+            turnHtml += `<p style="margin-bottom:5px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se você for o PRIMEIRO:</span><br>Foco em defesa e setup de chakra. `;
+            if(defensiveSetups.length > 0) turnHtml += `Ative habilidades como ${defensiveSetups[0]} para garantir a sobrevivência.</p>`;
+            else turnHtml += `Você não possui proteções imediatas. Use ataques rápidos.</p>`;
+
+            turnHtml += `<p style="margin-bottom:5px; margin-top:10px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se você for o SEGUNDO:</span><br>Aproveite o chakra extra. `;
+            if(aggressiveSetups.length > 0) turnHtml += `Use ${aggressiveSetups[0]} para focar o ${primaryTarget.char.name} e forçá-los a jogar na defensiva.</p>`;
+            else turnHtml += `Prepare o terreno com suas habilidades táticas.</p>`;
+
+            document.getElementById('report-turn1').innerHTML = turnHtml;
+        }
+
+        // ==========================================
+        // LÓGICA DAS MISSÕES NINJA (COM O "PENTE FINO")
+        // ==========================================
+        let currentMission = null;
+
+        function filterMissions() {
+            const search = document.getElementById('search-mission').value.toLowerCase();
+            const filtered = missions.filter(m => m.name.toLowerCase().includes(search) || m.requirements.toLowerCase().includes(search));
+            renderMissionsList(filtered);
+        }
+
+        function renderMissionsList(list = missions) {
+            const container = document.getElementById('mission-list');
+            container.innerHTML = '';
+            list.forEach(mission => {
+                const div = document.createElement('div');
+                div.className = 'mission-item';
+                div.innerText = mission.name;
+                div.onclick = (e) => showMissionDetails(mission, e);
+                container.appendChild(div);
+            });
+        }
+
+        function showMissionDetails(mission, event) {
+            currentMission = mission;
+            document.querySelectorAll('.mission-item').forEach(m => m.classList.remove('active'));
+            if(event) event.currentTarget.classList.add('active');
+
+            let rewardHtml = '';
+            let rewardChar = null;
+            if (mission.reward_text) {
+                rewardChar = characters.find(c => mission.reward_text.includes(c.name));
+                const rewardImg = rewardChar ? rewardChar.img : (mission.reward_img || '');
+                rewardHtml = `
+                    <div class="reward-box">
+                        <img src="${rewardImg}" onerror="this.src='https://via.placeholder.com/80?text=?'">
+                        <div>
+                            <h4 style="margin:0 0 5px 0; color: var(--reward-color);">🎁 Recompensa:</h4>
+                            <p style="margin:0; color:#ddd; font-size:0.9em;">${mission.reward_text}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('mission-details').innerHTML = `
+                <div class="mission-header">
+                    <img src="${mission.img}" onerror="this.src='https://via.placeholder.com/220?text=Mission'">
+                    <h2 style="color: var(--mission-color); margin: 0;">${mission.name}</h2>
+                </div>
+                <div style="color: #bbb; line-height: 1.6; background: #252525; padding: 15px; border-radius: 8px;">
+                    <strong>📜 Requisitos da Missão:</strong><br>${mission.requirements}
+                </div>
+                ${rewardHtml}
+                <hr style="border: 1px dashed #444; margin: 20px 0;">
+                <button class="btn-simulate" onclick="simulateIdealTeam()">🧪 Simular Equipe Ideal</button>
+                <div id="simulated-team-area"></div>
+            `;
+        }
+
+        function simulateIdealTeam() {
+            if(!currentMission || typeof characters === 'undefined') return;
+            const reqText = currentMission.requirements.toLowerCase();
+            const rewardText = currentMission.reward_text ? currentMission.reward_text.toLowerCase() : "";
+            
+            let mandatoryChars = [];
+            characters.forEach(char => {
+                const nameLower = char.name.toLowerCase();
+                if (rewardText.includes(nameLower)) return;
+                if (reqText.includes(nameLower) || reqText.includes(nameLower.split(' ')[0])) {
+                    if (!mandatoryChars.includes(char)) mandatoryChars.push(char);
+                }
+            });
+
+            let groupChars = [];
+            if (reqText.includes('any ') || reqText.includes('qualquer ')) {
+                const keywords = ['uchiha', 'hyuuga', 'sand', 'sound', 'akatsuki', 'leaf', 'mist', 'minato'];
+                keywords.forEach(kw => {
+                    if (reqText.includes(kw)) {
+                        const matches = characters.filter(c => 
+                            !rewardText.includes(c.name.toLowerCase()) && !mandatoryChars.includes(c) &&
+                            ((c.lore && c.lore.toLowerCase().includes(kw)) || c.name.toLowerCase().includes(kw))
+                        );
+                        groupChars = [...groupChars, ...matches];
+                    }
+                });
+            }
+
+            let allRequired = [...mandatoryChars];
+            let teams = [];
+            let tempPool = [...allRequired];
+
+            while (tempPool.length > 0 || (teams.length === 0)) {
+                let currentTeam = tempPool.splice(0, 3);
+                if (currentTeam.length < 3) {
+                    const healers = characters.filter(c => 
+                        !rewardText.includes(c.name.toLowerCase()) && !allRequired.includes(c) && !currentTeam.includes(c) &&
+                        c.skills.some(s => /\b(heal|heals|healing|restores)\b/.test(s.description.toLowerCase()))
+                    );
+                    while (currentTeam.length < 3 && healers.length > 0) {
+                        currentTeam.push(healers.shift());
+                    }
+                }
+                teams.push(currentTeam);
+                if (tempPool.length === 0) break; 
+            }
+
+            let finalHtml = `<h3 style="color:#fff; margin-top:20px;">📋 Estratégia de Conclusão:</h3>`;
+            teams.forEach((team, index) => {
+                let synergyAnalysis = generateDetailedSynergy(team);
+                finalHtml += `
+                    <div class="strat-summary" style="margin-bottom: 20px; border-left-color: ${index === 0 ? 'var(--ally-color)' : '#00bcd4'};">
+                        <h4 style="margin:0 0 10px 0; color: #fff;">Equipe Sugerida ${teams.length > 1 ? (index + 1) : ''}:</h4>
+                        <p style="font-size: 0.9em; line-height: 1.5; color: #bbb;">${synergyAnalysis}</p>
+                        <div class="rec-slots">
+                            ${team.map(c => `<div class="rec-slot" style="background-image: url('${c.img}');"><div class="rec-name">${c.name}</div></div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('simulated-team-area').innerHTML = finalHtml;
+        }
+
+        function generateDetailedSynergy(team) {
+            let charAnalyses = [];
+            team.forEach(char => {
+                let roles = [];
+                let descStr = char.skills.map(s => s.description.toLowerCase()).join(' ');
+                
+                if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura e sustentação");
+                if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle de grupo (stuns)");
+                if (/(damage reduction|invulnerable|destructible defense|counter|reflect)/.test(descStr)) roles.push("habilidades defensivas e proteção");
+                if (/(remove|steal|lose) (random )?chakra/.test(descStr)) roles.push("manipulação/roubo de chakra");
+                if (/(piercing|affliction) damage/.test(descStr)) roles.push("dano inevitável (perfurante/aflição)");
+                if (/\ball enemies\b/.test(descStr)) roles.push("dano em área (AoE)");
+                
+                let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "ataques diretos e dano bruto";
+                charAnalyses.push(`<strong>${char.name}</strong> contribui com ${roleText}`);
+            });
+
+            if (charAnalyses.length === 3) {
+                return `Esta equipe possui uma sinergia tática excelente porque: ${charAnalyses[0]}, ${charAnalyses[1]}, enquanto ${charAnalyses[2]}. Isso cria o equilíbrio perfeito para vencer os requisitos desta missão!`;
+            } else if (charAnalyses.length > 0) {
+                return `A equipe sugerida é ideal porque: ` + charAnalyses.join(', ') + `.`;
+            } else {
+                return `Equipe balanceada baseada nos requisitos da missão.`;
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
