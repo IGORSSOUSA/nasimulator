@@ -11,7 +11,8 @@ const missions = [
         "img": "https://i.imgur.com/NWWHZNz.jpg",
         "requirements": "Win 20 battles with any Ninja of the Team Minato. (20/20) Win 5 battles in a row with Young Kakashi. (5/5) Win 5 battles in a row with Uchiha Obito. (5/5) Win 5 battles in a row with Nohara Rin. (5/5)",
         "reward_text": "Mission \"The Yellow Flash\" completion.Namikaze Minato",
-        "reward_img": "https://i.imgur.com/PSc47fS.png"
+        "reward_img": "https://i.imgur.com/PSc47fS.png",
+        "personsmis": [20, 21, 22]
     },
     {
         "name": "A Final Promise",
@@ -116,7 +117,8 @@ const missions = [
         "img": "https://i.imgur.com/CyXcyCy.jpg",
         "requirements": "Win 5 battles with Uzumaki Naruto, Uchiha Sasuke and Haruno Sakura on the same team.(5/5)",
         "reward_text": "Mission \"Survival\" completion.Yakushi Kabuto",
-        "reward_img": "https://i.imgur.com/ZIyW33w.png"
+        "reward_img": "https://i.imgur.com/ZIyW33w.png",
+        "personsmis": [[1, 3, 2]]
     },
     {
         "name": "The Search for Kimimaro",
@@ -144,7 +146,8 @@ const missions = [
         "img": "https://i.imgur.com/MSaFGhV.jpg",
         "requirements": "Win 12 battles with Uzumaki Naruto. (12/12) Win 4 battles in a row with Uzumaki Naruto. (4/4) Win 2 battles in a row with Uzumaki Naruto and Uchiha Sasuke on the same team.(2/2)",
         "reward_text": "Mission \"The Rise of a Jinchuuriki\" completion.Kyuubi Naruto",
-        "reward_img": "https://i.imgur.com/g8Hgdw3.png"
+        "reward_img": "https://i.imgur.com/g8Hgdw3.png",
+        "personsmis": [[1, 3]]
     },
     {
         "name": "The Beast Inside",
@@ -354,14 +357,16 @@ const missions = [
         "img": "https://i.imgur.com/mFwe6eK.jpg",
         "requirements": "Win 4 battles in a row with Hatake Kakashi (S) and Sai (S) on the same team.(4/4)",
         "reward_text": "Mission \"A New Team Leader\" completion.Yamato (S)",
-        "reward_img": "https://i.imgur.com/9H3giit.png"
+        "reward_img": "https://i.imgur.com/9H3giit.png",
+        "personsmis": [[76, 66]]
     },
     {
         "name": "Return of the Snake",
         "img": "https://i.imgur.com/vRbGnul.jpg",
         "requirements": "Win 4 battles in a row with Orochimaru and Yakushi Kabuto on the same team.(4/4) Win 4 battles in a row with Uzumaki Naruto (S) and Yamato (S) on the same team.(4/4)",
         "reward_text": "Mission \"Return of the Snake\" completion.Orochimaru (S)",
-        "reward_img": "https://imgur.com/gokjDPg.jpg"
+        "reward_img": "https://imgur.com/gokjDPg.jpg",
+        "personsmis": [[49, 40], [64, 77]]
     },
     {
         "name": "A Double Agent",
@@ -494,7 +499,8 @@ const missions = [
         "img": "https://i.imgur.com/WOE9qAl.png",
         "requirements": "Win 25 battles with Haruno Sakura (S). (0/25) Win 5 battles in a row with Haruno Sakura (S) and Chiyo (S) on the same team.(0/5) Successfully counter 10 skills using Chiyo's \"Ally Puppetry\". (0/10)",
         "reward_text": "Mission \"Perfection Achieved\" completion.True Form Sasori",
-        "reward_img": "https://i.imgur.com/MohdeE7.png"
+        "reward_img": "https://i.imgur.com/MohdeE7.png",
+        "personsmis": [[65, 180]]
     },
     {
         "name": "Another Sacrifice",
@@ -522,7 +528,8 @@ const missions = [
         "img": "https://i.imgur.com/VLngMFN.jpg",
         "requirements": "Win 15 battles with Cursed Seal Sasuke. (15/15) Win 4 battles in a row with Uchiha Sasuke and Orochimaru (S) on the same team.(4/4)",
         "reward_text": "Mission \"Beginning a Path of Vengeance\" completion.Uchiha Sasuke (S)",
-        "reward_img": "https://i.imgur.com/bQ57WbY.png"
+        "reward_img": "https://i.imgur.com/bQ57WbY.png",
+        "personsmis": [[3, 112]]
     },
     {
         "name": "A Slippery Individual",
