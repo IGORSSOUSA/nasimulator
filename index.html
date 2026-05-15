@@ -3,38 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naruto Arena - Simulador Master V4</title>
+    <title>Naruto Arena - Simulador Master V6</title>
     <style>
         :root {
             --bg-color: #121212; --panel-bg: #1e1e1e; --text-color: #e0e0e0;
             --accent-color: #d15615; --border-color: #333;
             --ally-color: #4caf50; --enemy-color: #f44336; --mission-color: #9c27b0;
             --reward-color: #ffeb3b; --meta-color: #e91e63; --classic-color: #00bcd4;
+            --builder-color: #03a9f4; /* Nova cor para o Montar Time */
         }
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            color: var(--text-color); 
-            margin: 0; 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            background-color: transparent; 
+            color: var(--text-color); margin: 0; padding: 20px; display: flex; 
+            flex-direction: column; align-items: center; background-color: transparent; 
         }
 
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh;
+            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: url('https://free-3dtextureshd.com/wp-content/uploads/2025/02/518.jpg.webp') no-repeat center center;
-            background-size: cover;
-            filter: blur(6px) brightness(0.35); 
-            z-index: -1; 
+            background-size: cover; filter: blur(6px) brightness(0.35); z-index: -1; 
         }
+
         h1, h2, h3 { color: var(--accent-color); margin-top: 0; }
 
         .app-header { width: 100%; max-width: 1200px; display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 15px; }
@@ -42,10 +32,11 @@
         .app-header a:hover { background: #333; color: #fff; border-color: var(--accent-color); }
         .app-header img { width: 18px; height: 18px; }
 
-        .main-tabs { display: flex; gap: 10px; width: 100%; max-width: 1200px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 15px; font-size: 1.2em; font-weight: bold; background: var(--panel-bg); color: #888; border: 1px solid var(--border-color); cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .main-tabs { display: flex; gap: 10px; width: 100%; max-width: 1200px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; min-width: 180px; padding: 15px; font-size: 1.1em; font-weight: bold; background: var(--panel-bg); color: #888; border: 1px solid var(--border-color); cursor: pointer; border-radius: 8px; transition: 0.3s; text-align: center; }
         .tab-btn.active { color: #fff; border-color: var(--accent-color); background: #2a1610; }
         .tab-btn.tab-meta.active { border-color: var(--meta-color); background: #3a0d1e; }
+        .tab-btn.tab-builder.active { border-color: var(--builder-color); background: #061922; }
         .tab-btn:hover { background: #222; }
 
         .view-section { display: none; width: 100%; max-width: 1200px; flex-direction: column; align-items: center; }
@@ -97,13 +88,14 @@
         .char-portrait:hover { transform: scale(1.1); border-color: var(--accent-color); z-index: 10; }
         .char-portrait.selected-ally { border-color: var(--ally-color); opacity: 0.4; }
         .char-portrait.selected-enemy { border-color: var(--enemy-color); opacity: 0.4; }
+        .char-portrait.selected-builder { border-color: var(--builder-color); opacity: 0.4; }
 
         .details-header { display: flex; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;}
-        .details-header img { width: 80px; height: 80px; border: 2px solid var(--accent-color); flex-shrink: 0;}
+        .details-header img { width: 80px; height: 80px; border: 2px solid var(--accent-color); flex-shrink: 0; background-color:#000;}
         .details-lore { font-size: 0.9em; color: #bbb; line-height: 1.4; margin-top: 5px; }
         
         .skill-item { background-color: #2a2a2a; padding: 10px; border-radius: 4px; border-left: 4px solid var(--accent-color); display: flex; gap: 15px; margin-bottom: 10px;}
-        .skill-img { width: 50px; height: 50px; border: 1px solid #000; flex-shrink: 0; }
+        .skill-img { width: 50px; height: 50px; border: 1px solid #000; flex-shrink: 0; background-color:#000;}
         .skill-info { flex: 1; }
         .skill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
         .skill-name { font-weight: bold; color: #fff; }
@@ -119,11 +111,14 @@
         .reward-box img { width: 80px; height: 80px; border: 2px solid var(--reward-color); border-radius: 4px; background-color: #000; }
         
         .rec-slots { display: flex; gap: 15px; margin-top: 15px; justify-content: flex-start; }
-        
+        .rec-slot { width: 80px; height: 80px; border: 2px solid var(--mission-color); border-radius: 4px; background-size: cover; display: flex; align-items: flex-end; justify-content: center; position: relative; background-color:#000;}
+        .rec-slot.meta-border { border-color: var(--meta-color); box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);}
+        .rec-name { background: rgba(0,0,0,0.8); width: 100%; text-align: center; font-size: 0.7em; padding: 2px 0; }
         .strat-summary { background: #0d1117; border-left: 4px solid var(--ally-color); padding: 15px; border-radius: 4px; margin-top: 15px; font-size: 0.95em; line-height: 1.5; color: #ccc; }
         .btn-simulate { background: var(--mission-color); color: #fff; border: none; padding: 12px 25px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-top: 15px; width: 100%; transition: 0.2s;}
         .btn-simulate:hover { opacity: 0.8; }
         .btn-meta { background: var(--meta-color); width: auto; margin:0;}
+        .btn-builder { background: var(--builder-color); color: #000; margin:0;}
         
         .streak-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
         @media (max-width: 900px) { .streak-grid { grid-template-columns: 1fr; } }
@@ -131,25 +126,26 @@
         .app-footer { width: 100%; max-width: 1200px; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border-color); color: #bbb; line-height: 1.6; }
         .app-footer a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
         .app-footer a:hover { text-decoration: underline; }
-        .disclaimer { font-size: 0.85em; color: #777; margin-top: 10px; }
+        .error-alert { background: #f44336; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; margin-bottom: 20px; width: 100%; box-sizing: border-box;}
     </style>
 </head>
 <body>
 
     <header class="app-header">
-        <a href="https://www.naruto-arena.site/" target="_blank">
-            🌐 Site Oficial
-        </a>
+        <a href="https://www.naruto-arena.site/" target="_blank">🌐 Site Oficial</a>
         <a href="https://discord.gg/ep7Y5gK9B8" target="_blank" style="color: #5865F2;">
             <svg width="18" height="18" viewBox="0 0 127.14 96.36" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a67.58,67.58,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.33,46,96.22,53,91.08,65.69,84.69,65.69Z"/></svg>
             Discord
         </a>
     </header>
 
+    <div id="error-container"></div>
+
     <div class="main-tabs">
-        <button class="tab-btn active" onclick="switchTab('arena')">⚔️ Simulador de Combate</button>
-        <button class="tab-btn" onclick="switchTab('missions')">📜 Missões Ninja</button>
-        <button class="tab-btn tab-meta" onclick="switchTab('streaks')">🔥 Streaks (Meta)</button>
+        <button class="tab-btn active" onclick="switchTab('arena', this)">⚔️ Simulador de Combate</button>
+        <button class="tab-btn" onclick="switchTab('missions', this)">📜 Missões Ninja</button>
+        <button class="tab-btn tab-meta" onclick="switchTab('streaks', this)">🔥 Streaks (Meta)</button>
+        <button class="tab-btn tab-builder" onclick="switchTab('builder', this)">🛠️ Montar Time</button>
     </div>
 
     <div id="view-arena" class="view-section active">
@@ -240,13 +236,45 @@
         <div class="top-bar" style="background: #2a0b16; border-color: var(--meta-color);">
             <div>
                 <h2 style="color: var(--meta-color); margin: 0; font-size: 1.5em;">🏆 Top 10 Equipes Invencíveis</h2>
-                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Equipes perfeitamente balanceadas combinando o Meta Atual e Estratégias Clássicas globais.</p>
+                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Equipes balanceadas combinando o Meta Atual e Estratégias Clássicas globais.</p>
             </div>
             <div class="controls">
                 <button class="btn-simulate btn-meta" onclick="generateStreakTeams()">🔄 Gerar Novas Composições</button>
             </div>
         </div>
         <div id="streaks-container" class="streak-grid"></div>
+    </div>
+
+    <div id="view-builder" class="view-section">
+        <div class="top-bar" style="background: #061922; border-color: var(--builder-color);">
+            <div>
+                <h2 style="color: var(--builder-color); margin: 0; font-size: 1.5em;">🛠️ Construtor de Equipes (Team Builder)</h2>
+                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Selecione 1 ou 2 personagens. Nós completaremos o time com os melhores parceiros disponíveis no jogo!</p>
+            </div>
+            <div class="controls">
+                <button class="btn-simulate btn-builder" onclick="buildCustomTeams()">🧪 Montar Time</button>
+            </div>
+        </div>
+
+        <div class="boards-container" style="justify-content: center; margin-bottom: 10px;">
+            <div class="board" style="border-color: var(--builder-color); max-width: 400px; padding: 15px;">
+                <h3 style="color: var(--builder-color); margin-bottom: 10px;">Seus Escolhidos (Máx 2)</h3>
+                <div class="team-slots" id="builder-slots" style="margin-top:0;"></div>
+            </div>
+        </div>
+
+        <div class="controls" style="width: 100%; margin-bottom: 15px; justify-content: flex-start;">
+            <input type="text" id="search-builder" placeholder="Buscar parceiro..." oninput="filterBuilderRoster()" style="width: 100%; max-width: 400px;">
+        </div>
+
+        <div class="split-layout">
+            <div class="left-panel" style="flex: 1;">
+                <div class="grid" id="builder-roster-grid"></div>
+            </div>
+            <div class="right-panel" id="builder-results" style="flex: 1.5; padding-top: 10px;">
+                <p style="text-align:center; color:#666; margin-top:50px;">Adicione personagens acima e clique em "Montar Time" para ver as sugestões.</p>
+            </div>
+        </div>
     </div>
 
     <footer class="app-footer">
@@ -261,8 +289,15 @@
         // ==========================================
         // VARIÁVEIS GLOBAIS E TRADUÇÃO
         // ==========================================
-        let allyTeam = []; let enemyTeam = []; let selectMode = 'ally'; let currentLang = 'br'; let filteredCharacters = [];
-        if(typeof missions === 'undefined') window.missions = [];
+        let allyTeam = []; 
+        let enemyTeam = []; 
+        let builderTeam = []; // Novo array para o Construtor de Times
+        let selectMode = 'ally'; 
+        let currentLang = 'br'; 
+        let filteredCharacters = [];
+        let filteredBuilderCharacters = []; // Roster separado para a nova aba
+        
+        if (typeof missions === 'undefined') { window.missions = []; }
 
         const i18n = {
             br: { 
@@ -274,25 +309,52 @@
         };
 
         function translateText(text) {
-            if (currentLang === 'en' || !text) return text;
+            if (currentLang === 'en' || !text) return text; 
             let newText = text;
-            for (const [eng, loc] of Object.entries(i18n[currentLang].words)) {
-                newText = newText.replace(new RegExp(`\\b${eng}\\b`, 'gi'), loc);
+            for (const [eng, loc] of Object.entries(i18n[currentLang].words)) { 
+                newText = newText.replace(new RegExp(`\\b${eng}\\b`, 'gi'), loc); 
             }
             return newText;
         }
 
-        function init() { if(typeof characters !== 'undefined') { filteredCharacters = [...characters]; renderRoster(); renderTeams(); } }
+        // ==========================================
+        // INICIALIZAÇÃO BLINDADA
+        // ==========================================
+        function init() {
+            const errorContainer = document.getElementById('error-container');
+            if (typeof characters === 'undefined') {
+                errorContainer.innerHTML = '<div class="error-alert">🚨 ERRO FATAL: O arquivo "dados.js" não foi carregado. Verifique se você esqueceu uma vírgula ou aspa.</div>';
+                return;
+            }
+            if (characters.length === 0) {
+                errorContainer.innerHTML = '<div class="error-alert">🚨 ERRO: A lista de personagens no "dados.js" está vazia.</div>';
+                return;
+            }
+            
+            errorContainer.innerHTML = '';
+            filteredCharacters = [...characters];
+            filteredBuilderCharacters = [...characters];
+            renderRoster();
+            renderTeams();
+            renderBuilderRoster();
+            renderBuilderSlots();
+        }
 
-        function switchTab(tabId) {
+        // ==========================================
+        // CONTROLES DE INTERFACE
+        // ==========================================
+        function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-            if(event) event.target.classList.add('active');
+            
+            if(btnElement) btnElement.classList.add('active');
             document.getElementById(`view-${tabId}`).classList.add('active');
             
             if(tabId === 'missions') renderMissionsList();
-            if(tabId === 'streaks' && document.getElementById('streaks-container').innerHTML.trim() === '') {
-                generateStreakTeams(); 
+            if(tabId === 'streaks' && document.getElementById('streaks-container').innerHTML.trim() === '') generateStreakTeams(); 
+            if(tabId === 'builder') {
+                renderBuilderRoster();
+                renderBuilderSlots();
             }
         }
 
@@ -309,44 +371,57 @@
             if (currentMission) showMissionDetails(currentMission);
         }
 
-        function setMode(mode) { selectMode = mode; document.getElementById('btn-ally').classList.toggle('active-ally', mode === 'ally'); document.getElementById('btn-enemy').classList.toggle('active-enemy', mode === 'enemy'); }
+        function setMode(mode) { 
+            selectMode = mode; 
+            document.getElementById('btn-ally').classList.toggle('active-ally', mode === 'ally'); 
+            document.getElementById('btn-enemy').classList.toggle('active-enemy', mode === 'enemy'); 
+        }
 
+        // ==========================================
+        // LÓGICA DA ARENA
+        // ==========================================
         function filterRoster() {
             const s = document.getElementById('search-input').value.toLowerCase();
             const f = document.getElementById('class-filter').value;
             filteredCharacters = characters.filter(c => {
-                const n = c.name.toLowerCase().includes(s);
-                const m = f === 'ALL' || c.skills.some(sk => sk.classes.some(cl => cl.replace('*', '').trim() === f));
-                return n && m;
+                const nameMatches = (c.name || '').toLowerCase().includes(s);
+                let classMatches = false;
+                if (f === 'ALL') { classMatches = true; } 
+                else if (c.skills) { classMatches = c.skills.some(sk => sk.classes && sk.classes.some(cl => (cl || '').replace('*', '').trim() === f)); }
+                return nameMatches && classMatches;
             });
             renderRoster();
         }
 
         function renderRoster() {
-            const grid = document.getElementById('roster-grid'); grid.innerHTML = '';
+            const grid = document.getElementById('roster-grid'); 
+            if (!grid) return; grid.innerHTML = '';
+            if (filteredCharacters.length === 0) { grid.innerHTML = '<p style="color:#888; grid-column: 1 / -1; text-align:center;">Nenhum personagem encontrado.</p>'; return; }
+
             filteredCharacters.forEach(c => {
                 const d = document.createElement('div'); d.className = 'char-portrait';
-                if(allyTeam.includes(c)) d.classList.add('selected-ally');
-                if(enemyTeam.includes(c)) d.classList.add('selected-enemy');
-                d.style.backgroundImage = `url('${c.img}')`;
+                if (allyTeam.includes(c)) d.classList.add('selected-ally');
+                if (enemyTeam.includes(c)) d.classList.add('selected-enemy');
+                d.style.backgroundImage = `url('${c.img ? c.img : 'https://via.placeholder.com/60?text=?'}')`;
                 d.onmouseenter = () => showDetails(c); d.onclick = () => toggleSelection(c);
                 grid.appendChild(d);
             });
         }
 
         function renderTeams() {
-            const draw = (arr, id, type) => {
-                const c = document.getElementById(id); c.innerHTML = '';
-                for(let i=0; i<3; i++) {
+            const draw = (arr, id) => {
+                const container = document.getElementById(id); if (!container) return; container.innerHTML = '';
+                for(let i = 0; i < 3; i++) {
                     const s = document.createElement('div'); s.className = 'slot';
-                    if(arr[i]) { s.style.backgroundImage = `url('${arr[i].img}')`; s.onclick = () => { arr.splice(i,1); renderRoster(); renderTeams(); }; }
-                    c.appendChild(s);
+                    if (arr[i]) { 
+                        s.style.backgroundImage = `url('${arr[i].img ? arr[i].img : 'https://via.placeholder.com/80?text=?'}')`; 
+                        s.onclick = () => { arr.splice(i, 1); renderRoster(); renderTeams(); }; 
+                    }
+                    container.appendChild(s);
                 }
             };
-            draw(allyTeam, 'ally-slots', 'ally'); draw(enemyTeam, 'enemy-slots', 'enemy');
-            
-            generateSynergy();
-            analyzeBattle();
+            draw(allyTeam, 'ally-slots'); draw(enemyTeam, 'enemy-slots');
+            generateSynergy(); analyzeBattle();
         }
 
         function toggleSelection(c) {
@@ -356,425 +431,250 @@
         }
 
         function showDetails(char) {
-            const loc = i18n[currentLang];
-            let skillsHtml = char.skills.map(skill => {
-                const chakras = (skill.chakra_cost_images && skill.chakra_cost_images.length > 0) ? skill.chakra_cost_images.map(img => `<img src="${img}">`).join('') : '';
-                const cooldownText = skill.cooldown === 'None' ? loc.ui_none : skill.cooldown;
-                const classesText = (skill.classes && skill.classes.length > 0) ? skill.classes.map(c => translateText(c.replace('*',''))).join(', ') + '.' : 'None.';
-                
-                return `<div class="skill-item">
-                    <img src="${skill.img}" class="skill-img" onerror="this.src='https://via.placeholder.com/50?text=S'">
-                    <div class="skill-info">
-                        <div class="skill-header"><span class="skill-name">${skill.name}</span><span>${chakras || '<span style="color:#888;">0</span>'}</span></div>
-                        <div class="skill-desc">${translateText(skill.description)}</div>
-                        <div class="skill-meta"><span style="margin-right:15px"><strong>${loc.ui_cd}</strong> ${cooldownText}</span><span><strong>Classes:</strong> ${classesText}</span></div>
-                    </div>
-                </div>`;
-            }).join('');
-            
+            const loc = i18n[currentLang]; let skillsHtml = "";
+            if (char.skills && Array.isArray(char.skills)) {
+                skillsHtml = char.skills.map(skill => {
+                    const chakras = (skill.chakra_cost_images && Array.isArray(skill.chakra_cost_images)) ? skill.chakra_cost_images.map(img => `<img src="${img}">`).join('') : '';
+                    const cooldownText = (skill.cooldown === 'None' || !skill.cooldown) ? loc.ui_none : skill.cooldown;
+                    const classesText = (skill.classes && Array.isArray(skill.classes) && skill.classes.length > 0) ? skill.classes.map(c => translateText((c||'').replace('*',''))).join(', ') + '.' : 'None.';
+                    return `<div class="skill-item"><img src="${skill.img || 'https://via.placeholder.com/50?text=S'}" class="skill-img" onerror="this.src='https://via.placeholder.com/50?text=S'"><div class="skill-info"><div class="skill-header"><span class="skill-name">${skill.name || 'Habilidade'}</span><span>${chakras || '<span style="color:#888;">0</span>'}</span></div><div class="skill-desc">${translateText(skill.description || '')}</div><div class="skill-meta"><span style="margin-right:15px"><strong>${loc.ui_cd}</strong> ${cooldownText}</span><span><strong>Classes:</strong> ${classesText}</span></div></div></div>`;
+                }).join('');
+            }
             const loreText = char.lore ? char.lore.replace(char.name, '').replace('More about', '').trim() : "Descrição não disponível.";
-            document.getElementById('details-panel').innerHTML = `
-                <div class="details-header">
-                    <img src="${char.img}">
-                    <div><h2>${char.name}</h2><div class="details-lore">${translateText(loreText)}</div></div>
-                </div>${skillsHtml}`;
+            document.getElementById('details-panel').innerHTML = `<div class="details-header"><img src="${char.img || 'https://via.placeholder.com/80?text=?'}" onerror="this.src='https://via.placeholder.com/80?text=?'"><div><h2>${char.name || 'Desconhecido'}</h2><div class="details-lore">${translateText(loreText)}</div></div></div>${skillsHtml}`;
         }
 
+        // ==========================================
+        // ASSESSOR E SINERGIA DA ARENA
+        // ==========================================
         function generateSynergy() {
-            const panel = document.getElementById('synergy-panel');
-            const content = document.getElementById('strat-content');
-            const comboContent = document.getElementById('combo-content');
-            const starsUI = document.getElementById('strat-stars');
-
-            if(allyTeam.length < 3) { panel.style.display = 'none'; return; }
-            panel.style.display = 'block';
+            const panel = document.getElementById('synergy-panel'); const content = document.getElementById('strat-content'); const comboContent = document.getElementById('combo-content'); const starsUI = document.getElementById('strat-stars');
+            if(allyTeam.length < 3) { panel.style.display = 'none'; return; } panel.style.display = 'block';
+            let score = 2; let pros = []; let cons = []; let classCount = { Physical: 0, Mental: 0, Chakra: 0, Affliction: 0 };
+            allyTeam.forEach(char => { if (char.skills) { char.skills.forEach(skill => { if (skill.classes) { skill.classes.forEach(c => { let cl = (c || '').replace('*', '').trim(); if (classCount[cl] !== undefined) classCount[cl]++; }); } }); } });
             
-            let score = 2; let pros = []; let cons = [];
-            let classCount = { Physical: 0, Mental: 0, Chakra: 0, Affliction: 0 };
-            
-            allyTeam.forEach(char => char.skills.forEach(skill => {
-                if(skill.classes) skill.classes.forEach(c => {
-                    let cl = c.replace('*', '').trim();
-                    if(classCount[cl] !== undefined) classCount[cl]++;
-                });
-            }));
-            
-            if (classCount.Physical > 4) { score++; pros.push("Alto Dano Físico Bruto"); }
-            if (classCount.Mental > 2) { score++; pros.push("Forte Controle Mental"); }
-            if (classCount.Chakra > 5) { score++; pros.push("Ninjutsu Massivo (Burst)"); }
-            if (classCount.Physical >= 4 && classCount.Chakra <= 1) { cons.push("Vulnerável a Contra-Ataques Físicos"); score--; }
-            
-            score = Math.max(1, Math.min(5, score));
-            let starsHTML = "";
-            for(let i=0; i<5; i++) starsHTML += i < score ? "★" : "☆";
-            starsUI.style.color = score <= 2 ? "#f44336" : (score === 3 ? "#ffeb3b" : "#4caf50");
-            starsUI.innerText = starsHTML;
-            
+            if (classCount.Physical > 4) { score++; pros.push("Alto Dano Físico Bruto"); } if (classCount.Mental > 2) { score++; pros.push("Forte Controle Mental"); } if (classCount.Chakra > 5) { score++; pros.push("Ninjutsu Massivo (Burst)"); } if (classCount.Physical >= 4 && classCount.Chakra <= 1) { cons.push("Vulnerável a Contra-Ataques"); score--; }
+            score = Math.max(1, Math.min(5, score)); let starsHTML = ""; for(let i=0; i<5; i++) starsHTML += i < score ? "★" : "☆";
+            starsUI.style.color = score <= 2 ? "#f44336" : (score === 3 ? "#ffeb3b" : "#4caf50"); starsUI.innerText = starsHTML;
             content.innerHTML = `<div class="strat-section"><strong>Vantagens:</strong> ${pros.join(', ') || 'Equipe neutra'}</div><div class="strat-section"><strong>Riscos:</strong> ${cons.join(', ') || 'Nenhum grave'}</div>`;
 
             let comboHtml = `<h3 style="color:var(--ally-color); border-bottom: 1px solid #333; padding-bottom:5px; margin-top:20px;">🔄 Guia de Rotação (Combos)</h3>`;
-            const getSkillInlineHtml = (skillObj) => `<span class="skill-inline"><img src="${skillObj.img}"><strong>${skillObj.name}</strong></span>`;
-
+            const getSkillInlineHtml = (skillObj) => `<span class="skill-inline"><img src="${skillObj.img || ''}"><strong>${skillObj.name || ''}</strong></span>`;
+            
             allyTeam.forEach(char => {
                 let setupSkillsMap = new Map(); let finishers = []; let defensives = []; let attacks = [];
-                char.skills.forEach(skill => {
-                    let desc = skill.description; let isPartOfComboChain = false; 
-                    char.skills.forEach(otherSkill => {
-                        if (skill.name !== otherSkill.name && desc.includes(`'${otherSkill.name}'`)) {
-                            isPartOfComboChain = true; setupSkillsMap.set(otherSkill.name, otherSkill); finishers.push({ finisherObj: skill, setupObj: otherSkill });
-                        }
+                if (char.skills) {
+                    char.skills.forEach(skill => {
+                        let desc = skill.description || ''; let isPartOfComboChain = false; 
+                        char.skills.forEach(otherSkill => { if (skill.name !== otherSkill.name && desc.includes(`'${otherSkill.name}'`)) { isPartOfComboChain = true; setupSkillsMap.set(otherSkill.name, otherSkill); finishers.push({ finisherObj: skill, setupObj: otherSkill }); } });
+                        if (!isPartOfComboChain) { let ldesc = desc.toLowerCase(); if (ldesc.includes('damage reduction') || ldesc.includes('invulnerable') || ldesc.includes('destructible defense')) { defensives.push(skill); } else if (ldesc.includes('damage') || ldesc.includes('stun')) { attacks.push(skill); } }
                     });
-                    if (!isPartOfComboChain) {
-                        let ldesc = desc.toLowerCase();
-                        if (ldesc.includes('damage reduction') || ldesc.includes('invulnerable') || ldesc.includes('destructible defense')) defensives.push(skill);
-                        else if (ldesc.includes('damage') || ldesc.includes('stun')) attacks.push(skill);
-                    }
-                });
-
-                comboHtml += `<div class="combo-box"><strong style="color:#fff; font-size: 1.1em; display:block; margin-bottom:5px; border-bottom:1px solid #333; padding-bottom:3px;">${char.name}</strong>`;
-                if (finishers.length > 0) {
-                    comboHtml += `<div><span class="turn-1">Turno 1 (Setup):</span> Priorize usar ${Array.from(setupSkillsMap.values()).map(s => getSkillInlineHtml(s)).join(' / ')}.</div>`;
-                    comboHtml += `<div style="margin-top:4px;"><span class="turn-2">Em seguida:</span> Libere ${finishers.map(f => getSkillInlineHtml(f.finisherObj)).join(' / ')} para dano máximo.</div>`;
-                } else if (defensives.length > 0 && attacks.length > 0) {
-                    comboHtml += `<div><span class="turn-1">Abertura:</span> Use ${getSkillInlineHtml(defensives[0])} para se proteger.</div>`;
-                    comboHtml += `<div style="margin-top:4px;"><span class="turn-2">Pressão:</span> Ataque com ${attacks.map(s => getSkillInlineHtml(s)).join(' ou ')}.</div>`;
-                } else if (defensives.length > 0) {
-                    comboHtml += `<div><span class="turn-1">Foco Tanque:</span> Mantenha ${getSkillInlineHtml(defensives[0])} ativo para absorver dano.</div>`;
-                } else if (attacks.length > 0) {
-                    comboHtml += `<div><span class="turn-1">Foco DPS:</span> Use ${attacks.map(s => getSkillInlineHtml(s)).join(' / ')} sempre que tiver chakra.</div>`;
-                } else {
-                    comboHtml += `<div><span class="turn-1">Tático:</span> Use as habilidades básicas conforme a necessidade da partida.</div>`;
                 }
+                comboHtml += `<div class="combo-box"><strong style="color:#fff; font-size: 1.1em; display:block; margin-bottom:5px; border-bottom:1px solid #333; padding-bottom:3px;">${char.name}</strong>`;
+                if (finishers.length > 0) { comboHtml += `<div><span class="turn-1">Turno 1 (Setup):</span> Priorize usar ${Array.from(setupSkillsMap.values()).map(s => getSkillInlineHtml(s)).join(' / ')}.</div><div style="margin-top:4px;"><span class="turn-2">Em seguida:</span> Libere ${finishers.map(f => getSkillInlineHtml(f.finisherObj)).join(' / ')} para dano máximo.</div>`; } else if (defensives.length > 0 && attacks.length > 0) { comboHtml += `<div><span class="turn-1">Abertura:</span> Use ${getSkillInlineHtml(defensives[0])} para se proteger.</div><div style="margin-top:4px;"><span class="turn-2">Pressão:</span> Ataque com ${attacks.map(s => getSkillInlineHtml(s)).join(' ou ')}.</div>`; } else if (defensives.length > 0) { comboHtml += `<div><span class="turn-1">Foco Tanque:</span> Mantenha ${getSkillInlineHtml(defensives[0])} ativo para absorver dano.</div>`; } else if (attacks.length > 0) { comboHtml += `<div><span class="turn-1">Foco DPS:</span> Use ${attacks.map(s => getSkillInlineHtml(s)).join(' / ')} sempre que tiver chakra.</div>`; } else { comboHtml += `<div><span class="turn-1">Tático:</span> Use as habilidades básicas conforme a necessidade da partida.</div>`; }
                 comboHtml += `</div>`;
             });
             comboContent.innerHTML = comboHtml;
         }
 
         function analyzeBattle() {
-            const reportUI = document.getElementById('battle-panel');
-            if(allyTeam.length !== 3 || enemyTeam.length !== 3) { reportUI.style.display = 'none'; return; }
-            reportUI.style.display = 'block';
-
+            const reportUI = document.getElementById('battle-panel'); if(allyTeam.length !== 3 || enemyTeam.length !== 3) { reportUI.style.display = 'none'; return; } reportUI.style.display = 'block';
             let threats = enemyTeam.map(enemy => {
                 let score = 0; let traits = [];
-                enemy.skills.forEach(skill => {
-                    let desc = skill.description.toLowerCase();
-                    if(/\b(heal|heals|healing|restores)\b/.test(desc)) { score += 20; if(!traits.includes('Sustain/Cura')) traits.push('Sustain/Cura'); }
-                    if(/\b(stun|stuns|stunned)\b/.test(desc)) { score += 15; if(!traits.includes('Controle (Stun)')) traits.push('Controle (Stun)'); }
-                    if(/(piercing|affliction)/.test(desc)) { score += 10; if(!traits.includes('Dano Inevitável')) traits.push('Dano Inevitável'); }
-                });
-                if(score === 0) { score += 8; traits.push('Agressor de Dano'); }
-                return { char: enemy, score, traits };
+                if (enemy.skills) { enemy.skills.forEach(skill => { let desc = (skill.description || '').toLowerCase(); if(/\b(heal|heals|healing|restores)\b/.test(desc)) { score += 20; if(!traits.includes('Sustain/Cura')) traits.push('Sustain/Cura'); } if(/\b(stun|stuns|stunned)\b/.test(desc)) { score += 15; if(!traits.includes('Controle (Stun)')) traits.push('Controle (Stun)'); } if(/(piercing|affliction)/.test(desc)) { score += 10; if(!traits.includes('Dano Inevitável')) traits.push('Dano Inevitável'); } }); }
+                if(score === 0) { score += 8; traits.push('Agressor de Dano'); } return { char: enemy, score, traits };
             });
-            threats.sort((a, b) => b.score - a.score);
-            let primaryTarget = threats[0];
-
-            document.getElementById('report-target').innerHTML = `
-                <h3 style="color:#ff5722; margin-top:0; border-bottom: 1px solid #333; padding-bottom:5px;">🎯 Ordem de Eliminação</h3>
-                <p><strong>Alvo 1:</strong> <span style="color:#ff5722; font-weight:bold;">${primaryTarget.char.name}</span><br><span style="color:#bbb; font-size:0.9em;">Ameaça: ${primaryTarget.traits.join(', ')}. Não deixe este personagem vivo.</span></p>
-                <p><strong>Alvo 2:</strong> ${threats[1].char.name}</p>
-                <p><strong>Alvo 3:</strong> ${threats[2].char.name}</p>
-            `;
-
+            threats.sort((a, b) => b.score - a.score); let primaryTarget = threats[0];
+            document.getElementById('report-target').innerHTML = `<h3 style="color:#ff5722; margin-top:0; border-bottom: 1px solid #333; padding-bottom:5px;">🎯 Ordem de Eliminação</h3><p><strong>Alvo 1:</strong> <span style="color:#ff5722; font-weight:bold;">${primaryTarget.char.name}</span><br><span style="color:#bbb; font-size:0.9em;">Ameaça: ${primaryTarget.traits.join(', ')}. Não deixe vivo.</span></p><p><strong>Alvo 2:</strong> ${threats[1].char.name}</p><p><strong>Alvo 3:</strong> ${threats[2].char.name}</p>`;
             let defensiveSetups = []; let aggressiveSetups = [];
-            allyTeam.forEach(ally => {
-                ally.skills.forEach(skill => {
-                    let desc = skill.description.toLowerCase();
-                    if(skill.cooldown === 'None' || skill.cooldown === '1' || skill.cooldown === '0') {
-                        if(desc.includes('damage reduction') || desc.includes('invulnerable') || desc.includes('destructible defense')) defensiveSetups.push(`<strong>${skill.name}</strong> (${ally.name})`);
-                        if(desc.includes('deals') && desc.includes('damage')) aggressiveSetups.push(`<strong>${skill.name}</strong> (${ally.name})`);
-                    }
-                });
-            });
-
-            let turnHtml = `<h3 style="color:#4caf50; margin-top:20px; border-bottom: 1px solid #333; padding-bottom:5px;">⏱️ Guia do 1º Turno</h3>`;
-            turnHtml += `<p style="margin-bottom:5px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se você for o PRIMEIRO:</span><br>Foco em defesa e setup de chakra. `;
-            if(defensiveSetups.length > 0) turnHtml += `Ative habilidades como ${defensiveSetups[0]} para garantir a sobrevivência.</p>`;
-            else turnHtml += `Você não possui proteções imediatas. Use ataques rápidos.</p>`;
-
-            turnHtml += `<p style="margin-bottom:5px; margin-top:10px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se você for o SEGUNDO:</span><br>Aproveite o chakra extra. `;
-            if(aggressiveSetups.length > 0) turnHtml += `Use ${aggressiveSetups[0]} para focar o ${primaryTarget.char.name} e forçá-los a jogar na defensiva.</p>`;
-            else turnHtml += `Prepare o terreno com suas habilidades táticas.</p>`;
-
+            allyTeam.forEach(ally => { if (ally.skills) { ally.skills.forEach(skill => { let desc = (skill.description || '').toLowerCase(); if(skill.cooldown === 'None' || skill.cooldown === '1' || skill.cooldown === '0') { if(desc.includes('damage reduction') || desc.includes('invulnerable') || desc.includes('destructible defense')) { defensiveSetups.push(`<strong>${skill.name}</strong>`); } if(desc.includes('deals') && desc.includes('damage')) { aggressiveSetups.push(`<strong>${skill.name}</strong>`); } } }); } });
+            let turnHtml = `<h3 style="color:#4caf50; margin-top:20px; border-bottom: 1px solid #333; padding-bottom:5px;">⏱️ Guia do 1º Turno</h3><p style="margin-bottom:5px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se for o PRIMEIRO:</span><br>Foco em defesa e setup de chakra. ` + (defensiveSetups.length > 0 ? `Ative ${defensiveSetups[0]} para garantir sobrevivência.</p>` : `Sem proteção imediata. Use ataques rápidos.</p>`) + `<p style="margin-bottom:5px; margin-top:10px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se for o SEGUNDO:</span><br>Aproveite o chakra extra. ` + (aggressiveSetups.length > 0 ? `Use ${aggressiveSetups[0]} para focar o ${primaryTarget.char.name}.</p>` : `Prepare o terreno.</p>`);
             document.getElementById('report-turn1').innerHTML = turnHtml;
         }
 
         // ==========================================
-        // LÓGICA DE MISSÕES NINJA (COM O PERSONSMIS)
+        // LÓGICA DE MISSÕES E STREAKS
         // ==========================================
-        function filterMissions() {
-            const search = document.getElementById('search-mission').value.toLowerCase();
-            const filtered = missions.filter(m => m.name.toLowerCase().includes(search) || m.requirements.toLowerCase().includes(search));
-            renderMissionsList(filtered);
-        }
-
-        function renderMissionsList(list = missions) {
-            const container = document.getElementById('mission-list'); container.innerHTML = '';
-            list.forEach(mission => {
-                const div = document.createElement('div'); div.className = 'mission-item'; div.innerText = mission.name;
-                div.onclick = (e) => showMissionDetails(mission, e); container.appendChild(div);
-            });
-        }
-
-        function showMissionDetails(mission, event) {
-            currentMission = mission;
-            const loc = i18n[currentLang];
-            document.querySelectorAll('.mission-item').forEach(m => m.classList.remove('active'));
-            if(event) event.currentTarget.classList.add('active');
-
-            let sortedChars = [...characters].sort((a, b) => b.name.length - a.name.length);
-            let rewardChar = null;
-            if (mission.reward_text) {
-                rewardChar = sortedChars.find(c => mission.reward_text.toLowerCase().includes(c.name.toLowerCase()));
-            }
-            const rewardImg = rewardChar ? rewardChar.img : (mission.reward_img || '');
-
-            document.getElementById('mission-details').innerHTML = `
-                <div class="mission-header">
-                    <img src="${mission.img}" onerror="this.src='https://via.placeholder.com/220?text=Mission'">
-                    <h2 style="color: var(--mission-color); margin: 0;">${mission.name}</h2>
-                </div>
-                <div style="color: #bbb; line-height: 1.6; background: #252525; padding: 15px; border-radius: 8px;">
-                    <strong>📜 ${loc.ui_req}</strong><br>${translateText(mission.requirements)}
-                </div>
-                <div class="reward-box">
-                    <img src="${rewardImg}" onerror="this.src='https://via.placeholder.com/80?text=?'">
-                    <div>
-                        <h4 style="margin:0 0 5px 0; color: var(--reward-color);">🎁 ${loc.ui_rew}</h4>
-                        <p style="margin:0; color:#ddd; font-size:0.9em;">${translateText(mission.reward_text)}</p>
-                    </div>
-                </div>
-                <hr style="border: 1px dashed #444; margin: 20px 0;">
-                <button class="btn-simulate" onclick="simulateIdealTeam()">🧪 ${loc.ui_sim}</button>
-                <div id="simulated-team-area"></div>
-            `;
+        let currentMission = null;
+        function filterMissions() { const search = document.getElementById('search-mission').value.toLowerCase(); const filtered = missions.filter(m => (m.name||'').toLowerCase().includes(search) || (m.requirements||'').toLowerCase().includes(search)); renderMissionsList(filtered); }
+        function renderMissionsList(list = missions) { const container = document.getElementById('mission-list'); if (!container) return; container.innerHTML = ''; if (!list || list.length === 0) { container.innerHTML = '<p style="color:#888; text-align:center;">Nenhuma missão encontrada.</p>'; return; } list.forEach(mission => { const div = document.createElement('div'); div.className = 'mission-item'; div.innerText = mission.name; div.onclick = function() { showMissionDetails(mission, this); }; container.appendChild(div); }); }
+        
+        function showMissionDetails(mission, el) {
+            currentMission = mission; const loc = i18n[currentLang]; document.querySelectorAll('.mission-item').forEach(m => m.classList.remove('active')); if(el) el.classList.add('active');
+            let sortedChars = [...characters].sort((a, b) => (b.name||'').length - (a.name||'').length); let rewardChar = null; if (mission.reward_text) { rewardChar = sortedChars.find(c => mission.reward_text.toLowerCase().includes((c.name||'').toLowerCase())); } const rewardImg = rewardChar ? rewardChar.img : (mission.reward_img || 'https://via.placeholder.com/80?text=?');
+            document.getElementById('mission-details').innerHTML = `<div class="mission-header"><img src="${mission.img || 'https://via.placeholder.com/220?text=Mission'}" onerror="this.src='https://via.placeholder.com/220?text=Mission'"><h2 style="color: var(--mission-color); margin: 0;">${mission.name || 'Missão'}</h2></div><div style="color: #bbb; line-height: 1.6; background: #252525; padding: 15px; border-radius: 8px;"><strong>📜 ${loc.ui_req}</strong><br>${translateText(mission.requirements || 'Sem requisitos')}</div><div class="reward-box"><img src="${rewardImg}" onerror="this.src='https://via.placeholder.com/80?text=?'"><div><h4 style="margin:0 0 5px 0; color: var(--reward-color);">🎁 ${loc.ui_rew}</h4><p style="margin:0; color:#ddd; font-size:0.9em;">${translateText(mission.reward_text || 'Recompensa oculta')}</p></div></div><hr style="border: 1px dashed #444; margin: 20px 0;"><button class="btn-simulate" onclick="simulateIdealTeam()">🧪 ${loc.ui_sim}</button><div id="simulated-team-area"></div>`;
         }
 
         function simulateIdealTeam() {
-            if(!currentMission || typeof characters === 'undefined') return;
-            let teams = [];
-            
+            if(!currentMission || typeof characters === 'undefined') return; let teams = [];
             if (currentMission.personsmis) {
-                let manualIds = [];
-                if (typeof currentMission.personsmis === 'string') {
-                    manualIds = currentMission.personsmis.split(',').map(n => parseInt(n.trim()));
-                } else if (Array.isArray(currentMission.personsmis)) {
-                    manualIds = currentMission.personsmis;
-                }
-
-                if (manualIds.length > 0 && Array.isArray(manualIds[0])) {
-                    manualIds.forEach(group => {
-                        let t = group.map(id => characters.find(c => c.id === id)).filter(Boolean);
-                        teams.push(t);
-                    });
-                } else {
-                    let chars = manualIds.map(id => characters.find(c => c.id === id)).filter(Boolean);
-                    while (chars.length > 0) {
-                        teams.push(chars.splice(0, 3));
-                    }
-                }
-            } 
-            else {
-                const reqText = currentMission.requirements.toLowerCase();
-                const sortedChars = [...characters].sort((a, b) => b.name.length - a.name.length);
-                let rewardChar = null;
-                if (currentMission.reward_text) {
-                    rewardChar = sortedChars.find(c => currentMission.reward_text.toLowerCase().includes(c.name.toLowerCase()));
-                }
-
-                let mandatoryChars = [];
-                let tempReqText = reqText;
-                
-                sortedChars.forEach(char => {
-                    if (rewardChar && char.id === rewardChar.id) return;
-                    let nameLower = char.name.toLowerCase();
-                    if (tempReqText.includes(nameLower)) {
-                        mandatoryChars.push(char);
-                        tempReqText = tempReqText.replace(nameLower, '***');
-                    }
-                });
-
-                let groupChars = [];
-                if (reqText.includes('any ') || reqText.includes('qualquer ')) {
-                    const keywords = ['uchiha', 'hyuuga', 'sand', 'sound', 'akatsuki', 'leaf', 'mist', 'minato', 'jounin', 'jinchuuriki'];
-                    keywords.forEach(kw => {
-                        if (reqText.includes(kw)) {
-                            const matches = characters.filter(c => 
-                                (!rewardChar || c.id !== rewardChar.id) && !mandatoryChars.includes(c) && 
-                                ((c.lore && c.lore.toLowerCase().includes(kw)) || c.name.toLowerCase().includes(kw))
-                            );
-                            groupChars = [...groupChars, ...matches.slice(0, 3)];
-                        }
-                    });
-                }
-
-                let allRequired = [...new Set([...mandatoryChars, ...groupChars])];
-                while (allRequired.length > 0) {
-                    teams.push(allRequired.splice(0, 3));
-                }
+                let manualIds = []; if (typeof currentMission.personsmis === 'string') { manualIds = currentMission.personsmis.split(',').map(n => parseInt(n.trim())); } else if (Array.isArray(currentMission.personsmis)) { manualIds = currentMission.personsmis; }
+                if (manualIds.length > 0 && Array.isArray(manualIds[0])) { manualIds.forEach(group => { let t = group.map(id => characters.find(c => c.id === id)).filter(Boolean); teams.push(t); }); } else { let chars = manualIds.map(id => characters.find(c => c.id === id)).filter(Boolean); while (chars.length > 0) { teams.push(chars.splice(0, 3)); } }
+            } else {
+                const reqText = (currentMission.requirements || '').toLowerCase(); const sortedChars = [...characters].sort((a, b) => (b.name||'').length - (a.name||'').length); let rewardChar = null; if (currentMission.reward_text) { rewardChar = sortedChars.find(c => currentMission.reward_text.toLowerCase().includes((c.name||'').toLowerCase())); }
+                let mandatoryChars = []; let tempReqText = reqText; sortedChars.forEach(char => { if (rewardChar && char.id === rewardChar.id) return; let nameLower = (char.name||'').toLowerCase(); if (nameLower && tempReqText.includes(nameLower)) { mandatoryChars.push(char); tempReqText = tempReqText.replace(nameLower, '***'); } });
+                let groupChars = []; if (reqText.includes('any ') || reqText.includes('qualquer ')) { const keywords = ['uchiha', 'hyuuga', 'sand', 'sound', 'akatsuki', 'leaf', 'mist', 'minato', 'jounin', 'jinchuuriki']; keywords.forEach(kw => { if (reqText.includes(kw)) { const matches = characters.filter(c => (!rewardChar || c.id !== rewardChar.id) && !mandatoryChars.includes(c) && (((c.lore||'').toLowerCase().includes(kw)) || ((c.name||'').toLowerCase().includes(kw)))); groupChars = [...groupChars, ...matches.slice(0, 3)]; } }); }
+                let allRequired = [...new Set([...mandatoryChars, ...groupChars])]; while (allRequired.length > 0) { teams.push(allRequired.splice(0, 3)); }
             }
-
-            let usedHealerIds = [];
-            teams.forEach(team => {
-                if (team.length < 3) {
-                    let healers = characters.filter(c => {
-                        if (currentMission.reward_text && currentMission.reward_text.toLowerCase().includes(c.name.toLowerCase())) return false;
-                        if (team.some(t => t.id === c.id)) return false;
-                        
-                        let baseName = c.name.replace(/\(S\)/gi, '').trim();
-                        let hasClone = team.some(t => t.name.replace(/\(S\)/gi, '').trim() === baseName);
-                        if (hasClone) return false;
-
-                        return c.skills.some(s => /\b(heal|heals|healing|restores)\b/.test(s.description.toLowerCase()));
-                    });
-
-                    while (team.length < 3 && healers.length > 0) {
-                        let h = healers.find(x => !usedHealerIds.includes(x.id)) || healers[0];
-                        team.push(h);
-                        usedHealerIds.push(h.id);
-                        healers = healers.filter(x => x.id !== h.id); 
-                    }
-                }
-            });
-
+            let usedHealerIds = []; teams.forEach(team => { if (team.length < 3) { let healers = characters.filter(c => { if (currentMission.reward_text && currentMission.reward_text.toLowerCase().includes((c.name||'').toLowerCase())) return false; if (team.some(t => t.id === c.id)) return false; let baseName = (c.name||'').replace(/\(S\)/gi, '').trim(); let hasClone = team.some(t => (t.name||'').replace(/\(S\)/gi, '').trim() === baseName); if (hasClone) return false; return c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/.test((s.description||'').toLowerCase())); }); while (team.length < 3 && healers.length > 0) { let h = healers.find(x => !usedHealerIds.includes(x.id)) || healers[0]; team.push(h); usedHealerIds.push(h.id); healers = healers.filter(x => x.id !== h.id); } } });
             let finalHtml = `<h3 style="color:#fff; margin-top:20px;">📋 Estratégia de Conclusão:</h3>`;
             teams.forEach((team, index) => {
-                let synergyAnalysis = generateDetailedSynergyMission(team);
-                finalHtml += `
-                    <div class="strat-summary" style="margin-bottom: 20px; border-left-color: ${index === 0 ? 'var(--ally-color)' : '#00bcd4'};">
-                        <h4 style="margin:0 0 10px 0; color: #fff;">Equipe Sugerida ${teams.length > 1 ? (index + 1) : ''}:</h4>
-                        <p style="font-size: 0.9em; line-height: 1.5; color: #bbb;">${synergyAnalysis}</p>
-                        <div class="rec-slots">
-                            ${team.map(c => `<div class="rec-slot" style="background-image: url('${c.img}');"><div class="rec-name">${c.name}</div></div>`).join('')}
-                        </div>
-                    </div>
-                `;
+                let charAnalyses = []; team.forEach(char => { let roles = []; let descStr = char.skills ? char.skills.map(s => (s.description||'').toLowerCase()).join(' ') : ''; if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura/sustentação"); if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle"); if (/(damage reduction|invulnerable|destructible defense)/.test(descStr)) roles.push("defesa"); if (/(piercing|affliction)/.test(descStr)) roles.push("dano inevitável"); let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "ataques diretos"; charAnalyses.push(`<strong>${char.name}</strong> em ${roleText}`); });
+                let syn = charAnalyses.length === 3 ? `Sinergia tática: ${charAnalyses[0]}, ${charAnalyses[1]}, enquanto ${charAnalyses[2]}.` : (charAnalyses.length > 0 ? `Equipe ideal: ` + charAnalyses.join(', ') + `.` : `Equipe balanceada.`);
+                finalHtml += `<div class="strat-summary" style="margin-bottom: 20px; border-left-color: ${index === 0 ? 'var(--ally-color)' : '#00bcd4'};"><h4 style="margin:0 0 10px 0; color: #fff;">Equipe Sugerida ${teams.length > 1 ? (index + 1) : ''}:</h4><p style="font-size: 0.9em; line-height: 1.5; color: #bbb;">${syn}</p><div class="rec-slots">${team.map(c => `<div class="rec-slot" style="background-image: url('${c.img || ''}');" title="${c.name || ''}"><div class="rec-name">${c.name || ''}</div></div>`).join('')}</div></div>`;
             });
-            
             if (teams.length === 0) finalHtml += `<p style="color:#bbb;">Não foi possível determinar uma equipe específica. Use seus personagens mais fortes!</p>`;
-
             document.getElementById('simulated-team-area').innerHTML = finalHtml;
         }
 
-        function generateDetailedSynergyMission(team) {
-            let charAnalyses = [];
-            team.forEach(char => {
-                let roles = [];
-                let descStr = char.skills.map(s => s.description.toLowerCase()).join(' ');
-                
-                if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura e sustentação");
-                if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle de grupo (stuns)");
-                if (/(damage reduction|invulnerable|destructible defense|counter|reflect)/.test(descStr)) roles.push("habilidades defensivas");
-                if (/(piercing|affliction) damage/.test(descStr)) roles.push("dano inevitável");
-                
-                let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "ataques diretos e dano bruto";
-                charAnalyses.push(`<strong>${char.name}</strong> contribui com ${roleText}`);
-            });
-
-            if (charAnalyses.length === 3) {
-                return `Esta equipe possui uma sinergia tática excelente porque: ${charAnalyses[0]}, ${charAnalyses[1]}, enquanto ${charAnalyses[2]}. Isso cria o equilíbrio perfeito para vencer os requisitos desta missão!`;
-            } else if (charAnalyses.length > 0) {
-                return `A equipe sugerida é ideal porque: ` + charAnalyses.join(', ') + `.`;
-            } else {
-                return `Equipe balanceada baseada nos requisitos da missão.`;
-            }
-        }
-
-        // ==========================================
-        // NOVA ABA: MOTOR DE STREAKS (META E CLÁSSICO)
-        // ==========================================
-        
         function generateMetaSynergy(team, isMeta) {
-            let charAnalyses = [];
-            team.forEach(char => {
-                let roles = [];
-                let descStr = char.skills.map(s => s.description.toLowerCase()).join(' ');
-                
-                if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura e sustentação");
-                if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle (stuns)");
-                if (/(damage reduction|invulnerable|destructible defense|counter|reflect)/.test(descStr)) roles.push("defesa impenetrável");
-                if (/(piercing|affliction) damage/.test(descStr)) roles.push("dano massivo");
-                
-                let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "pressão ofensiva bruta";
-                charAnalyses.push(`<strong>${char.name}</strong> focado em ${roleText}`);
-            });
-
-            let intro = isMeta ? "Composição de Tier S (Meta) para vitórias." : "Formação Clássica Global bem balanceada.";
-            return `${intro} Nesta formação: ${charAnalyses.join(', ')}.`;
+            let charAnalyses = []; team.forEach(char => { let roles = []; let descStr = char.skills ? char.skills.map(s => (s.description||'').toLowerCase()).join(' ') : ''; if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura e sustentação"); if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle absoluto"); if (/(damage reduction|invulnerable|destructible defense)/.test(descStr)) roles.push("defesa impenetrável"); if (/(piercing|affliction) damage/.test(descStr)) roles.push("dano massivo"); let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "pressão ofensiva bruta"; charAnalyses.push(`<strong>${char.name}</strong> focado em ${roleText}`); });
+            let intro = isMeta ? "Composição de Tier S (Meta) para vitórias." : "Formação equilibrada perfeitamente.";
+            return `${intro} Nesta composição: ${charAnalyses.join(', ')}.`;
         }
 
         function generateStreakTeams() {
             if(typeof characters === 'undefined' || characters.length === 0) return;
-
             function pickTeamsFromPool(pool, count, isMeta) {
-                let healers = pool.filter(c => c.skills.some(s => /\b(heal|heals|healing|restores)\b/i.test(s.description)));
-                let stunners = pool.filter(c => c.skills.some(s => /\b(stun|stuns|stunned|stunning)\b/i.test(s.description)));
-                let tanks = pool.filter(c => c.skills.some(s => /(damage reduction|invulnerable|destructible defense)/i.test(s.description)));
-                let dps = pool.filter(c => c.skills.some(s => /(piercing|affliction) damage/i.test(s.description)));
-
-                if(healers.length === 0) healers = pool;
-                if(stunners.length === 0) stunners = pool;
-                if(tanks.length === 0) tanks = pool;
-                if(dps.length === 0) dps = pool;
-
-                let poolTeams = [];
-                let usedSignatures = new Set();
-                let attempts = 0;
-
+                let healers = pool.filter(c => c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/i.test(s.description||''))); let stunners = pool.filter(c => c.skills && c.skills.some(s => /\b(stun|stuns|stunned|stunning)\b/i.test(s.description||''))); let tanks = pool.filter(c => c.skills && c.skills.some(s => /(damage reduction|invulnerable|destructible defense)/i.test(s.description||''))); let dps = pool.filter(c => c.skills && c.skills.some(s => /(piercing|affliction) damage/i.test(s.description||'')));
+                if(healers.length === 0) healers = pool; if(stunners.length === 0) stunners = pool; if(tanks.length === 0) tanks = pool; if(dps.length === 0) dps = pool;
+                let poolTeams = []; let usedSignatures = new Set(); let attempts = 0;
                 while(poolTeams.length < count && attempts < 200) {
-                    attempts++;
-                    let team = [];
-                    let r1 = healers[Math.floor(Math.random() * healers.length)];
-                    let r2 = (attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)];
-                    let r3 = dps[Math.floor(Math.random() * dps.length)];
-
-                    team.push(r1);
-                    if(!team.some(c => c.name.replace(/\(S\)/gi, '').trim() === r2.name.replace(/\(S\)/gi, '').trim())) team.push(r2);
-                    if(team.length < 3 && !team.some(c => c.name.replace(/\(S\)/gi, '').trim() === r3.name.replace(/\(S\)/gi, '').trim())) team.push(r3);
-
-                    while(team.length < 3) {
-                        let fill = pool[Math.floor(Math.random() * pool.length)];
-                        if(!team.some(c => c.name.replace(/\(S\)/gi, '').trim() === fill.name.replace(/\(S\)/gi, '').trim())) team.push(fill);
-                    }
-
-                    let sig = [...team].sort((a,b) => a.id - b.id).map(c => c.id).join('-');
-                    if(!usedSignatures.has(sig)) {
-                        usedSignatures.add(sig);
-                        poolTeams.push({ chars: team, isMeta: isMeta });
-                    }
-                }
-                return poolTeams;
+                    attempts++; let team = [];
+                    let r1 = healers[Math.floor(Math.random() * healers.length)] || pool[0]; let r2 = (attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)]; r2 = r2 || pool[1] || pool[0]; let r3 = dps[Math.floor(Math.random() * dps.length)] || pool[2] || pool[0];
+                    if(r1) team.push(r1); if(r2 && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (r2.name||'').replace(/\(S\)/gi, '').trim())) team.push(r2); if(r3 && team.length < 3 && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (r3.name||'').replace(/\(S\)/gi, '').trim())) team.push(r3);
+                    while(team.length < 3) { let fill = pool[Math.floor(Math.random() * pool.length)]; if(fill && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (fill.name||'').replace(/\(S\)/gi, '').trim())) team.push(fill); }
+                    let sig = [...team].sort((a,b) => a.id - b.id).map(c => c.id).join('-'); if(!usedSignatures.has(sig)) { usedSignatures.add(sig); poolTeams.push({ chars: team, isMeta: isMeta }); }
+                } return poolTeams;
             }
-
-            let metaChars = [...characters].sort((a, b) => b.id - a.id).slice(0, 50);
-            let metaTeams = pickTeamsFromPool(metaChars, 5, true);
-
-            let allChars = [...characters];
-            let classicTeams = pickTeamsFromPool(allChars, 5, false);
-
+            let metaChars = [...characters].sort((a, b) => b.id - a.id).slice(0, 50); let metaTeams = pickTeamsFromPool(metaChars, 5, true);
+            let classicTeams = pickTeamsFromPool([...characters], 5, false);
             let allTeams = [...metaTeams, ...classicTeams];
-
             let html = '';
             allTeams.forEach((item, index) => {
-                let team = item.chars;
-                let synergyDesc = generateMetaSynergy(team, item.isMeta);
+                let team = item.chars; let synergyDesc = generateMetaSynergy(team, item.isMeta); 
+                let title = item.isMeta ? `🔥 #${index + 1} - Esquadrão Meta Atual` : `🎲 #${index + 1} - Esquadrão Clássico/Global`; let borderColor = item.isMeta ? 'var(--meta-color)' : 'var(--classic-color)'; let shadowColor = item.isMeta ? 'rgba(233, 30, 99, 0.5)' : 'rgba(0, 188, 212, 0.5)';
+                html += `<div class="strat-summary" style="border-left-color: ${borderColor}; margin-top: 0; background: #160a12;"><h4 style="margin:0 0 10px 0; color: ${borderColor};">${title}</h4><p style="font-size: 0.85em; line-height: 1.5; color: #bbb; margin-bottom: 15px;">${synergyDesc}</p><div class="rec-slots" style="justify-content: space-around;">${team.map(c => `<div class="rec-slot" style="border-color: ${borderColor}; box-shadow: 0 0 10px ${shadowColor}; background-image: url('${c.img || ''}');" title="${c.name || ''}"><div class="rec-name">${c.name || ''}</div></div>`).join('')}</div></div>`;
+            });
+            document.getElementById('streaks-container').innerHTML = html;
+        }
+
+        // ==========================================
+        // NOVA ABA: CONSTRUTOR DE TIMES (TEAM BUILDER)
+        // ==========================================
+        function filterBuilderRoster() {
+            const s = document.getElementById('search-builder').value.toLowerCase();
+            filteredBuilderCharacters = characters.filter(c => (c.name || '').toLowerCase().includes(s));
+            renderBuilderRoster();
+        }
+
+        function renderBuilderRoster() {
+            const grid = document.getElementById('builder-roster-grid'); 
+            if (!grid) return; grid.innerHTML = '';
+            if (filteredBuilderCharacters.length === 0) { grid.innerHTML = '<p style="color:#888; grid-column: 1 / -1; text-align:center;">Nenhum personagem encontrado.</p>'; return; }
+
+            filteredBuilderCharacters.forEach(c => {
+                const d = document.createElement('div'); d.className = 'char-portrait';
+                if (builderTeam.includes(c)) d.classList.add('selected-builder'); // Usa uma borda e opacidade de seleção
+                d.style.backgroundImage = `url('${c.img ? c.img : 'https://via.placeholder.com/60?text=?'}')`;
                 
-                let title = item.isMeta ? `🔥 #${index + 1} - Esquadrão Meta Atual` : `🎲 #${index + 1} - Esquadrão Clássico/Global`;
-                let borderColor = item.isMeta ? 'var(--meta-color)' : 'var(--classic-color)';
-                let shadowColor = item.isMeta ? 'rgba(233, 30, 99, 0.5)' : 'rgba(0, 188, 212, 0.5)';
+                // Ao clicar, adiciona ou remove do Construtor (Máximo 2)
+                d.onclick = () => {
+                    if (builderTeam.includes(c)) {
+                        builderTeam.splice(builderTeam.indexOf(c), 1);
+                    } else if (builderTeam.length < 2) {
+                        builderTeam.push(c);
+                    }
+                    renderBuilderRoster();
+                    renderBuilderSlots();
+                };
+                grid.appendChild(d);
+            });
+        }
+
+        function renderBuilderSlots() {
+            const container = document.getElementById('builder-slots'); if (!container) return; container.innerHTML = '';
+            for(let i = 0; i < 2; i++) {
+                const s = document.createElement('div'); s.className = 'slot';
+                s.style.borderColor = "var(--builder-color)";
+                if (builderTeam[i]) { 
+                    s.style.backgroundImage = `url('${builderTeam[i].img}')`; 
+                    s.onclick = () => { builderTeam.splice(i, 1); renderBuilderRoster(); renderBuilderSlots(); }; 
+                }
+                container.appendChild(s);
+            }
+        }
+
+        function buildCustomTeams() {
+            const resultsArea = document.getElementById('builder-results');
+            if (builderTeam.length === 0) {
+                resultsArea.innerHTML = '<p style="color:#f44336; text-align:center; margin-top:50px; font-weight:bold;">⚠️ Selecione pelo menos 1 personagem na lista para criarmos os parceiros!</p>';
+                return;
+            }
+
+            // Mapeando a piscina geral
+            let pool = [...characters];
+            let healers = pool.filter(c => c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/i.test(s.description||'')));
+            let stunners = pool.filter(c => c.skills && c.skills.some(s => /\b(stun|stuns|stunned|stunning)\b/i.test(s.description||'')));
+            let tanks = pool.filter(c => c.skills && c.skills.some(s => /(damage reduction|invulnerable|destructible defense)/i.test(s.description||'')));
+            let dps = pool.filter(c => c.skills && c.skills.some(s => /(piercing|affliction) damage/i.test(s.description||'')));
+
+            if(healers.length===0) healers = pool; if(stunners.length===0) stunners = pool; if(tanks.length===0) tanks = pool; if(dps.length===0) dps = pool;
+
+            let generatedTeams = [];
+            let attempts = 0;
+            let usedSigs = new Set();
+
+            while(generatedTeams.length < 3 && attempts < 100) {
+                attempts++;
+                let team = [...builderTeam]; // Começa com os bonecos do usuário
                 
+                // Analisa o que já tem na equipe para não repetir papéis (se possível)
+                let hasHeal = team.some(c => healers.includes(c));
+                let hasStun = team.some(c => stunners.includes(c));
+                let hasTank = team.some(c => tanks.includes(c));
+                let hasDps  = team.some(c => dps.includes(c));
+
+                while(team.length < 3) {
+                    let fillCand;
+                    if (!hasHeal) { fillCand = healers[Math.floor(Math.random() * healers.length)]; hasHeal = true; }
+                    else if (!hasStun && !hasTank) { 
+                        fillCand = (attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)]; 
+                        hasStun = true; hasTank = true; 
+                    }
+                    else if (!hasDps) { fillCand = dps[Math.floor(Math.random() * dps.length)]; hasDps = true; }
+                    else { fillCand = pool[Math.floor(Math.random() * pool.length)]; }
+
+                    // Verifica clone ex: Naruto vs Naruto (S)
+                    if (fillCand && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (fillCand.name||'').replace(/\(S\)/gi, '').trim())) {
+                        team.push(fillCand);
+                    }
+                }
+
+                // Cria assinatura única do time
+                let sig = [...team].sort((a,b) => a.id - b.id).map(c => c.id).join('-');
+                if (!usedSigs.has(sig) && team.length === 3) {
+                    usedSigs.add(sig);
+                    generatedTeams.push(team);
+                }
+            }
+
+            // Exibe na tela
+            let html = '<h3 style="color:var(--builder-color); margin-top:0;">🤝 Parceiros Ideais Encontrados</h3>';
+            generatedTeams.forEach((team, index) => {
+                let synergyDesc = generateMetaSynergy(team, false); 
                 html += `
-                    <div class="strat-summary" style="border-left-color: ${borderColor}; margin-top: 0; background: #160a12;">
-                        <h4 style="margin:0 0 10px 0; color: ${borderColor};">${title}</h4>
-                        <p style="font-size: 0.85em; line-height: 1.5; color: #bbb; margin-bottom: 15px;">${synergyDesc}</p>
-                        <div class="rec-slots" style="justify-content: space-around;">
-                            ${team.map(c => `<div class="rec-slot" style="border: 2px solid ${borderColor}; box-shadow: 0 0 10px ${shadowColor}; background-image: url('${c.img}'); border-radius: 4px; background-size: cover; display: flex; align-items: flex-end; justify-content: center; position: relative; width: 80px; height: 80px;" title="${c.name}"><div class="rec-name" style="background: rgba(0,0,0,0.8); width: 100%; text-align: center; font-size: 0.7em; padding: 2px 0;">${c.name}</div></div>`).join('')}
+                    <div class="strat-summary" style="border-left-color: var(--builder-color); margin-top: 15px; background: #0a1116;">
+                        <h4 style="margin:0 0 10px 0; color: var(--builder-color);">Combinação #${index + 1}</h4>
+                        <p style="font-size: 0.85em; line-height: 1.5; color: #bbb; margin-bottom: 10px;">${synergyDesc}</p>
+                        <div class="rec-slots" style="justify-content: flex-start;">
+                            ${team.map(c => `<div class="rec-slot" style="border-color: var(--builder-color); background-image: url('${c.img||''}');" title="${c.name}"><div class="rec-name">${c.name}</div></div>`).join('')}
                         </div>
                     </div>
                 `;
             });
 
-            document.getElementById('streaks-container').innerHTML = html;
+            resultsArea.innerHTML = html;
         }
 
         window.onload = init;
