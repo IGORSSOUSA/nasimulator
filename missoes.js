@@ -1,1 +1,394 @@
-const missions=[{'name':'The\x20Adored\x20Elder\x20Sister','img':'https://i.imgur.com/SG8qAug.png','requirements':'Use\x20Hyuuga\x20Neji\x27s\x20\x22Gentle\x20Fist\x22\x208\x20times.\x20(8/8)\x20Use\x20Hyuuga\x20Hinata\x27s\x20\x22Gentle\x20Fist\x22\x208\x20times.\x20(8/8)','reward_text':'Mission\x20\x22The\x20Adored\x20Elder\x20Sister\x22\x20completion.Hyuuga\x20Hanabi','reward_img':'https://i.imgur.com/ovkEczm.jpg'},{'name':'The\x20Yellow\x20Flash','img':'https://i.imgur.com/NWWHZNz.jpg','requirements':'Win\x2020\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x20Minato.\x20(20/20)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Young\x20Kakashi.\x20(5/5)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Obito.\x20(5/5)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Nohara\x20Rin.\x20(5/5)','reward_text':'Mission\x20\x22The\x20Yellow\x20Flash\x22\x20completion.Namikaze\x20Minato','reward_img':'https://i.imgur.com/PSc47fS.png','personsmis':[0x14,0x15,0x16]},{'name':'A\x20Final\x20Promise','img':'https://i.imgur.com/lnoT0bg.jpeg','requirements':'Win\x2020\x20battles\x20with\x20Namikaze\x20Minato.\x20(20/20)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Classic\x20Uzumaki\x20Naruto.\x20(5/5)\x20Use\x20Kyuubi\x20Naruto\x27s\x20\x22Kyuubi\x20Rage\x22\x2010\x20times.\x20(10/10)\x20Use\x20Uzumaki\x20Naruto\x20(S)\x27s\x20\x22Kyuubi\x20Boost\x22\x2010\x20times.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Final\x20Promise\x22\x20completion.Uzumaki\x20Kushina','reward_img':'https://i.imgur.com/Bt4OJMT.jpg'},{'name':'Sasukes\x20Quest\x20for\x20Power','img':'https://i.imgur.com/vzVbRv0.png','requirements':'Use\x20Uchiha\x20Sasuke\x27s\x20\x22Chidori\x22\x20on\x20an\x20enemy\x20affected\x20by\x20\x22Sharingan\x22\x205\x20times.\x20(5/5)','reward_text':'Mission\x20\x22Sasukes\x20Quest\x20for\x20Power\x22\x20completion.UNLOCKED\x20BORDER:\x20ID\x20-\x2004','reward_img':'https://i.imgur.com/CQYJRRJ.png'},{'name':'The\x20Search\x20for\x20Jiroubou','img':'https://i.imgur.com/ReKFPdG.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Akimichi\x20Chouji.\x20(3/3)','reward_text':'Mission\x20\x22The\x20Search\x20for\x20Jiroubou\x22\x20completion.Jiroubou','reward_img':'https://i.imgur.com/MuepMwr.png'},{'name':'The\x20Search\x20for\x20Kidoumaru','img':'https://i.imgur.com/PlgonF6.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Hyuuga\x20Neji.\x20(3/3)','reward_text':'Mission\x20\x22The\x20Search\x20for\x20Kidoumaru\x22\x20completion.Kidoumaru','reward_img':'https://i.imgur.com/ZSWwJiY.png'},{'name':'The\x20Search\x20for\x20Tayuya','img':'https://i.imgur.com/RAREgJy.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Nara\x20Shikamaru\x20or\x20Temari.\x20(3/3)','reward_text':'Mission\x20\x22The\x20Search\x20for\x20Tayuya\x22\x20completion.Tayuya','reward_img':'https://i.imgur.com/ZkTTfAq.png'},{'name':'The\x20Search\x20for\x20Sakon','img':'https://i.imgur.com/yYoByVg.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Inuzuka\x20Kiba\x20or\x20Kankuro.\x20(3/3)','reward_text':'Mission\x20\x22The\x20Search\x20for\x20Sakon\x22\x20completion.Sakon','reward_img':'https://i.imgur.com/fXMOzMv.png'},{'name':'A\x20New-Found\x20Skin','img':'https://i.imgur.com/U4wMean.png','requirements':'Win\x2015\x20battles\x20with\x20Kinuta\x20Dosu.\x20(0/15)\x20Win\x2015\x20battles\x20with\x20Abumi\x20Zaku.\x20(0/15)\x20Win\x2015\x20battles\x20with\x20Tsuchi\x20Kin.\x20(11/15)','reward_text':'Mission\x20\x22A\x20New-Found\x20Skin\x22\x20completion.Shiore\x20Orochimaru','reward_img':'https://i.imgur.com/AzUvWCt.png'},{'name':'Descent\x20into\x20Darkness','img':'https://i.imgur.com/MOHHjog.jpg','requirements':'Win\x202\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto.\x20(2/2)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Sasuke.\x20(4/4)\x20Win\x2010\x20battles\x20with\x20Uchiha\x20Sasuke.\x20(10/10)','reward_text':'Mission\x20\x22Descent\x20into\x20Darkness\x22\x20completion.Cursed\x20Seal\x20Sasuke','reward_img':'https://i.imgur.com/r4RPyUj.png'},{'name':'The\x20Redemption\x20of\x20Gaara','img':'https://i.imgur.com/rtn4dsy.jpg','requirements':'Win\x202\x20battles\x20in\x20a\x20row\x20with\x20Rock\x20Lee.\x20(2/2)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Gaara\x20of\x20the\x20Desert.\x20(4/4)\x20Win\x2010\x20battles\x20with\x20Gaara\x20of\x20the\x20Desert.\x20(10/10)','reward_text':'Mission\x20\x22The\x20Redemption\x20of\x20Gaara\x22\x20completion.Gaara\x20Rehabilitated','reward_img':'https://i.imgur.com/tV82AF4.png'},{'name':'The\x20Sounds\x20Amongst\x20the\x20Leaves','img':'https://i.imgur.com/utvYcfq.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20any\x20Ninja\x20of\x20the\x20Sound\x20Genin\x20(Dosu,\x20Kin,\x20Zaku).\x20(3/3)','reward_text':'Mission\x20\x22The\x20Sounds\x20Amongst\x20the\x20Leaves\x22\x20completion.Akadou\x20Yoroi','reward_img':'https://i.imgur.com/ZqpOP0D.png'},{'name':'Twisting\x20Sound','img':'https://i.imgur.com/TRERBfs.jpeg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Kankuro.\x20(3/3)','reward_text':'Mission\x20\x22Twisting\x20Sound\x22\x20completion.Tsurugi\x20Misumi','reward_img':'https://i.imgur.com/M8EPY4F.png'},{'name':'A\x20Rare\x20Opportunity','img':'https://i.imgur.com/QaWdQbS.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Hyuuga\x20Hinata.\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Aburame\x20Shino.\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Inuzuka\x20Kiba.\x20(3/3)','reward_text':'Mission\x20\x22A\x20Rare\x20Opportunity\x22\x20completion.Shigure','reward_img':'https://i.imgur.com/lLYJBpS.png'},{'name':'A\x20Downpour\x20of\x20Illusion','img':'https://i.imgur.com/5uJ1i3p.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Shigure.\x20(3/3)','reward_text':'Mission\x20\x22A\x20Downpour\x20of\x20Illusion\x22\x20completion.Oboro','reward_img':'https://i.imgur.com/XLe6m8K.png'},{'name':'Devotion','img':'https://i.imgur.com/VxfyjZy.jpg','requirements':'Win\x208\x20battles\x20with\x20Haku.\x20(8/8)','reward_text':'Mission\x20\x22Devotion\x22\x20completion.Momochi\x20Zabuza','reward_img':'https://i.imgur.com/OzHvYsF.png'},{'name':'Survival','img':'https://i.imgur.com/CyXcyCy.jpg','requirements':'Win\x205\x20battles\x20with\x20Uzumaki\x20Naruto,\x20Uchiha\x20Sasuke\x20and\x20Haruno\x20Sakura\x20on\x20the\x20same\x20team.(5/5)','reward_text':'Mission\x20\x22Survival\x22\x20completion.Yakushi\x20Kabuto','reward_img':'https://i.imgur.com/ZIyW33w.png','personsmis':[[0x1,0x3,0x2]]},{'name':'The\x20Search\x20for\x20Kimimaro','img':'https://i.imgur.com/ymOmjnR.jpeg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Rock\x20Lee\x20or\x20Gaara\x20Rehabilitated.\x20(4/4)','reward_text':'Mission\x20\x22The\x20Search\x20for\x20Kimimaro\x22\x20completion.Kimimaro','reward_img':'https://i.imgur.com/qzCv58M.png'},{'name':'The\x20Drunken\x20Master','img':'https://i.imgur.com/CVot6mQ.jpeg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Rock\x20Lee\x20or\x20Kimimaro.\x20(4/4)\x20Use\x20Kimimaro\x27s\x20\x22Dance\x20of\x20the\x20Camellia\x22\x2010\x20times.\x20(10/10)','reward_text':'Mission\x20\x22The\x20Drunken\x20Master\x22\x20completion.Drunken\x20Lee','reward_img':'https://i.imgur.com/QYXQyIZ.png'},{'name':'Medical\x20Training','img':'https://i.imgur.com/wnsCvez.jpg','requirements':'Win\x2010\x20battles\x20with\x20Haruno\x20Sakura.\x20(10/10)','reward_text':'Mission\x20\x22Medical\x20Training\x22\x20completion.Shizune','reward_img':'https://i.imgur.com/V4ZPeu0.png'},{'name':'The\x20Rise\x20of\x20a\x20Jinchuuriki','img':'https://i.imgur.com/MSaFGhV.jpg','requirements':'Win\x2012\x20battles\x20with\x20Uzumaki\x20Naruto.\x20(12/12)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto.\x20(4/4)\x20Win\x202\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto\x20and\x20Uchiha\x20Sasuke\x20on\x20the\x20same\x20team.(2/2)','reward_text':'Mission\x20\x22The\x20Rise\x20of\x20a\x20Jinchuuriki\x22\x20completion.Kyuubi\x20Naruto','reward_img':'https://i.imgur.com/g8Hgdw3.png','personsmis':[[0x1,0x3]]},{'name':'The\x20Beast\x20Inside','img':'https://i.imgur.com/xQNpJsZ.jpeg','requirements':'Win\x2012\x20battles\x20with\x20Gaara\x20Rehabilitated.\x20(12/12)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Gaara\x20Rehabilitated.\x20(4/4)\x20Use\x20Gaara\x20Rehabilitated\x27s\x20\x22Quicksand\x20Waterfall\x22\x2010\x20times.\x20(10/10)','reward_text':'Mission\x20\x22The\x20Beast\x20Inside\x22\x20completion.Shukaku\x20Gaara','reward_img':'https://i.imgur.com/bJHNRJ2.png'},{'name':'The\x20Survivor\x20of\x20the\x20Seal','img':'https://i.imgur.com/zO3NU9w.jpg','requirements':'Win\x203\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x207.\x20(3/3)\x20Win\x203\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x208.\x20(3/3)\x20Win\x203\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x209.\x20(3/3)\x20Win\x203\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x2010.\x20(3/3)\x20Win\x203\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Sand\x20Genin\x20(Gaara/Gaara\x20Rehabilitated,\x20Kankuro,\x20Temari).\x20(3/3)\x20Win\x203\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Sound\x20Genin\x20(Dosu,\x20Kin,\x20Zaku).\x20(3/3)','reward_text':'Mission\x20\x22The\x20Survivor\x20of\x20the\x20Seal\x22\x20completion.Mitarashi\x20Anko','reward_img':'https://i.imgur.com/q0YFcWg.png'},{'name':'Duty\x20of\x20a\x20Sensei','img':'https://i.imgur.com/ZYvPX2L.jpg','requirements':'Win\x202\x20battles\x20with\x20Uzumaki\x20Naruto.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Uchiha\x20Sasuke.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Haruno\x20Sakura.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Hyuuga\x20Hinata.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Aburame\x20Shino.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Inuzuka\x20Kiba.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Nara\x20Shikamaru.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Akimichi\x20Chouji.\x20(2/2)\x20Win\x202\x20battles\x20with\x20Yamanaka\x20Ino.\x20(2/2)','reward_text':'Mission\x20\x22Duty\x20of\x20a\x20Sensei\x22\x20completion.Umino\x20Iruka','reward_img':'https://i.imgur.com/VFwEl8B.png'},{'name':'Mist\x20Ascendant','img':'https://i.imgur.com/XkEM2l4.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Haku\x20or\x20Momochi\x20Zabuza.\x20(4/4)','reward_text':'Mission\x20\x22Mist\x20Ascendant\x22\x20completion.Demon\x20Brothers','reward_img':'https://i.imgur.com/rO5gKY6.png'},{'name':'A\x20Dishonored\x20Shinobi','img':'https://i.imgur.com/9GlXiaR.jpg','requirements':'Win\x208\x20battles\x20with\x20Uzumaki\x20Naruto.\x20(8/8)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Umino\x20Iruka.\x20(3/3)','reward_text':'Mission\x20\x22A\x20Dishonored\x20Shinobi\x22\x20completion.Touji\x20Mizuki','reward_img':'https://i.imgur.com/56OlIhi.png'},{'name':'The\x20Corrupted\x20by\x20Dark\x20Ambitons','img':'https://i.imgur.com/hnyXtw3.png','requirements':'Win\x2013\x20battles\x20with\x20Touji\x20Mizuki.\x20(13/13)','reward_text':'Mission\x20\x22The\x20Corrupted\x20by\x20Dark\x20Ambitons\x22\x20completion.Cursed\x20Seal\x20Mizuki','reward_img':'https://i.imgur.com/V6AYlxZ.png'},{'name':'Team\x207\x20Fights\x20as\x20a\x20Team','img':'https://i.imgur.com/ZeoV0b7.jpg','requirements':'Win\x2015\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x207.\x20(15/15)','reward_text':'Mission\x20\x22Team\x207\x20Fights\x20as\x20a\x20Team\x22\x20completion.Hatake\x20Kakashi','reward_img':'https://i.imgur.com/EiPfRpg.png'},{'name':'Team\x208\x20Scouting\x20at\x20its\x20Best','img':'https://i.imgur.com/pC8K83K.jpg','requirements':'Win\x2015\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x208.\x20(15/15)','reward_text':'Mission\x20\x22Team\x208\x20Scouting\x20at\x20its\x20Best\x22\x20completion.Yuhi\x20Kurenai','reward_img':'https://i.imgur.com/L1IWoqb.png'},{'name':'Team\x209\x20the\x20Best\x20Taijustu\x20Team','img':'https://i.imgur.com/Nyei6JT.jpg','requirements':'Win\x2015\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x209.\x20(15/15)','reward_text':'Mission\x20\x22Team\x209\x20the\x20Best\x20Taijustu\x20Team\x22\x20completion.Maito\x20Gai','reward_img':'https://i.imgur.com/mZzzuP2.png'},{'name':'Team\x2010\x20Fights\x20vs\x20the\x20Sound','img':'https://i.imgur.com/HmMvRu1.jpg','requirements':'Win\x2015\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x2010.\x20(15/15)','reward_text':'Mission\x20\x22Team\x2010\x20Fights\x20vs\x20the\x20Sound\x22\x20completion.Sarutobi\x20Asuma','reward_img':'https://i.imgur.com/N4ZFINr.png'},{'name':'Sand\x20Siblings\x20at\x20War','img':'https://i.imgur.com/I0vyzSJ.jpg','requirements':'Win\x2015\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Sand\x20Genin\x20(Gaara/Gaara\x20Rehabilitated,\x20Kankuro,\x20Temari).\x20(15/15)','reward_text':'Mission\x20\x22Sand\x20Siblings\x20at\x20War\x22\x20completion.Baki','reward_img':'https://i.imgur.com/f0YWgRx.png'},{'name':'S-Rank\x20Criminal\x20Kisame!','img':'https://i.imgur.com/fSB99BW.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Maito\x20Gai\x20or\x20Sarutobi\x20Asuma.\x20(6/5)','reward_text':'Mission\x20\x22S-Rank\x20Criminal\x20Kisame!\x22\x20completion.Hoshigaki\x20Kisame','reward_img':'https://i.imgur.com/M8xGMby.png'},{'name':'S-Rank\x20Criminal\x20Itachi!','img':'https://i.imgur.com/0jLYeW9.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Hatake\x20Kakashi\x20or\x20Yuhi\x20Kurenai.\x20(6/5)','reward_text':'Mission\x20\x22S-Rank\x20Criminal\x20Itachi!\x22\x20completion.Uchiha\x20Itachi','reward_img':'https://i.imgur.com/DXGV0Uz.png'},{'name':'The\x20Moonlight\x20of\x20the\x20Leaf','img':'https://i.imgur.com/onI0Chf.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Baki.\x20(5/5)','reward_text':'Mission\x20\x22The\x20Moonlight\x20of\x20the\x20Leaf\x22\x20completion.Gekko\x20Hayate','reward_img':'https://i.imgur.com/CXtg9Cd.png'},{'name':'Disciples\x20of\x20the\x20Toad','img':'https://i.imgur.com/Lm7tyYj.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto.\x20(5/5)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Namikaze\x20Minato.\x20(5/5)\x20Win\x2020\x20battles\x20with\x20Uzumaki\x20Naruto\x20or\x20Namikaze\x20Minato.\x20(20/20)','reward_text':'Mission\x20\x22Disciples\x20of\x20the\x20Toad\x22\x20completion.Jiraiya','reward_img':'https://i.imgur.com/tZpyvBQ.png'},{'name':'Disciples\x20of\x20the\x20Slug','img':'https://i.imgur.com/pPBd4vH.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Haruno\x20Sakura.\x20(5/5)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Shizune.\x20(5/5)\x20Win\x2020\x20battles\x20with\x20Haruno\x20Sakura\x20or\x20Shizune.\x20(20/20)','reward_text':'Mission\x20\x22Disciples\x20of\x20the\x20Slug\x22\x20completion.Tsunade','reward_img':'https://i.imgur.com/LGztynU.png'},{'name':'Disciples\x20of\x20the\x20Snake','img':'https://i.imgur.com/nHnmL4p.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Sasuke.\x20(5/5)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Yakushi\x20Kabuto.\x20(5/5)\x20Win\x2020\x20battles\x20with\x20Uchiha\x20Sasuke\x20or\x20Yakushi\x20Kabuto.\x20(20/20)','reward_text':'Mission\x20\x22Disciples\x20of\x20the\x20Snake\x22\x20completion.Orochimaru','reward_img':'https://i.imgur.com/SujZWa4.png'},{'name':'The\x20God\x20of\x20the\x20Shinobi','img':'https://i.imgur.com/FOSgnsQ.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Jiraiya.\x20(7/4)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Tsunade.\x20(7/4)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Orochimaru.\x20(7/4)','reward_text':'Mission\x20\x22The\x20God\x20of\x20the\x20Shinobi\x22\x20completion.Sandaime\x20Hokage','reward_img':'https://i.imgur.com/OUgT0V5.jpg'},{'name':'The\x20Resurrection\x20of\x20the\x20First','img':'https://i.imgur.com/PfOaRWq.jpg','requirements':'Win\x2020\x20battles\x20with\x20Sandaime\x20Hokage.\x20(25/20)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Kimimaro.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Jiroubou.\x20(15/10)\x20Win\x2010\x20battles\x20with\x20Tayuya.\x20(15/10)\x20Win\x2010\x20battles\x20with\x20Kidoumaru.\x20(15/10)\x20Win\x2010\x20battles\x20with\x20Sakon.\x20(15/10)','reward_text':'Mission\x20\x22The\x20Resurrection\x20of\x20the\x20First\x22\x20completion.Shodai\x20Hokage','reward_img':'https://i.imgur.com/4Qt9UaS.png'},{'name':'The\x20Resurrection\x20of\x20the\x20Second','img':'https://i.imgur.com/3RTEsKR.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Sandaime\x20Hokage.\x20(6/5)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Yakushi\x20Kabuto.\x20(3/3)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Jiroubou.\x20(5/4)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Tayuya.\x20(5/4)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Kidoumaru.\x20(5/4)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Sakon.\x20(5/4)','reward_text':'Mission\x20\x22The\x20Resurrection\x20of\x20the\x20Second\x22\x20completion.Nidaime\x20Hokage','reward_img':'https://i.imgur.com/GyEmocs.png'},{'name':'The\x20Prodigal\x20Son\x20Returns','img':'https://i.imgur.com/jgOMFXH.jpg','requirements':'Win\x202\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto.\x20(2/2)\x20Win\x206\x20battles\x20with\x20Uzumaki\x20Naruto.\x20(6/6)','reward_text':'Mission\x20\x22The\x20Prodigal\x20Son\x20Returns\x22\x20completion.Uzumaki\x20Naruto\x20(S)','reward_img':'https://i.imgur.com/ksOuPJi.png'},{'name':'A\x20Girl\x20Grown\x20Up','img':'https://i.imgur.com/p622DKI.jpeg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Haruno\x20Sakura.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Haruno\x20Sakura.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Girl\x20Grown\x20Up\x22\x20completion.Haruno\x20Sakura\x20(S)','reward_img':'https://i.imgur.com/5iC4YJR.png'},{'name':'A\x20Genius\x20of\x20Hard\x20Work','img':'https://i.imgur.com/L8EEhnY.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Rock\x20Lee.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Rock\x20Lee.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Genius\x20of\x20Hard\x20Work\x22\x20completion.Rock\x20Lee\x20(S)','reward_img':'https://i.imgur.com/DTqDmu4.png'},{'name':'A\x20Genius\x20of\x20Ranged\x20Combat','img':'https://i.imgur.com/CGoSy5u.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Tenten.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Tenten.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Genius\x20of\x20Ranged\x20Combat\x22\x20completion.Tenten\x20(S)','reward_img':'https://i.imgur.com/lFtTPeQ.png'},{'name':'Pride\x20of\x20the\x20Hyuuga','img':'https://i.imgur.com/pvw1p4Q.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Hyuuga\x20Neji.\x20(3/3)\x20Win\x2013\x20battles\x20with\x20Hyuuga\x20Neji.\x20(13/13)','reward_text':'Mission\x20\x22Pride\x20of\x20the\x20Hyuuga\x22\x20completion.Hyuuga\x20Neji\x20(S)','reward_img':'https://i.imgur.com/L3PYgA9.png'},{'name':'The\x20Green\x20Beast','img':'https://i.imgur.com/iKXcldS.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Rock\x20Lee.\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Tenten.\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Neji.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Maito\x20Gai.\x20(10/10)','reward_text':'Mission\x20\x22The\x20Green\x20Beast\x22\x20completion.Maito\x20Gai\x20(S)','reward_img':'https://i.imgur.com/QNaZDbW.png'},{'name':'From\x20Teacher\x20to\x20Partner','img':'https://i.imgur.com/PWANEHn.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Naruto.\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Sakura.\x20(3/3)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Kakashi.\x20(4/4)','reward_text':'Mission\x20\x22From\x20Teacher\x20to\x20Partner\x22\x20completion.Hatake\x20Kakashi\x20(S)','reward_img':'https://i.imgur.com/lKc2rbD.png'},{'name':'Finding\x20His\x20Purpose','img':'https://i.imgur.com/f7vxOLT.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Gaara\x20Rehabilitated.\x20(5/5)\x20Win\x2015\x20battles\x20with\x20Gaara\x20Rehabilitated.\x20(15/15)','reward_text':'Mission\x20\x22Finding\x20His\x20Purpose\x22\x20completion.Kazekage\x20Gaara\x20(S)','reward_img':'https://i.imgur.com/Osg9lfR.png'},{'name':'A\x20Blank\x20Slate','img':'https://i.imgur.com/hnn3C0u.jpg','requirements':'Win\x2010\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Team\x207.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Blank\x20Slate\x22\x20completion.Sai\x20(S)','reward_img':'https://i.imgur.com/A7rJdmI.png'},{'name':'A\x20New\x20Team\x20Leader','img':'https://i.imgur.com/mFwe6eK.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Hatake\x20Kakashi\x20(S)\x20and\x20Sai\x20(S)\x20on\x20the\x20same\x20team.(4/4)','reward_text':'Mission\x20\x22A\x20New\x20Team\x20Leader\x22\x20completion.Yamato\x20(S)','reward_img':'https://i.imgur.com/9H3giit.png','personsmis':[[0x4c,0x42]]},{'name':'Return\x20of\x20the\x20Snake','img':'https://i.imgur.com/vRbGnul.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Orochimaru\x20and\x20Yakushi\x20Kabuto\x20on\x20the\x20same\x20team.(4/4)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto\x20(S)\x20and\x20Yamato\x20(S)\x20on\x20the\x20same\x20team.(4/4)','reward_text':'Mission\x20\x22Return\x20of\x20the\x20Snake\x22\x20completion.Orochimaru\x20(S)','reward_img':'https://imgur.com/gokjDPg.jpg','personsmis':[[0x31,0x28],[0x40,0x4d]]},{'name':'A\x20Double\x20Agent','img':'https://i.imgur.com/FU7sZfm.png','requirements':'Win\x2020\x20battles\x20with\x20Yakushi\x20Kabuto.\x20(20/20)','reward_text':'Mission\x20\x22A\x20Double\x20Agent\x22\x20completion.Yakushi\x20Kabuto\x20(S)','reward_img':'https://i.imgur.com/lBkxaOw.png'},{'name':'What\x20Lies\x20Beneath','img':'https://i.imgur.com/CC3boVT.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Yamato\x20(S).\x20(4/4)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Kyuubi\x20Naruto.\x20(5/5)\x20Win\x2015\x20battles\x20with\x20Uzumaki\x20Naruto\x20(S).\x20(15/15)','reward_text':'Mission\x20\x22What\x20Lies\x20Beneath\x22\x20completion.Four\x20Tail\x20Kyuubi\x20Naruto\x20(S)','reward_img':'https://i.imgur.com/D0nPc8R.png'},{'name':'Where\x20the\x20Shadows\x20Lie','img':'https://i.imgur.com/kqrbOVl.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Nara\x20Shikamaru.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Nara\x20Shikamaru.\x20(10/10)','reward_text':'Mission\x20\x22Where\x20the\x20Shadows\x20Lie\x22\x20completion.Nara\x20Shikamaru\x20(S)','reward_img':'https://i.imgur.com/DJ6gLqt.png'},{'name':'A\x20Guardian\x20of\x20the\x20Flame','img':'https://i.imgur.com/UCDVS6A.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Nara\x20Shikamaru\x20(S).\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Akimichi\x20Chouji\x20(S).\x20(3/3)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Yamanaka\x20Ino\x20(S).\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Sarutobi\x20Asuma.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Guardian\x20of\x20the\x20Flame\x22\x20completion.Sarutobi\x20Asuma\x20(S)','reward_img':'https://i.imgur.com/PFcN7Rp.png'},{'name':'A\x20Portly\x20but\x20Steadfast\x20Ninja','img':'https://i.imgur.com/jQ93K50.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Akimichi\x20Chouji.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Akimichi\x20Chouji.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Portly\x20but\x20Steadfast\x20Ninja\x22\x20completion.Akimichi\x20Chouji\x20(S)','reward_img':'https://i.imgur.com/yOkMa5x.png'},{'name':'Blondes\x20Have\x20All\x20the\x20Fun','img':'https://i.imgur.com/C9ECnHg.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Yamanaka\x20Ino.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Yamanaka\x20Ino.\x20(10/10)','reward_text':'Mission\x20\x22Blondes\x20Have\x20All\x20the\x20Fun\x22\x20completion.Yamanaka\x20Ino\x20(S)','reward_img':'https://i.imgur.com/zA72t3a.png'},{'name':'The\x20Konoha\x20Man\x20of\x20Mystery','img':'https://i.imgur.com/5zDFBKF.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Aburame\x20Shino.\x20(3/3)\x20Win\x2010\x20battles\x20with\x20Aburame\x20Shino.\x20(10/10)','reward_text':'Mission\x20\x22The\x20Konoha\x20Man\x20of\x20Mystery\x22\x20completion.Aburame\x20Shino\x20(S)','reward_img':'https://i.imgur.com/tTKpPqk.png'},{'name':'A\x20Lovestruck\x20Girl','img':'https://i.imgur.com/ylXTBAY.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Hyuuga\x20Hinata.\x20(4/4)\x20Win\x2010\x20battles\x20with\x20Hyuuga\x20Hinata.\x20(10/10)','reward_text':'Mission\x20\x22A\x20Lovestruck\x20Girl\x22\x20completion.Hyuuga\x20Hinata\x20(S)','reward_img':'https://i.imgur.com/IvkdaCw.png'},{'name':'Boy\x20and\x20His\x20Dog','img':'https://i.imgur.com/t6xK7vV.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Inuzuka\x20Kiba.\x20(4/4)\x20Win\x2010\x20battles\x20with\x20Inuzuka\x20Kiba.\x20(10/10)','reward_text':'Mission\x20\x22Boy\x20and\x20His\x20Dog\x22\x20completion.Inuzuka\x20Kiba\x20(S)','reward_img':'https://i.imgur.com/nHC0h7V.png'},{'name':'An\x20Inseparable\x20Duo','img':'https://i.imgur.com/2pUOB9A.jpg','requirements':'Win\x2020\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Leaf\x20Village.\x20(20/20)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Sarutobi\x20Asuma\x20(S).\x20(5/5)','reward_text':'Mission\x20\x22An\x20Inseparable\x20Duo\x22\x20completion.Izumo\x20and\x20Kotetsu\x20(S)','reward_img':'https://i.imgur.com/9zd3jpv.jpg'},{'name':'A\x20Feast\x20for\x20Crows','img':'https://i.imgur.com/pv68kry.jpg','requirements':'Win\x2020\x20battles\x20with\x20any\x20Konoha\x20Jounin.\x20(20/20)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20any\x20Konoha\x20Jounin.\x20(5/5)','reward_text':'Mission\x20\x22A\x20Feast\x20for\x20Crows\x22\x20completion.Yamashiro\x20Aoba\x20(S)','reward_img':'https://i.imgur.com/DSILjJ6.png'},{'name':'A\x20True\x20Artist','img':'https://i.imgur.com/9om0BiG.jpg','requirements':'Win\x2012\x20battles\x20with\x20any\x20Akatsuki\x20Member.\x20(12/12)','reward_text':'Mission\x20\x22A\x20True\x20Artist\x22\x20completion.Deidara\x20(S)','reward_img':'https://i.imgur.com/iAgnmxk.png'},{'name':'Puppet\x20Within\x20a\x20Puppet','img':'https://i.imgur.com/uJPdVnO.png','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Kankuro\x20(S).\x20(0/5)\x20Win\x2025\x20battles\x20with\x20Kankuro\x20(S).\x20(0/25)','reward_text':'Mission\x20\x22Puppet\x20Within\x20a\x20Puppet\x22\x20completion.Hiruko\x20Sasori\x20(S)','reward_img':'https://i.imgur.com/T1Da57N.png'},{'name':'Coming\x20Out\x20of\x20Retirement','img':'https://i.imgur.com/G1nzf3k.jpg','requirements':'Win\x2022\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Sand\x20Village.\x20(22/22)','reward_text':'Mission\x20\x22Coming\x20Out\x20of\x20Retirement\x22\x20completion.Chiyo\x20(S)','reward_img':'https://i.imgur.com/Xwi4eLx.png'},{'name':'The\x20Aspiring\x20Puppet\x20Master','img':'https://i.imgur.com/hLqKmTD.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Kazekage\x20Gaara\x20(S).\x20(5/5)\x20Win\x2020\x20battles\x20with\x20Kankuro.\x20(20/20)','reward_text':'Mission\x20\x22The\x20Aspiring\x20Puppet\x20Master\x22\x20completion.Kankuro\x20(S)','reward_img':'https://i.imgur.com/dj3meeB.png'},{'name':'The\x20Real\x20Itachi','img':'https://i.imgur.com/Bd9NFCj.jpg','requirements':'Win\x2017\x20battles\x20with\x20any\x20Akatsuki\x20Member.\x20(17/17)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Itachi.\x20(5/5)','reward_text':'Mission\x20\x22The\x20Real\x20Itachi\x22\x20completion.Itachi\x20Body\x20Double\x20(S)','reward_img':'https://i.imgur.com/U1zO7L5.jpg'},{'name':'Return\x20of\x20a\x20Rival','img':'https://i.imgur.com/myU7D1Q.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Hoshigaki\x20Kisame.\x20(6/5)\x20Win\x2025\x20battles\x20with\x20any\x20Akatsuki\x20Member.\x20(25/25)','reward_text':'Mission\x20\x22Return\x20of\x20a\x20Rival\x22\x20completion.Kisame\x20Body\x20Double\x20(S)','reward_img':'https://i.imgur.com/bqqAtVc.jpeg'},{'name':'Master\x20of\x20Puppets','img':'https://i.imgur.com/WgsXt4X.jpg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Hiruko\x20Sasori\x20(S).\x20(6/4)\x20Win\x2015\x20battles\x20with\x20Hiruko\x20Sasori\x20(S).\x20(15/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Deidara\x20(S).\x20(3/3)','reward_text':'Mission\x20\x22Master\x20of\x20Puppets\x22\x20completion.Sasori\x20of\x20the\x20Red\x20Sand\x20(S)','reward_img':'https://i.imgur.com/zosLJnp.png'},{'name':'Perfection\x20Achieved','img':'https://i.imgur.com/WOE9qAl.png','requirements':'Win\x2025\x20battles\x20with\x20Haruno\x20Sakura\x20(S).\x20(0/25)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Haruno\x20Sakura\x20(S)\x20and\x20Chiyo\x20(S)\x20on\x20the\x20same\x20team.(0/5)\x20Successfully\x20counter\x2010\x20skills\x20using\x20Chiyo\x27s\x20\x22Ally\x20Puppetry\x22.\x20(0/10)','reward_text':'Mission\x20\x22Perfection\x20Achieved\x22\x20completion.True\x20Form\x20Sasori','reward_img':'https://i.imgur.com/MohdeE7.png','personsmis':[[0x41,0xb4]]},{'name':'Another\x20Sacrifice','img':'https://i.imgur.com/0o0LRBj.jpg','requirements':'Win\x2020\x20battles\x20with\x20any\x20Akatsuki\x20Member.\x20(20/20)','reward_text':'Mission\x20\x22Another\x20Sacrifice\x22\x20completion.Hidan\x20(S)','reward_img':'https://i.imgur.com/BsRLXW8.jpg'},{'name':'Hidden\x20Monsters','img':'https://i.imgur.com/anvKqXW.jpg','requirements':'Win\x2020\x20battles\x20with\x20Hidan\x20(S).\x20(20/20)\x20Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Nara\x20Shikamaru\x20(S)\x20or\x20Sarutobi\x20Asuma\x20(S).\x20(5/5)','reward_text':'Mission\x20\x22Hidden\x20Monsters\x22\x20completion.Kakuzu\x20(S)','reward_img':'https://i.imgur.com/d6ivMCI.png'},{'name':'The\x20Two\x20Tailed\x20Beast','img':'https://i.imgur.com/xeqWMgj.jpg','requirements':'Win\x206\x20battles\x20in\x20a\x20row\x20with\x20a\x20Jinchuuriki.\x20(6/6)\x20Win\x2010\x20battles\x20with\x20Hidan\x20(S).\x20(10/10)\x20Win\x2010\x20battles\x20with\x20Kakuzu\x20(S).\x20(10/10)\x20Use\x20Hidan\x20(S)\x27\x20\x22Impale\x22\x2015\x20times.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Two\x20Tailed\x20Beast\x22\x20completion.Nii\x20Yugito\x20(S)','reward_img':'https://i.imgur.com/ISPJbcs.png'},{'name':'Beginning\x20a\x20Path\x20of\x20Vengeance','img':'https://i.imgur.com/VLngMFN.jpg','requirements':'Win\x2015\x20battles\x20with\x20Cursed\x20Seal\x20Sasuke.\x20(15/15)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Sasuke\x20and\x20Orochimaru\x20(S)\x20on\x20the\x20same\x20team.(4/4)','reward_text':'Mission\x20\x22Beginning\x20a\x20Path\x20of\x20Vengeance\x22\x20completion.Uchiha\x20Sasuke\x20(S)','reward_img':'https://i.imgur.com/bQ57WbY.png','personsmis':[[0x3,0x70]]},{'name':'A\x20Slippery\x20Individual','img':'https://i.imgur.com/LLCTXVZ.jpg','requirements':'Win\x2018\x20battles\x20with\x20Uchiha\x20Sasuke\x20(S).\x20(18/18)','reward_text':'Mission\x20\x22A\x20Slippery\x20Individual\x22\x20completion.Hozuki\x20Suigetsu\x20(S)','reward_img':'https://i.imgur.com/F6oZeRo.png'},{'name':'Tsundere\x20Sensor','img':'https://i.imgur.com/zMUKOuq.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Sasuke\x20(S).\x20(5/5)\x20Win\x2015\x20battles\x20with\x20Hozuki\x20Suigetsu\x20(S).\x20(15/15)\x20Use\x20Hozuki\x20Suigetsu\x20(S)\x27\x20\x22Hydro\x20Taijutsu\x22\x2020\x20times.\x20(20/20)','reward_text':'Mission\x20\x22Tsundere\x20Sensor\x22\x20completion.Karin\x20(S)','reward_img':'https://i.imgur.com/IiLO959.png'},{'name':'Gentle\x20Lunatic','img':'https://i.imgur.com/9aoUsDw.jpg','requirements':'Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Hozuki\x20Suigetsu\x20(S).\x20(5/3)\x20Win\x202\x20battles\x20in\x20a\x20row\x20with\x20Uchiha\x20Sasuke\x20(S).\x20(4/2)\x20Win\x2012\x20battles\x20with\x20Karin\x20(S).\x20(12/12)\x20Use\x20Karin\x20(S)\x27\x20\x22Minds\x20Eye\x20of\x20Kagura\x22\x2020\x20times.\x20(20/20)','reward_text':'Mission\x20\x22Gentle\x20Lunatic\x22\x20completion.Juugo\x20(S)','reward_img':'https://i.imgur.com/6ZUMNbR.jpg'},{'name':'Jiraiya\x20Undercover','img':'https://i.imgur.com/KnoOIl4.jpg','requirements':'Win\x2015\x20battles\x20with\x20Jiraiya.\x20(15/15)\x20Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Jiraiya.\x20(4/4)','reward_text':'Mission\x20\x22Jiraiya\x20Undercover\x22\x20completion.Jiraiya\x20(S)','reward_img':'https://i.imgur.com/ZpGGXKN.png'},{'name':'Angel\x20of\x20Akatsuki','img':'https://i.imgur.com/tJDJSn3.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Jiraiya\x20(S).\x20(5/5)\x20Win\x2015\x20battles\x20with\x20any\x20Akatsuki\x20Member.\x20(15/15)','reward_text':'Mission\x20\x22Angel\x20of\x20Akatsuki\x22\x20completion.Konan\x20(S)','reward_img':'https://i.imgur.com/V7BSQFp.jpg'},{'name':'Power\x20of\x20a\x20Sage','img':'https://i.imgur.com/YPIYqEp.jpg','requirements':'Win\x2018\x20battles\x20with\x20Jiraiya\x20(S)\x20and\x20Animal\x20Path\x20Pein\x20(S)\x20on\x20the\x20same\x20team.(18/18)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Animal\x20Path\x20Pein\x20(S)\x20and\x20Konan\x20(S)\x20on\x20the\x20same\x20team.(3/3)','reward_text':'Mission\x20\x22Power\x20of\x20a\x20Sage\x22\x20completion.Sennin\x20Jiraiya\x20(S)','reward_img':'https://i.imgur.com/0AZFUyS.jpg'},{'name':'The\x20Mental\x20Genius','img':'https://i.imgur.com/0aYVdsf.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Yamanaka\x20Ino\x20(S).\x20(5/5)\x20Use\x20Yamanaka\x20Ino\x20(S)\x27\x20\x22Mind\x20Body\x20Switch\x22\x2015\x20times.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Mental\x20Genius\x22\x20completion.Yamanaka\x20Inoichi\x20(S)','reward_img':'https://i.imgur.com/D5wMgU4.png'},{'name':'The\x20Den\x20Mother','img':'https://i.imgur.com/Q5bhJ9E.jpg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Inuzuka\x20Kiba\x20(S).\x20(5/5)\x20Use\x20Inuzuka\x20Kiba\x20(S)\x27\x20\x22Fang\x20Over\x20Fang\x22\x2015\x20times.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Den\x20Mother\x22\x20completion.Inuzuka\x20Tsume\x20(S)','reward_img':'https://i.imgur.com/IIeGmwW.png'},{'name':'A\x20Proud\x20Father','img':'https://i.imgur.com/LMVzQzJ.jpeg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Akimichi\x20Chouji\x20(S).\x20(5/5)\x20Use\x20Akimichi\x20Chouji\x20(S)\x27\x20\x22Expansion\x20Technique\x22\x2015\x20times.\x20(15/15)','reward_text':'Mission\x20\x22A\x20Proud\x20Father\x22\x20completion.Akimichi\x20Chouza\x20(S)','reward_img':'https://i.imgur.com/y0UOx6i.png'},{'name':'The\x20Ruthless\x20Interrogater','img':'https://i.imgur.com/EH7kJgT.jpeg','requirements':'Win\x2020\x20battles\x20with\x20any\x20Konoha\x20Jounin.\x20(20/20)','reward_text':'Mission\x20\x22The\x20Ruthless\x20Interrogater\x22\x20completion.Morino\x20Ibiki\x20(S)','reward_img':'https://i.imgur.com/2SLQHTC.png'},{'name':'The\x20Yamanaka\x20Shadow','img':'https://i.imgur.com/Aedt5wY.jpeg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20any\x20Yamanaka\x20ninja.\x20(5/5)\x20Win\x2015\x20battles\x20with\x20any\x20Yamanaka\x20ninja.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Yamanaka\x20Shadow\x22\x20completion.Yamanaka\x20Fu\x20(S)','reward_img':'https://i.imgur.com/InnBYnM.png'},{'name':'The\x20Aburame\x20Shadow','img':'https://i.imgur.com/WsAY7gK.jpeg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20any\x20Aburame\x20ninja.\x20(5/5)\x20Win\x2015\x20battles\x20with\x20any\x20Aburame\x20ninja.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Aburame\x20Shadow\x22\x20completion.Aburame\x20Torune\x20(S)','reward_img':'https://i.imgur.com/A4wlANH.png'},{'name':'The\x20Veteran\x20of\x20The\x20Mist','img':'https://i.imgur.com/UlKIUM1.jpeg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Haku\x20or\x20Momochi\x20Zabuza.\x20(5/5)\x20Win\x2015\x20battles\x20with\x20Haku\x20or\x20Momochi\x20Zabuza.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Veteran\x20of\x20The\x20Mist\x22\x20completion.Ao\x20(S)','reward_img':'https://i.imgur.com/8eZpgiw.jpg'},{'name':'The\x20Lone\x20Swordsman','img':'https://i.imgur.com/F1laEXr.jpeg','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20Momochi\x20Zabuza\x20or\x20Hoshigaki\x20Kisame.\x20(4/4)\x20Win\x2015\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Mist\x20Village.\x20(15/15)','reward_text':'Mission\x20\x22The\x20Lone\x20Swordsman\x22\x20completion.Chojuro\x20(S)','reward_img':'https://i.imgur.com/WMSVj5I.jpg'},{'name':'The\x20Third\x20Sand\x20Sibling','img':'https://i.imgur.com/OOMGABa.jpeg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Kankuro\x20(S).\x20(5/5)\x20Win\x2015\x20battles\x20with\x20Temari.\x20(15/15)\x20Use\x20Temari\x27s\x20\x22Cutting\x20Whirlwind\x22\x2020\x20times.\x20(20/20)','reward_text':'Mission\x20\x22The\x20Third\x20Sand\x20Sibling\x22\x20completion.Temari\x20(S)','reward_img':'https://i.imgur.com/jKSd8JS.png'},{'name':'A\x20Respected\x20Cloud\x20Ninja','img':'https://i.imgur.com/TqLQPTZ.jpeg','requirements':'Win\x2020\x20battles\x20with\x20Killer\x20Bee\x20(S).\x20(20/20)','reward_text':'Mission\x20\x22A\x20Respected\x20Cloud\x20Ninja\x22\x20completion.Shee\x20(S)','reward_img':'https://i.imgur.com/lBS7djv.png'},{'name':'The\x20Rock\x20of\x20the\x20Rock\x20Village','img':'https://i.imgur.com/B9MEmj4.jpeg','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Deidara\x20(S).\x20(5/5)\x20Win\x2016\x20battles\x20with\x20Deidara\x20(S).\x20(16/16)','reward_text':'Mission\x20\x22The\x20Rock\x20of\x20the\x20Rock\x20Village\x22\x20completion.Akatsuchi\x20(S)','reward_img':'https://i.imgur.com/Fu0lus7.png'},{'name':'The\x20Shrewd\x20Kunoichi','img':'https://i.imgur.com/9zCBfJz.png','requirements':'Win\x205\x20battles\x20in\x20a\x20row\x20with\x20Akatsuchi\x20(S).\x20(5/5)\x20Win\x2015\x20battles\x20with\x20Akatsuchi\x20(S).\x20(15/15)','reward_text':'Mission\x20\x22The\x20Shrewd\x20Kunoichi\x22\x20completion.Kurotsuchi\x20(S)','reward_img':'https://i.imgur.com/Gwr8OgN.png'},{'name':'Maki\x20of\x20the\x20Sand','img':'https://i.imgur.com/oxZwdxe.png','requirements':'Win\x204\x20battles\x20in\x20a\x20row\x20with\x20any\x20Ninja\x20of\x20the\x20Sand\x20Village.\x20(4/4)\x20Win\x2020\x20battles\x20with\x20any\x20Ninja\x20of\x20the\x20Sand\x20Village.\x20(20/20)','reward_text':'Mission\x20\x22Maki\x20of\x20the\x20Sand\x22\x20completion.Maki\x20(S)','reward_img':'https://i.imgur.com/7Aokrcx.png'},{'name':'The\x20Child\x20of\x20Rain','img':'https://i.imgur.com/2PeA5Uw.png','requirements':'Win\x2015\x20battles\x20with\x20Uzumaki\x20Naruto.\x20(3/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Uzumaki\x20Naruto.\x20(0/3)\x20Win\x2015\x20battles\x20with\x20Haruno\x20Sakura.\x20(3/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Haruno\x20Sakura.\x20(0/3)\x20Win\x2015\x20battles\x20with\x20Nara\x20Shikamaru.\x20(2/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Nara\x20Shikamaru.\x20(0/3)\x20Win\x2015\x20battles\x20with\x20Akimichi\x20Chouji.\x20(0/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Akimichi\x20Chouji.\x20(0/3)\x20Win\x2015\x20battles\x20with\x20Yamanaka\x20Ino.\x20(0/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Yamanaka\x20Ino.\x20(0/3)\x20Win\x2015\x20battles\x20with\x20Inuzuka\x20Kiba.\x20(0/15)\x20Win\x203\x20battles\x20in\x20a\x20row\x20with\x20Inuzuka\x20Kiba.\x20(0/3)','reward_text':'Mission\x20\x22The\x20Child\x20of\x20Rain\x22\x20completion.Edo\x20Tensei\x20Yota\x20(S)','reward_img':'https://i.imgur.com/CgXEKRN.png'}];globalThis['missions']=missions;
+const missions = [
+    {
+        "name": "The Adored Elder Sister",
+        "img": "https://i.imgur.com/SG8qAug.png",
+        "requirements": "Use Hyuuga Neji's \"Gentle Fist\" 8 times. (8/8) Use Hyuuga Hinata's \"Gentle Fist\" 8 times. (8/8)",
+        "reward_text": "Mission \"The Adored Elder Sister\" completion.Hyuuga Hanabi",
+        "reward_img": "https://i.imgur.com/ovkEczm.jpg"
+    },
+    {
+        "name": "The Yellow Flash",
+        "img": "https://i.imgur.com/NWWHZNz.jpg",
+        "requirements": "Win 20 battles with any Ninja of the Team Minato. (20/20) Win 5 battles in a row with Young Kakashi. (0/5) Win 5 battles in a row with Uchiha Obito. (0/5) Win 5 battles in a row with Nohara Rin. (0/5)",
+        "reward_text": "Mission \"The Yellow Flash\" completion.Namikaze Minato",
+        "reward_img": "https://i.imgur.com/PSc47fS.png"
+    },
+    {
+        "name": "The Fourth",
+        "img": "https://i.imgur.com/k5q2NIp.png",
+        "requirements": "Win 5 battles in a row with Uzumaki Naruto. (0/5) Win 5 battles in a row with Uzumaki Kushina. (0/5) Win 5 battles in a row with Namikaze Minato. (0/5) Win 5 battles in a row with Sandaime Hokage. (0/5) Win 5 battles in a row with Jiraiya. (0/5) Use Uzumaki Kushina's \"Adamantine Sealing Chains\" 20 times. (0/20)",
+        "reward_text": "Mission \"The Fourth\" completion.Yondaime Hokage",
+        "reward_img": "https://i.imgur.com/JD6Ftin.png"
+    },
+    {
+        "name": "Konoha",
+        "img": "https://i.imgur.com/sJnF2s5.png",
+        "requirements": "Win 6 battles in a row with Shodai Hokage. (0/6) Win 24 battles with Shodai Hokage. (0/24)",
+        "reward_text": "Mission \"Konoha\" completion.Senju Hashirama",
+        "reward_img": "https://i.imgur.com/bOIy76f.png"
+    },
+    {
+        "name": "Uchiha Eternity",
+        "img": "https://i.imgur.com/UbZPv1Z.png",
+        "requirements": "Win 6 battles in a row with any Ninja of the Uchiha Clan. (0/6) Win 24 battles with any Ninja of the Uchiha Clan. (7/24)",
+        "reward_text": "Mission \"Uchiha Eternity\" completion.Uchiha Madara",
+        "reward_img": "https://i.imgur.com/uNZqC39.png"
+    },
+    {
+        "name": "Eternal Devotion",
+        "img": "https://i.imgur.com/nlHXRxj.png",
+        "requirements": "Win 30 battles with any Ninja of the Uchiha Clan. (7/30) Win 4 battles in a row with Shimura Danzo (S). (0/4)",
+        "reward_text": "Mission \"Eternal Devotion\" completion.Uchiha Shisui (S)",
+        "reward_img": "https://i.imgur.com/1VX4Blm.png"
+    },
+    {
+        "name": "The Elusive Six-Tails",
+        "img": "https://i.imgur.com/HASuKW8.png",
+        "requirements": "Win 30 battles with a Jinchuuriki. (30/30) Win 5 battles in a row with a Jinchuuriki. (5/5)",
+        "reward_text": "Mission \"The Elusive Six-Tails\" completion.Utakata (S)",
+        "reward_img": "https://i.imgur.com/aJd17zi.png"
+    },
+    {
+        "name": "The Bloody Mizukage",
+        "img": "https://i.imgur.com/edioIzT.png",
+        "requirements": "Win 25 battles with Uchiha Itachi. (0/25) Win 30 battles with any Ninja of the Mist Village. (4/30) Win 4 battles in a row with any Ninja of the Mist Village. (2/4)",
+        "reward_text": "Mission \"The Bloody Mizukage\" completion.Karatachi Yagura",
+        "reward_img": "https://i.imgur.com/uuIzkk0.png"
+    },
+    {
+        "name": "Red-Hot Habanero",
+        "img": "https://i.imgur.com/mLhJD4S.png",
+        "requirements": "Win 25 battles with Uzumaki Kushina. (0/25) Win 5 battles in a row with Uzumaki Kushina. (0/5) Use Uzumaki Kushina's \"Life Transfer\" 50 times. (0/50)",
+        "reward_text": "Mission \"Red-Hot Habanero\" completion.Young Kushina",
+        "reward_img": "https://i.imgur.com/OVQz2LC.png"
+    },
+    {
+        "name": "Sasukes Quest for Power",
+        "img": "https://i.imgur.com/vzVbRv0.png",
+        "requirements": "Use Uchiha Sasuke's \"Chidori\" on an enemy affected by \"Sharingan\" 5 times. (5/5)",
+        "reward_text": "Mission \"Sasukes Quest for Power\" completion.UNLOCKED BORDER: ID - 04",
+        "reward_img": "https://i.imgur.com/CQYJRRJ.png"
+    },
+    {
+        "name": "The Search for Jiroubou",
+        "img": "https://i.imgur.com/ReKFPdG.jpg",
+        "requirements": "Win 3 battles in a row with Akimichi Chouji. (0/3)",
+        "reward_text": "Mission \"The Search for Jiroubou\" completion.Jiroubou",
+        "reward_img": "https://i.imgur.com/MuepMwr.png"
+    },
+    {
+        "name": "The Search for Kidoumaru",
+        "img": "https://i.imgur.com/PlgonF6.jpg",
+        "requirements": "Win 3 battles in a row with Hyuuga Neji. (0/3)",
+        "reward_text": "Mission \"The Search for Kidoumaru\" completion.Kidoumaru",
+        "reward_img": "https://i.imgur.com/ZSWwJiY.png"
+    },
+    {
+        "name": "The Search for Tayuya",
+        "img": "https://i.imgur.com/RAREgJy.jpg",
+        "requirements": "Win 3 battles in a row with Nara Shikamaru or Temari. (0/3)",
+        "reward_text": "Mission \"The Search for Tayuya\" completion.Tayuya",
+        "reward_img": "https://i.imgur.com/ZkTTfAq.png"
+    },
+    {
+        "name": "The Search for Sakon",
+        "img": "https://i.imgur.com/yYoByVg.jpg",
+        "requirements": "Win 3 battles in a row with Inuzuka Kiba or Kankuro. (0/3)",
+        "reward_text": "Mission \"The Search for Sakon\" completion.Sakon",
+        "reward_img": "https://i.imgur.com/fXMOzMv.png"
+    },
+    {
+        "name": "A New-Found Skin",
+        "img": "https://i.imgur.com/U4wMean.png",
+        "requirements": "Win 15 battles with Kinuta Dosu. (0/15) Win 15 battles with Abumi Zaku. (6/15) Win 15 battles with Tsuchi Kin. (5/15)",
+        "reward_text": "Mission \"A New-Found Skin\" completion.Shiore Orochimaru",
+        "reward_img": "https://i.imgur.com/AzUvWCt.png"
+    },
+    {
+        "name": "The Sounds Amongst the Leaves",
+        "img": "https://i.imgur.com/utvYcfq.jpg",
+        "requirements": "Win 3 battles in a row with any Ninja of the Sound Genin (Dosu, Kin, Zaku). (0/3)",
+        "reward_text": "Mission \"The Sounds Amongst the Leaves\" completion.Akadou Yoroi",
+        "reward_img": "https://i.imgur.com/ZqpOP0D.png"
+    },
+    {
+        "name": "Twisting Sound",
+        "img": "https://i.imgur.com/TRERBfs.jpeg",
+        "requirements": "Win 3 battles in a row with Kankuro. (0/3)",
+        "reward_text": "Mission \"Twisting Sound\" completion.Tsurugi Misumi",
+        "reward_img": "https://i.imgur.com/M8EPY4F.png"
+    },
+    {
+        "name": "Devotion",
+        "img": "https://i.imgur.com/VxfyjZy.jpg",
+        "requirements": "Win 8 battles with Haku. (4/8)",
+        "reward_text": "Mission \"Devotion\" completion.Momochi Zabuza",
+        "reward_img": "https://i.imgur.com/OzHvYsF.png"
+    },
+    {
+        "name": "Survival",
+        "img": "https://i.imgur.com/CyXcyCy.jpg",
+        "requirements": "Win 5 battles with Uzumaki Naruto, Uchiha Sasuke and Haruno Sakura on the same team.(2/5)",
+        "reward_text": "Mission \"Survival\" completion.Yakushi Kabuto",
+        "reward_img": "https://i.imgur.com/ZIyW33w.png"
+    },
+    {
+        "name": "The Beast Inside",
+        "img": "https://i.imgur.com/xQNpJsZ.jpeg",
+        "requirements": "Win 12 battles with Gaara Rehabilitated. (0/12) Win 4 battles in a row with Gaara Rehabilitated. (0/4) Use Gaara Rehabilitated's \"Quicksand Waterfall\" 10 times. (0/10)",
+        "reward_text": "Mission \"The Beast Inside\" completion.Shukaku Gaara",
+        "reward_img": "https://i.imgur.com/bJHNRJ2.png"
+    },
+    {
+        "name": "Duty of a Sensei",
+        "img": "https://i.imgur.com/ZYvPX2L.jpg",
+        "requirements": "Win 2 battles with Uzumaki Naruto. (2/2) Win 2 battles with Uchiha Sasuke. (2/2) Win 2 battles with Haruno Sakura. (2/2) Win 2 battles with Hyuuga Hinata. (2/2) Win 2 battles with Aburame Shino. (2/2) Win 2 battles with Inuzuka Kiba. (2/2) Win 2 battles with Nara Shikamaru. (2/2) Win 2 battles with Akimichi Chouji. (2/2) Win 2 battles with Yamanaka Ino. (2/2)",
+        "reward_text": "Mission \"Duty of a Sensei\" completion.Umino Iruka",
+        "reward_img": "https://i.imgur.com/VFwEl8B.png"
+    },
+    {
+        "name": "A Dishonored Shinobi",
+        "img": "https://i.imgur.com/9GlXiaR.jpg",
+        "requirements": "Win 8 battles with Uzumaki Naruto. (0/8) Win 3 battles in a row with Umino Iruka. (0/3)",
+        "reward_text": "Mission \"A Dishonored Shinobi\" completion.Touji Mizuki",
+        "reward_img": "https://i.imgur.com/56OlIhi.png"
+    },
+    {
+        "name": "Team 7 Fights as a Team",
+        "img": "https://i.imgur.com/ZeoV0b7.jpg",
+        "requirements": "Win 15 battles with any Ninja of the Team 7. (15/15)",
+        "reward_text": "Mission \"Team 7 Fights as a Team\" completion.Hatake Kakashi",
+        "reward_img": "https://i.imgur.com/EiPfRpg.png"
+    },
+    {
+        "name": "Team 8 Scouting at its Best",
+        "img": "https://i.imgur.com/pC8K83K.jpg",
+        "requirements": "Win 15 battles with any Ninja of the Team 8. (15/15)",
+        "reward_text": "Mission \"Team 8 Scouting at its Best\" completion.Yuhi Kurenai",
+        "reward_img": "https://i.imgur.com/L1IWoqb.png"
+    },
+    {
+        "name": "Team 9 the Best Taijustu Team",
+        "img": "https://i.imgur.com/Nyei6JT.jpg",
+        "requirements": "Win 15 battles with any Ninja of the Team 9. (4/15)",
+        "reward_text": "Mission \"Team 9 the Best Taijustu Team\" completion.Maito Gai",
+        "reward_img": "https://i.imgur.com/mZzzuP2.png"
+    },
+    {
+        "name": "Team 10 Fights vs the Sound",
+        "img": "https://i.imgur.com/HmMvRu1.jpg",
+        "requirements": "Win 15 battles with any Ninja of the Team 10. (15/15)",
+        "reward_text": "Mission \"Team 10 Fights vs the Sound\" completion.Sarutobi Asuma",
+        "reward_img": "https://i.imgur.com/N4ZFINr.png"
+    },
+    {
+        "name": "Sand Siblings at War",
+        "img": "https://i.imgur.com/I0vyzSJ.jpg",
+        "requirements": "Win 15 battles with any Ninja of the Sand Genin (Gaara/Gaara Rehabilitated, Kankuro, Temari). (0/15)",
+        "reward_text": "Mission \"Sand Siblings at War\" completion.Baki",
+        "reward_img": "https://i.imgur.com/f0YWgRx.png"
+    },
+    {
+        "name": "S-Rank Criminal Kisame!",
+        "img": "https://i.imgur.com/fSB99BW.jpg",
+        "requirements": "Win 5 battles in a row with Maito Gai or Sarutobi Asuma. (0/5)",
+        "reward_text": "Mission \"S-Rank Criminal Kisame!\" completion.Hoshigaki Kisame",
+        "reward_img": "https://i.imgur.com/M8xGMby.png"
+    },
+    {
+        "name": "S-Rank Criminal Itachi!",
+        "img": "https://i.imgur.com/0jLYeW9.jpg",
+        "requirements": "Win 5 battles in a row with Hatake Kakashi or Yuhi Kurenai. (0/5)",
+        "reward_text": "Mission \"S-Rank Criminal Itachi!\" completion.Uchiha Itachi",
+        "reward_img": "https://i.imgur.com/DXGV0Uz.png"
+    },
+    {
+        "name": "Disciples of the Toad",
+        "img": "https://i.imgur.com/Lm7tyYj.jpg",
+        "requirements": "Win 5 battles in a row with Uzumaki Naruto. (0/5) Win 5 battles in a row with Namikaze Minato. (0/5) Win 20 battles with Uzumaki Naruto or Namikaze Minato. (16/20)",
+        "reward_text": "Mission \"Disciples of the Toad\" completion.Jiraiya",
+        "reward_img": "https://i.imgur.com/tZpyvBQ.png"
+    },
+    {
+        "name": "Disciples of the Slug",
+        "img": "https://i.imgur.com/pPBd4vH.jpg",
+        "requirements": "Win 5 battles in a row with Haruno Sakura. (0/5) Win 5 battles in a row with Shizune. (0/5) Win 20 battles with Haruno Sakura or Shizune. (20/20)",
+        "reward_text": "Mission \"Disciples of the Slug\" completion.Tsunade",
+        "reward_img": "https://i.imgur.com/LGztynU.png"
+    },
+    {
+        "name": "Disciples of the Snake",
+        "img": "https://i.imgur.com/nHnmL4p.jpg",
+        "requirements": "Win 5 battles in a row with Uchiha Sasuke. (0/5) Win 5 battles in a row with Yakushi Kabuto. (0/5) Win 20 battles with Uchiha Sasuke or Yakushi Kabuto. (7/20)",
+        "reward_text": "Mission \"Disciples of the Snake\" completion.Orochimaru",
+        "reward_img": "https://i.imgur.com/SujZWa4.png"
+    },
+    {
+        "name": "The Prodigal Son Returns",
+        "img": "https://i.imgur.com/jgOMFXH.jpg",
+        "requirements": "Win 2 battles in a row with Uzumaki Naruto. (2/2) Win 6 battles with Uzumaki Naruto. (6/6)",
+        "reward_text": "Mission \"The Prodigal Son Returns\" completion.Uzumaki Naruto (S)",
+        "reward_img": "https://i.imgur.com/ksOuPJi.png"
+    },
+    {
+        "name": "A Girl Grown Up",
+        "img": "https://i.imgur.com/p622DKI.jpeg",
+        "requirements": "Win 3 battles in a row with Haruno Sakura. (0/3) Win 10 battles with Haruno Sakura. (10/10)",
+        "reward_text": "Mission \"A Girl Grown Up\" completion.Haruno Sakura (S)",
+        "reward_img": "https://i.imgur.com/5iC4YJR.png"
+    },
+    {
+        "name": "A Genius of Hard Work",
+        "img": "https://i.imgur.com/L8EEhnY.jpg",
+        "requirements": "Win 3 battles in a row with Rock Lee. (0/3) Win 10 battles with Rock Lee. (0/10)",
+        "reward_text": "Mission \"A Genius of Hard Work\" completion.Rock Lee (S)",
+        "reward_img": "https://i.imgur.com/DTqDmu4.png"
+    },
+    {
+        "name": "A Genius of Ranged Combat",
+        "img": "https://i.imgur.com/CGoSy5u.jpg",
+        "requirements": "Win 3 battles in a row with Tenten. (2/3) Win 10 battles with Tenten. (4/10)",
+        "reward_text": "Mission \"A Genius of Ranged Combat\" completion.Tenten (S)",
+        "reward_img": "https://i.imgur.com/lFtTPeQ.png"
+    },
+    {
+        "name": "Pride of the Hyuuga",
+        "img": "https://i.imgur.com/pvw1p4Q.jpg",
+        "requirements": "Win 3 battles in a row with Hyuuga Neji. (0/3) Win 13 battles with Hyuuga Neji. (0/13)",
+        "reward_text": "Mission \"Pride of the Hyuuga\" completion.Hyuuga Neji (S)",
+        "reward_img": "https://i.imgur.com/L3PYgA9.png"
+    },
+    {
+        "name": "The Green Beast",
+        "img": "https://i.imgur.com/iKXcldS.jpg",
+        "requirements": "Win 3 battles in a row with Rock Lee. (0/3) Win 3 battles in a row with Tenten. (2/3) Win 3 battles in a row with Neji. (0/3) Win 10 battles with Maito Gai. (0/10)",
+        "reward_text": "Mission \"The Green Beast\" completion.Maito Gai (S)",
+        "reward_img": "https://i.imgur.com/QNaZDbW.png"
+    },
+    {
+        "name": "A Double Agent",
+        "img": "https://i.imgur.com/FU7sZfm.png",
+        "requirements": "Win 20 battles with Yakushi Kabuto. (0/20)",
+        "reward_text": "Mission \"A Double Agent\" completion.Yakushi Kabuto (S)",
+        "reward_img": "https://i.imgur.com/lBkxaOw.png"
+    },
+    {
+        "name": "A Portly but Steadfast Ninja",
+        "img": "https://i.imgur.com/jQ93K50.jpg",
+        "requirements": "Win 3 battles in a row with Akimichi Chouji. (0/3) Win 10 battles with Akimichi Chouji. (10/10)",
+        "reward_text": "Mission \"A Portly but Steadfast Ninja\" completion.Akimichi Chouji (S)",
+        "reward_img": "https://i.imgur.com/yOkMa5x.png"
+    },
+    {
+        "name": "Blondes Have All the Fun",
+        "img": "https://i.imgur.com/C9ECnHg.jpg",
+        "requirements": "Win 3 battles in a row with Yamanaka Ino. (3/3) Win 10 battles with Yamanaka Ino. (10/10)",
+        "reward_text": "Mission \"Blondes Have All the Fun\" completion.Yamanaka Ino (S)",
+        "reward_img": "https://i.imgur.com/zA72t3a.png"
+    },
+    {
+        "name": "A Lovestruck Girl",
+        "img": "https://i.imgur.com/ylXTBAY.jpg",
+        "requirements": "Win 4 battles in a row with Hyuuga Hinata. (0/4) Win 10 battles with Hyuuga Hinata. (6/10)",
+        "reward_text": "Mission \"A Lovestruck Girl\" completion.Hyuuga Hinata (S)",
+        "reward_img": "https://i.imgur.com/IvkdaCw.png"
+    },
+    {
+        "name": "A True Artist",
+        "img": "https://i.imgur.com/9om0BiG.jpg",
+        "requirements": "Win 12 battles with any Akatsuki Member. (0/12)",
+        "reward_text": "Mission \"A True Artist\" completion.Deidara (S)",
+        "reward_img": "https://i.imgur.com/iAgnmxk.png"
+    },
+    {
+        "name": "Coming Out of Retirement",
+        "img": "https://i.imgur.com/G1nzf3k.jpg",
+        "requirements": "Win 22 battles with any Ninja of the Sand Village. (0/22)",
+        "reward_text": "Mission \"Coming Out of Retirement\" completion.Chiyo (S)",
+        "reward_img": "https://i.imgur.com/Xwi4eLx.png"
+    },
+    {
+        "name": "The Mental Genius",
+        "img": "https://i.imgur.com/0aYVdsf.jpg",
+        "requirements": "Win 5 battles in a row with Yamanaka Ino (S). (0/5) Use Yamanaka Ino (S)' \"Mind Body Switch\" 15 times. (0/15)",
+        "reward_text": "Mission \"The Mental Genius\" completion.Yamanaka Inoichi (S)",
+        "reward_img": "https://i.imgur.com/D5wMgU4.png"
+    },
+    {
+        "name": "The Aburame Shadow",
+        "img": "https://i.imgur.com/WsAY7gK.jpeg",
+        "requirements": "Win 5 battles in a row with any Aburame ninja. (0/5) Win 15 battles with any Aburame ninja. (15/15)",
+        "reward_text": "Mission \"The Aburame Shadow\" completion.Aburame Torune (S)",
+        "reward_img": "https://i.imgur.com/A4wlANH.png"
+    },
+    {
+        "name": "The Veteran of The Mist",
+        "img": "https://i.imgur.com/UlKIUM1.jpeg",
+        "requirements": "Win 5 battles in a row with Haku or Momochi Zabuza. (2/5) Win 15 battles with Haku or Momochi Zabuza. (4/15)",
+        "reward_text": "Mission \"The Veteran of The Mist\" completion.Ao (S)",
+        "reward_img": "https://i.imgur.com/8eZpgiw.jpg"
+    },
+    {
+        "name": "The Lone Swordsman",
+        "img": "https://i.imgur.com/F1laEXr.jpeg",
+        "requirements": "Win 4 battles in a row with Momochi Zabuza or Hoshigaki Kisame. (0/4) Win 15 battles with any Ninja of the Mist Village. (4/15)",
+        "reward_text": "Mission \"The Lone Swordsman\" completion.Chojuro (S)",
+        "reward_img": "https://i.imgur.com/WMSVj5I.jpg"
+    },
+    {
+        "name": "A Respected Cloud Ninja",
+        "img": "https://i.imgur.com/TqLQPTZ.jpeg",
+        "requirements": "Win 20 battles with Killer Bee (S). (0/20)",
+        "reward_text": "Mission \"A Respected Cloud Ninja\" completion.Shee (S)",
+        "reward_img": "https://i.imgur.com/lBS7djv.png"
+    },
+    {
+        "name": "The Rock of the Rock Village",
+        "img": "https://i.imgur.com/B9MEmj4.jpeg",
+        "requirements": "Win 5 battles in a row with Deidara (S). (0/5) Win 16 battles with Deidara (S). (0/16)",
+        "reward_text": "Mission \"The Rock of the Rock Village\" completion.Akatsuchi (S)",
+        "reward_img": "https://i.imgur.com/Fu0lus7.png"
+    },
+    {
+        "name": "The Shrewd Kunoichi",
+        "img": "https://i.imgur.com/9zCBfJz.png",
+        "requirements": "Win 3 battles in a row with Akatsuchi (S). (0/3) Win 20 battles with Akatsuchi (S). (0/20)",
+        "reward_text": "Mission \"The Shrewd Kunoichi\" completion.Kurotsuchi (S)",
+        "reward_img": "https://i.imgur.com/Gwr8OgN.png"
+    },
+    {
+        "name": "The Rocks Second in Command",
+        "img": "https://i.imgur.com/9NxDMvu.png",
+        "requirements": "Win 3 battles in a row with Ittan (S). (0/3) Win 20 battles with Ittan (S). (0/20)",
+        "reward_text": "Mission \"The Rocks Second in Command\" completion.Kitsuchi (S)",
+        "reward_img": "https://i.imgur.com/UIvCvlp.png"
+    },
+    {
+        "name": "Maki of the Sand",
+        "img": "https://i.imgur.com/oxZwdxe.png",
+        "requirements": "Win 4 battles in a row with any Ninja of the Sand Village. (0/4) Win 20 battles with any Ninja of the Sand Village. (0/20)",
+        "reward_text": "Mission \"Maki of the Sand\" completion.Maki (S)",
+        "reward_img": "https://i.imgur.com/7Aokrcx.png"
+    },
+    {
+        "name": "A New Power",
+        "img": "https://i.imgur.com/SiloTN6.png",
+        "requirements": "Win 6 battles in a row with Kyuubi Naruto. (0/6) Win 5 battles in a row with Four Tail Kyuubi Naruto (S). (0/5) Win 4 battles in a row with Uzumaki Kushina. (0/4) Win 3 battles in a row with Killer Bee (S). (0/3) Win 20 battles with Uzumaki Naruto (S). (20/20) Use Uzumaki Kushina's \"Adamantine Sealing Chains\" 15 times. (0/15)",
+        "reward_text": "Mission \"A New Power\" completion.Shinobi Alliance Naruto (S)",
+        "reward_img": "https://i.imgur.com/VlK9BfK.png"
+    },
+    {
+        "name": "The Will of the Senju",
+        "img": "https://i.imgur.com/T9o9u1J.png",
+        "requirements": "Win 6 battles in a row with Tsunade. (0/6) Win 24 battles with Tsunade. (0/24)",
+        "reward_text": "Mission \"The Will of the Senju\" completion.Tsunade (S)",
+        "reward_img": "https://i.imgur.com/TgVKWQY.png"
+    },
+    {
+        "name": "The Child of Rain",
+        "img": "https://i.imgur.com/2PeA5Uw.png",
+        "requirements": "Win 15 battles with Uzumaki Naruto. (15/15) Win 3 battles in a row with Uzumaki Naruto. (0/3) Win 15 battles with Haruno Sakura. (15/15) Win 3 battles in a row with Haruno Sakura. (0/3) Win 15 battles with Nara Shikamaru. (15/15) Win 3 battles in a row with Nara Shikamaru. (0/3) Win 15 battles with Akimichi Chouji. (15/15) Win 3 battles in a row with Akimichi Chouji. (0/3) Win 15 battles with Yamanaka Ino. (15/15) Win 3 battles in a row with Yamanaka Ino. (3/3) Win 15 battles with Inuzuka Kiba. (6/15) Win 3 battles in a row with Inuzuka Kiba. (0/3)",
+        "reward_text": "Mission \"The Child of Rain\" completion.Edo Tensei Yota (S)",
+        "reward_img": "https://i.imgur.com/CgXEKRN.png"
+    }
+];

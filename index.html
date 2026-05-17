@@ -3,22 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naruto Arena - Simulador Master V6</title>
+    <title>Naruto Arena - Simulador Master V7</title>
     <style>
+        /* =========================================================
+           1. VARIÁVEIS DE CORES DO SISTEMA (Design System)
+           Aqui definimos as cores padrões para facilitar a mudança depois.
+           ========================================================= */
         :root {
-            --bg-color: #121212; --panel-bg: #1e1e1e; --text-color: #e0e0e0;
-            --accent-color: #d15615; --border-color: #333;
-            --ally-color: #4caf50; --enemy-color: #f44336; --mission-color: #9c27b0;
-            --reward-color: #ffeb3b; --meta-color: #e91e63; --classic-color: #00bcd4;
-            --builder-color: #03a9f4; /* Nova cor para o Montar Time */
+            --bg-color: #121212; /* Fundo geral escuro */
+            --panel-bg: #1e1e1e; /* Fundo dos painéis e caixas */
+            --text-color: #e0e0e0; /* Cor do texto padrão */
+            --accent-color: #d15615; /* Cor de destaque (Laranja/Ferrugem) */
+            --border-color: #333; /* Cor das bordas padrão */
+            --ally-color: #4caf50; /* Verde (Seu Time) */
+            --enemy-color: #f44336; /* Vermelho (Time Inimigo) */
+            --both-color: #ff9800; /* Laranja (Selecionado nos DOIS times - Espelho) */
+            --mission-color: #9c27b0; /* Roxo (Aba de Missões) */
+            --reward-color: #ffeb3b; /* Amarelo (Recompensas) */
+            --meta-color: #e91e63; /* Rosa Choque (Aba Meta/Streaks) */
+            --classic-color: #00bcd4; /* Ciano (Times Clássicos) */
+            --builder-color: #03a9f4; /* Azul Claro (Construtor de Times) */
         }
 
+        /* =========================================================
+           2. ESTILOS GERAIS (Body e Fundo Fosco)
+           ========================================================= */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             color: var(--text-color); margin: 0; padding: 20px; display: flex; 
             flex-direction: column; align-items: center; background-color: transparent; 
         }
 
+        /* Camada da Imagem de Fundo 3D com efeito embaçado e escurecido (blur e brightness) */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: url('https://free-3dtextureshd.com/wp-content/uploads/2025/02/518.jpg.webp') no-repeat center center;
@@ -27,6 +43,9 @@
 
         h1, h2, h3 { color: var(--accent-color); margin-top: 0; }
 
+        /* =========================================================
+           3. CABEÇALHO (LINKS OFICIAIS) E MENU (ABAS)
+           ========================================================= */
         .app-header { width: 100%; max-width: 1200px; display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 15px; }
         .app-header a { color: #ccc; text-decoration: none; font-weight: bold; background: var(--panel-bg); padding: 8px 15px; border-radius: 4px; border: 1px solid var(--border-color); transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.9em;}
         .app-header a:hover { background: #333; color: #fff; border-color: var(--accent-color); }
@@ -40,21 +59,33 @@
         .tab-btn:hover { background: #222; }
 
         .view-section { display: none; width: 100%; max-width: 1200px; flex-direction: column; align-items: center; }
-        .view-section.active { display: flex; }
+        .view-section.active { display: flex; } /* Ativa a aba atual escondendo as outras */
 
+        /* =========================================================
+           4. BARRAS SUPERIORES E CONTROLES (Filtros, Busca, Temas)
+           ========================================================= */
         .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; background-color: var(--panel-bg); padding: 15px 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px; box-sizing: border-box; flex-wrap: wrap; gap: 10px;}
         .controls { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
         input, select { background-color: #333; color: #fff; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; outline: none; }
         
+        /* Grupo de botões de Temas (Dano Físico, AOE, Counter, Misto) */
+        .theme-btn-group { display: flex; gap: 10px; flex-wrap: wrap; width: 100%; margin-top: 15px; }
+        .theme-btn-group button { flex: 1; min-width: 150px; }
+
+        /* Botões de Seleção de Time (Aliado vs Inimigo) na Arena */
         .team-switch { display: flex; gap: 10px; background: #000; padding: 5px; border-radius: 6px; border: 1px solid var(--border-color); }
         .team-btn { padding: 8px 15px; border: none; background: none; color: #888; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; }
         .team-btn.active-ally { background-color: var(--ally-color); color: #fff; }
         .team-btn.active-enemy { background-color: var(--enemy-color); color: #fff; }
         
+        /* Bandeiras de Tradução */
         .flags { display: flex; gap: 10px; }
         .flag-btn { font-size: 1.5em; cursor: pointer; background: none; border: none; filter: grayscale(100%); transition: 0.2s; }
         .flag-btn.active, .flag-btn:hover { filter: grayscale(0%); transform: scale(1.1); }
 
+        /* =========================================================
+           5. PLACARES E SLOTS DE TIMES (Exibição dos rostos escolhidos)
+           ========================================================= */
         .boards-container { display: flex; width: 100%; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
         .board { flex: 1; background-color: var(--panel-bg); padding: 20px; border-radius: 8px; text-align: center; border: 2px solid transparent; min-width: 300px; }
         .board.ally { border-color: var(--ally-color); }
@@ -62,6 +93,9 @@
         .team-slots { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
         .slot { width: 80px; height: 80px; border: 2px dashed var(--border-color); background-color: #000; display: flex; align-items: center; justify-content: center; cursor: pointer; background-size: cover; background-position: center; transition: 0.2s; }
 
+        /* =========================================================
+           6. RELATÓRIOS DA ARENA (Sinergia e Combos)
+           ========================================================= */
         .reports-container { display: flex; width: 100%; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
         .report-box { flex: 1; background-color: #1a1a2e; padding: 20px; border: 1px solid #16213e; border-radius: 8px; box-sizing: border-box; display: none; min-width: 300px; max-height: 500px; overflow-y: auto;}
         .report-box h2 { border-bottom: 1px solid #0f3460; padding-bottom: 10px; margin-bottom: 15px;}
@@ -79,6 +113,9 @@
         .skill-inline img { width: 20px; height: 20px; border: 1px solid #000; border-radius: 2px; }
         .skill-inline strong { color: #fff; font-weight: bold; }
 
+        /* =========================================================
+           7. LAYOUT DIVIDIDO LADO A LADO E GRADE DE PERSONAGENS
+           ========================================================= */
         .split-layout { display: flex; gap: 20px; width: 100%; align-items: flex-start; }
         .left-panel { flex: 1; background-color: var(--panel-bg); padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; max-height: 60vh; overflow-y: auto; }
         .right-panel { flex: 1.5; background-color: var(--panel-bg); padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; max-height: 60vh; overflow-y: auto; }
@@ -86,10 +123,16 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 5px; }
         .char-portrait { width: 60px; height: 60px; background-color: #000; border: 2px solid var(--border-color); cursor: pointer; background-size: cover; background-position: center; transition: 0.1s; }
         .char-portrait:hover { transform: scale(1.1); border-color: var(--accent-color); z-index: 10; }
-        .char-portrait.selected-ally { border-color: var(--ally-color); opacity: 0.4; }
-        .char-portrait.selected-enemy { border-color: var(--enemy-color); opacity: 0.4; }
-        .char-portrait.selected-builder { border-color: var(--builder-color); opacity: 0.4; }
+        
+        /* CORES DE SELEÇÃO DOS PERSONAGENS NA GRADE */
+        .char-portrait.selected-ally { border-color: var(--ally-color); opacity: 0.4; } /* Apenas Seu Time */
+        .char-portrait.selected-enemy { border-color: var(--enemy-color); opacity: 0.4; } /* Apenas Time Inimigo */
+        .char-portrait.selected-both { border-color: var(--both-color); opacity: 0.4; box-shadow: 0 0 8px var(--both-color);} /* NOS DOIS TIMES AO MESMO TEMPO (ESPELHO) */
+        .char-portrait.selected-builder { border-color: var(--builder-color); opacity: 0.4; } /* Construtor de Time */
 
+        /* =========================================================
+           8. DETALHES DAS HABILIDADES (Painel Direito)
+           ========================================================= */
         .details-header { display: flex; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;}
         .details-header img { width: 80px; height: 80px; border: 2px solid var(--accent-color); flex-shrink: 0; background-color:#000;}
         .details-lore { font-size: 0.9em; color: #bbb; line-height: 1.4; margin-top: 5px; }
@@ -103,6 +146,9 @@
         .skill-desc { font-size: 0.85em; color: #bbb; margin-bottom: 8px; }
         .skill-meta { font-size: 0.85em; color: #888; border-top: 1px dashed #444; padding-top: 5px; }
 
+        /* =========================================================
+           9. MISSÕES, STREAKS E CONSTRUTOR DE TIMES
+           ========================================================= */
         .mission-header { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 20px; text-align: center; }
         .mission-header img { width: 220px; border: 3px solid var(--mission-color); border-radius: 8px; box-shadow: 0 0 15px rgba(156, 39, 176, 0.3); }
         .mission-item { background: #2a2a2a; padding: 10px; margin-bottom: 10px; border-left: 4px solid var(--mission-color); cursor: pointer; border-radius: 4px; }
@@ -115,14 +161,19 @@
         .rec-slot.meta-border { border-color: var(--meta-color); box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);}
         .rec-name { background: rgba(0,0,0,0.8); width: 100%; text-align: center; font-size: 0.7em; padding: 2px 0; }
         .strat-summary { background: #0d1117; border-left: 4px solid var(--ally-color); padding: 15px; border-radius: 4px; margin-top: 15px; font-size: 0.95em; line-height: 1.5; color: #ccc; }
+        
+        /* Botões de Ação Principal (Simular, Gerar, etc) */
         .btn-simulate { background: var(--mission-color); color: #fff; border: none; padding: 12px 25px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-top: 15px; width: 100%; transition: 0.2s;}
         .btn-simulate:hover { opacity: 0.8; }
-        .btn-meta { background: var(--meta-color); width: auto; margin:0;}
-        .btn-builder { background: var(--builder-color); color: #000; margin:0;}
+        .btn-meta { background: var(--meta-color); width: auto; margin:0; padding: 10px 15px; font-size: 0.9em; }
+        .btn-builder { background: var(--builder-color); color: #000; width: auto; margin:0; padding: 10px 15px; font-size: 0.9em; }
         
         .streak-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
         @media (max-width: 900px) { .streak-grid { grid-template-columns: 1fr; } }
 
+        /* =========================================================
+           10. RODAPÉ E ALERTA DE ERROS
+           ========================================================= */
         .app-footer { width: 100%; max-width: 1200px; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border-color); color: #bbb; line-height: 1.6; }
         .app-footer a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
         .app-footer a:hover { text-decoration: underline; }
@@ -233,26 +284,32 @@
     </div>
 
     <div id="view-streaks" class="view-section">
-        <div class="top-bar" style="background: #2a0b16; border-color: var(--meta-color);">
+        <div class="top-bar" style="background: #2a0b16; border-color: var(--meta-color); flex-direction: column; align-items: flex-start;">
             <div>
                 <h2 style="color: var(--meta-color); margin: 0; font-size: 1.5em;">🏆 Top 10 Equipes Invencíveis</h2>
-                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Equipes balanceadas combinando o Meta Atual e Estratégias Clássicas globais.</p>
+                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Gere sua composição de personagens de acordo com sua necessidade, e veja as melhores equipes.</p>
             </div>
-            <div class="controls">
-                <button class="btn-simulate btn-meta" onclick="generateStreakTeams()">🔄 Gerar Novas Composições</button>
+            <div class="theme-btn-group">
+                <button class="btn-simulate btn-meta" onclick="generateStreakTeams('fisico')" title="Focado em trazer equipes que causam dano físico!">⚔️ Dano Físico</button>
+                <button class="btn-simulate btn-meta" onclick="generateStreakTeams('aoe')" title="Focado em trazer equipes que causam dano em área (AOE)!">🌪️ Dano AOE</button>
+                <button class="btn-simulate btn-meta" onclick="generateStreakTeams('counter')" title="Focado em trazer equipes que causam dano de reflexos e bloqueios!">🛡️ Dano Counter</button>
+                <button class="btn-simulate btn-meta" onclick="generateStreakTeams('misto')" title="Focado em trazer equipes balanceadas (Dano + Cura + Defesa)!">⚖️ Misto</button>
             </div>
         </div>
         <div id="streaks-container" class="streak-grid"></div>
     </div>
 
     <div id="view-builder" class="view-section">
-        <div class="top-bar" style="background: #061922; border-color: var(--builder-color);">
+        <div class="top-bar" style="background: #061922; border-color: var(--builder-color); flex-direction: column; align-items: flex-start;">
             <div>
                 <h2 style="color: var(--builder-color); margin: 0; font-size: 1.5em;">🛠️ Construtor de Equipes (Team Builder)</h2>
-                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Selecione 1 ou 2 personagens. Nós completaremos o time com os melhores parceiros disponíveis no jogo!</p>
+                <p style="margin: 5px 0 0 0; color: #bbb; font-size: 0.9em;">Gere sua composição de personagens de acordo com sua necessidade, e veja as melhores equipes.</p>
             </div>
-            <div class="controls">
-                <button class="btn-simulate btn-builder" onclick="buildCustomTeams()">🧪 Montar Time</button>
+            <div class="theme-btn-group">
+                <button class="btn-simulate btn-builder" onclick="buildCustomTeams('fisico')" title="Focado em trazer parceiros para dano físico!">⚔️ Dano Físico</button>
+                <button class="btn-simulate btn-builder" onclick="buildCustomTeams('aoe')" title="Focado em trazer parceiros para dano em área (AOE)!">🌪️ Dano AOE</button>
+                <button class="btn-simulate btn-builder" onclick="buildCustomTeams('counter')" title="Focado em trazer parceiros para dano de reflexos e bloqueios!">🛡️ Dano Counter</button>
+                <button class="btn-simulate btn-builder" onclick="buildCustomTeams('misto')" title="Focado em trazer parceiros balanceados (Dano + Cura + Defesa)!">⚖️ Misto</button>
             </div>
         </div>
 
@@ -272,7 +329,7 @@
                 <div class="grid" id="builder-roster-grid"></div>
             </div>
             <div class="right-panel" id="builder-results" style="flex: 1.5; padding-top: 10px;">
-                <p style="text-align:center; color:#666; margin-top:50px;">Adicione personagens acima e clique em "Montar Time" para ver as sugestões.</p>
+                <p style="text-align:center; color:#666; margin-top:50px;">Adicione personagens e clique em um dos temas acima para ver as sugestões.</p>
             </div>
         </div>
     </div>
@@ -287,18 +344,22 @@
 
     <script>
         // ==========================================
-        // VARIÁVEIS GLOBAIS E TRADUÇÃO
+        // 1. VARIÁVEIS GLOBAIS
         // ==========================================
-        let allyTeam = []; 
-        let enemyTeam = []; 
-        let builderTeam = []; // Novo array para o Construtor de Times
-        let selectMode = 'ally'; 
-        let currentLang = 'br'; 
-        let filteredCharacters = [];
-        let filteredBuilderCharacters = []; // Roster separado para a nova aba
+        let allyTeam = []; // Lista dos 3 ninjas do Seu Time
+        let enemyTeam = []; // Lista dos 3 ninjas do Time Inimigo
+        let builderTeam = []; // Lista dos ninjas selecionados pelo usuário na aba Montar Time (Máx 2)
+        let selectMode = 'ally'; // Diz se ao clicar na grade, o ninja vai pro Aliado ou Inimigo
+        let currentLang = 'br'; // Controle do idioma atual
+        let filteredCharacters = []; // Lista de personagens filtrados na busca da Arena
+        let filteredBuilderCharacters = []; // Lista de personagens filtrados na busca do Builder
         
+        // Garante que o array de missões exista para o site não quebrar caso o arquivo falhe
         if (typeof missions === 'undefined') { window.missions = []; }
 
+        // ==========================================
+        // 2. DICIONÁRIO DE TRADUÇÃO (Inglês, Português, Espanhol)
+        // ==========================================
         const i18n = {
             br: { 
                 ui_none: "Nenhum", ui_cd: "Recarga:", ui_req: "Requisitos da Missão:", ui_rew: "Recompensa:", ui_sim: "Simular Equipe Ideal",
@@ -308,6 +369,7 @@
             es: { ui_none: "Ninguno", ui_cd: "Recarga:", ui_req: "Requisitos de la Misión:", ui_rew: "Recompensa:", ui_sim: "Simular Equipo Ideal", words: { "deals": "inflige", "damage": "de daño", "enemy": "enemigo", "enemies": "enemigos", "Physical": "Físico", "Melee": "Cuerpo-a-cuerpo", "Instant": "Instantáneo", "Win": "Gana", "battles": "batallas", "with": "con", "any": "cualquier", "or": "o", "and": "y", "in a row": "consecutivas", "Use": "Usa", "times": "veces", "on the same team": "en el mismo equipo", "completion": "completada", "Mission": "Misión", "affected by": "afectado por", "Member": "Miembro", "Village": "Aldea" } }
         };
 
+        // Função que lê o texto e substitui as palavras de acordo com a bandeira clicada
         function translateText(text) {
             if (currentLang === 'en' || !text) return text; 
             let newText = text;
@@ -318,10 +380,11 @@
         }
 
         // ==========================================
-        // INICIALIZAÇÃO BLINDADA
+        // 3. INICIALIZAÇÃO DA PÁGINA (INIT)
         // ==========================================
         function init() {
             const errorContainer = document.getElementById('error-container');
+            // BLINDAGEM: Se o arquivo dados.js não for lido corretamente, mostra o erro vermelho na tela.
             if (typeof characters === 'undefined') {
                 errorContainer.innerHTML = '<div class="error-alert">🚨 ERRO FATAL: O arquivo "dados.js" não foi carregado. Verifique se você esqueceu uma vírgula ou aspa.</div>';
                 return;
@@ -331,6 +394,7 @@
                 return;
             }
             
+            // Se tudo estiver OK, esvazia o erro, clona a lista e desenha as grades de rostos.
             errorContainer.innerHTML = '';
             filteredCharacters = [...characters];
             filteredBuilderCharacters = [...characters];
@@ -341,36 +405,42 @@
         }
 
         // ==========================================
-        // CONTROLES DE INTERFACE
+        // 4. CONTROLES GERAIS DA TELA
         // ==========================================
+        
+        // Troca de Aba (Arena, Missões, Streaks, Construtor)
         function switchTab(tabId, btnElement) {
+            // Remove a classe "active" (que exibe a aba) de todas
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
             
+            // Coloca a classe "active" apenas no botão clicado e na seção alvo
             if(btnElement) btnElement.classList.add('active');
             document.getElementById(`view-${tabId}`).classList.add('active');
             
+            // Gatilhos específicos: Se abrir missões, renderiza a lista. Se abrir Streaks, gera times mistos por padrão.
             if(tabId === 'missions') renderMissionsList();
-            if(tabId === 'streaks' && document.getElementById('streaks-container').innerHTML.trim() === '') generateStreakTeams(); 
-            if(tabId === 'builder') {
-                renderBuilderRoster();
-                renderBuilderSlots();
-            }
+            if(tabId === 'streaks' && document.getElementById('streaks-container').innerHTML.trim() === '') generateStreakTeams('misto'); 
+            if(tabId === 'builder') { renderBuilderRoster(); renderBuilderSlots(); }
         }
 
+        // Troca de Idioma
         function setLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll(`.flag-${lang}`).forEach(btn => btn.classList.add('active'));
             
+            // Atualiza o painel de detalhes atual
             const detailName = document.querySelector('.details-header h2');
             if(detailName) {
                 const char = characters.find(c => c.name === detailName.innerText);
                 if(char) showDetails(char);
             }
+            // Atualiza a missão atual se tiver alguma aberta
             if (currentMission) showMissionDetails(currentMission);
         }
 
+        // Define se os cliques na grade da Arena enviam o Ninja pro Aliado ou Inimigo
         function setMode(mode) { 
             selectMode = mode; 
             document.getElementById('btn-ally').classList.toggle('active-ally', mode === 'ally'); 
@@ -378,8 +448,10 @@
         }
 
         // ==========================================
-        // LÓGICA DA ARENA
+        // 5. LÓGICA E RENDERIZAÇÃO DA ARENA
         // ==========================================
+        
+        // Busca um personagem por nome ou classe na ABA ARENA
         function filterRoster() {
             const s = document.getElementById('search-input').value.toLowerCase();
             const f = document.getElementById('class-filter').value;
@@ -387,12 +459,14 @@
                 const nameMatches = (c.name || '').toLowerCase().includes(s);
                 let classMatches = false;
                 if (f === 'ALL') { classMatches = true; } 
+                // Varre as habilidades do ninja para ver se a classe selecionada (Ex: Mental) existe
                 else if (c.skills) { classMatches = c.skills.some(sk => sk.classes && sk.classes.some(cl => (cl || '').replace('*', '').trim() === f)); }
                 return nameMatches && classMatches;
             });
-            renderRoster();
+            renderRoster(); // Redesenha a grade após filtrar
         }
 
+        // Desenha a grade com os rostos de todos os ninjas filtrados na ABA ARENA
         function renderRoster() {
             const grid = document.getElementById('roster-grid'); 
             if (!grid) return; grid.innerHTML = '';
@@ -400,14 +474,22 @@
 
             filteredCharacters.forEach(c => {
                 const d = document.createElement('div'); d.className = 'char-portrait';
-                if (allyTeam.includes(c)) d.classList.add('selected-ally');
-                if (enemyTeam.includes(c)) d.classList.add('selected-enemy');
+                
+                // NOVO CÓDIGO (O ESPELHO): Permite que a cor da grade indique se o Ninja tá nos 2 times
+                let isAlly = allyTeam.includes(c);
+                let isEnemy = enemyTeam.includes(c);
+                if (isAlly && isEnemy) { d.classList.add('selected-both'); } // Laranja (Ambos)
+                else if (isAlly) { d.classList.add('selected-ally'); } // Verde (Só Aliado)
+                else if (isEnemy) { d.classList.add('selected-enemy'); } // Vermelho (Só Inimigo)
+                
                 d.style.backgroundImage = `url('${c.img ? c.img : 'https://via.placeholder.com/60?text=?'}')`;
-                d.onmouseenter = () => showDetails(c); d.onclick = () => toggleSelection(c);
+                d.onmouseenter = () => showDetails(c); // Passar mouse = Ver Detalhes
+                d.onclick = () => toggleSelection(c); // Clicar = Ir pro time
                 grid.appendChild(d);
             });
         }
 
+        // Desenha os 3 slots vazios ou preenchidos do Seu Time e Time Inimigo
         function renderTeams() {
             const draw = (arr, id) => {
                 const container = document.getElementById(id); if (!container) return; container.innerHTML = '';
@@ -415,21 +497,32 @@
                     const s = document.createElement('div'); s.className = 'slot';
                     if (arr[i]) { 
                         s.style.backgroundImage = `url('${arr[i].img ? arr[i].img : 'https://via.placeholder.com/80?text=?'}')`; 
+                        // Se clicar no rosto no topo, remove do time
                         s.onclick = () => { arr.splice(i, 1); renderRoster(); renderTeams(); }; 
                     }
                     container.appendChild(s);
                 }
             };
             draw(allyTeam, 'ally-slots'); draw(enemyTeam, 'enemy-slots');
+            
+            // Sempre que o time muda, recarrega a inteligência para calcular as forças!
             generateSynergy(); analyzeBattle();
         }
 
+        // NOVO: Adiciona e Remove do time. Agora permite o mesmo personagem no Aliado e no Inimigo simultaneamente.
         function toggleSelection(c) {
-            if(selectMode === 'ally' && !allyTeam.includes(c) && !enemyTeam.includes(c) && allyTeam.length < 3) allyTeam.push(c);
-            if(selectMode === 'enemy' && !enemyTeam.includes(c) && !allyTeam.includes(c) && enemyTeam.length < 3) enemyTeam.push(c);
+            if(selectMode === 'ally') {
+                if (allyTeam.includes(c)) allyTeam.splice(allyTeam.indexOf(c), 1);
+                else if (allyTeam.length < 3) allyTeam.push(c);
+            } 
+            else if(selectMode === 'enemy') {
+                if (enemyTeam.includes(c)) enemyTeam.splice(enemyTeam.indexOf(c), 1);
+                else if (enemyTeam.length < 3) enemyTeam.push(c);
+            }
             renderRoster(); renderTeams();
         }
 
+        // Mostra o Painel Direito gigante contendo as 4 Habilidades, imagens de chakra, descrições e cooldown
         function showDetails(char) {
             const loc = i18n[currentLang]; let skillsHtml = "";
             if (char.skills && Array.isArray(char.skills)) {
@@ -445,11 +538,13 @@
         }
 
         // ==========================================
-        // ASSESSOR E SINERGIA DA ARENA
+        // 6. INTELIGÊNCIA TÁTICA DA ARENA (⭐ E ASSESSOR)
         // ==========================================
         function generateSynergy() {
             const panel = document.getElementById('synergy-panel'); const content = document.getElementById('strat-content'); const comboContent = document.getElementById('combo-content'); const starsUI = document.getElementById('strat-stars');
             if(allyTeam.length < 3) { panel.style.display = 'none'; return; } panel.style.display = 'block';
+            
+            // Calculo Matemático das Estrelas
             let score = 2; let pros = []; let cons = []; let classCount = { Physical: 0, Mental: 0, Chakra: 0, Affliction: 0 };
             allyTeam.forEach(char => { if (char.skills) { char.skills.forEach(skill => { if (skill.classes) { skill.classes.forEach(c => { let cl = (c || '').replace('*', '').trim(); if (classCount[cl] !== undefined) classCount[cl]++; }); } }); } });
             
@@ -458,6 +553,7 @@
             starsUI.style.color = score <= 2 ? "#f44336" : (score === 3 ? "#ffeb3b" : "#4caf50"); starsUI.innerText = starsHTML;
             content.innerHTML = `<div class="strat-section"><strong>Vantagens:</strong> ${pros.join(', ') || 'Equipe neutra'}</div><div class="strat-section"><strong>Riscos:</strong> ${cons.join(', ') || 'Nenhum grave'}</div>`;
 
+            // Avalia os combos: Verifica se a habilidade B cita o nome da habilidade A (Setup/Finisher)
             let comboHtml = `<h3 style="color:var(--ally-color); border-bottom: 1px solid #333; padding-bottom:5px; margin-top:20px;">🔄 Guia de Rotação (Combos)</h3>`;
             const getSkillInlineHtml = (skillObj) => `<span class="skill-inline"><img src="${skillObj.img || ''}"><strong>${skillObj.name || ''}</strong></span>`;
             
@@ -477,15 +573,19 @@
             comboContent.innerHTML = comboHtml;
         }
 
+        // Avalia quem é o personagem mais perigoso do time inimigo e sugere ser focado
         function analyzeBattle() {
             const reportUI = document.getElementById('battle-panel'); if(allyTeam.length !== 3 || enemyTeam.length !== 3) { reportUI.style.display = 'none'; return; } reportUI.style.display = 'block';
             let threats = enemyTeam.map(enemy => {
                 let score = 0; let traits = [];
+                // Dá pontos de ameaça se o inimigo curar (+20), dar stun (+15) ou dano inevitável (+10)
                 if (enemy.skills) { enemy.skills.forEach(skill => { let desc = (skill.description || '').toLowerCase(); if(/\b(heal|heals|healing|restores)\b/.test(desc)) { score += 20; if(!traits.includes('Sustain/Cura')) traits.push('Sustain/Cura'); } if(/\b(stun|stuns|stunned)\b/.test(desc)) { score += 15; if(!traits.includes('Controle (Stun)')) traits.push('Controle (Stun)'); } if(/(piercing|affliction)/.test(desc)) { score += 10; if(!traits.includes('Dano Inevitável')) traits.push('Dano Inevitável'); } }); }
                 if(score === 0) { score += 8; traits.push('Agressor de Dano'); } return { char: enemy, score, traits };
             });
-            threats.sort((a, b) => b.score - a.score); let primaryTarget = threats[0];
+            threats.sort((a, b) => b.score - a.score); let primaryTarget = threats[0]; // O maior pontuador vira o Alvo 1
+            
             document.getElementById('report-target').innerHTML = `<h3 style="color:#ff5722; margin-top:0; border-bottom: 1px solid #333; padding-bottom:5px;">🎯 Ordem de Eliminação</h3><p><strong>Alvo 1:</strong> <span style="color:#ff5722; font-weight:bold;">${primaryTarget.char.name}</span><br><span style="color:#bbb; font-size:0.9em;">Ameaça: ${primaryTarget.traits.join(', ')}. Não deixe vivo.</span></p><p><strong>Alvo 2:</strong> ${threats[1].char.name}</p><p><strong>Alvo 3:</strong> ${threats[2].char.name}</p>`;
+            
             let defensiveSetups = []; let aggressiveSetups = [];
             allyTeam.forEach(ally => { if (ally.skills) { ally.skills.forEach(skill => { let desc = (skill.description || '').toLowerCase(); if(skill.cooldown === 'None' || skill.cooldown === '1' || skill.cooldown === '0') { if(desc.includes('damage reduction') || desc.includes('invulnerable') || desc.includes('destructible defense')) { defensiveSetups.push(`<strong>${skill.name}</strong>`); } if(desc.includes('deals') && desc.includes('damage')) { aggressiveSetups.push(`<strong>${skill.name}</strong>`); } } }); } });
             let turnHtml = `<h3 style="color:#4caf50; margin-top:20px; border-bottom: 1px solid #333; padding-bottom:5px;">⏱️ Guia do 1º Turno</h3><p style="margin-bottom:5px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se for o PRIMEIRO:</span><br>Foco em defesa e setup de chakra. ` + (defensiveSetups.length > 0 ? `Ative ${defensiveSetups[0]} para garantir sobrevivência.</p>` : `Sem proteção imediata. Use ataques rápidos.</p>`) + `<p style="margin-bottom:5px; margin-top:10px;"><span style="color:#fff; background:#555; padding:2px 5px; border-radius:3px;">Se for o SEGUNDO:</span><br>Aproveite o chakra extra. ` + (aggressiveSetups.length > 0 ? `Use ${aggressiveSetups[0]} para focar o ${primaryTarget.char.name}.</p>` : `Prepare o terreno.</p>`);
@@ -493,7 +593,7 @@
         }
 
         // ==========================================
-        // LÓGICA DE MISSÕES E STREAKS
+        // 7. LÓGICA DA ABA 2: MISSÕES NINJA
         // ==========================================
         let currentMission = null;
         function filterMissions() { const search = document.getElementById('search-mission').value.toLowerCase(); const filtered = missions.filter(m => (m.name||'').toLowerCase().includes(search) || (m.requirements||'').toLowerCase().includes(search)); renderMissionsList(filtered); }
@@ -505,6 +605,7 @@
             document.getElementById('mission-details').innerHTML = `<div class="mission-header"><img src="${mission.img || 'https://via.placeholder.com/220?text=Mission'}" onerror="this.src='https://via.placeholder.com/220?text=Mission'"><h2 style="color: var(--mission-color); margin: 0;">${mission.name || 'Missão'}</h2></div><div style="color: #bbb; line-height: 1.6; background: #252525; padding: 15px; border-radius: 8px;"><strong>📜 ${loc.ui_req}</strong><br>${translateText(mission.requirements || 'Sem requisitos')}</div><div class="reward-box"><img src="${rewardImg}" onerror="this.src='https://via.placeholder.com/80?text=?'"><div><h4 style="margin:0 0 5px 0; color: var(--reward-color);">🎁 ${loc.ui_rew}</h4><p style="margin:0; color:#ddd; font-size:0.9em;">${translateText(mission.reward_text || 'Recompensa oculta')}</p></div></div><hr style="border: 1px dashed #444; margin: 20px 0;"><button class="btn-simulate" onclick="simulateIdealTeam()">🧪 ${loc.ui_sim}</button><div id="simulated-team-area"></div>`;
         }
 
+        // Lê a variável "personsmis" (Mapeada por você) para montar os times com perfeição, senão lê os textos
         function simulateIdealTeam() {
             if(!currentMission || typeof characters === 'undefined') return; let teams = [];
             if (currentMission.personsmis) {
@@ -516,7 +617,9 @@
                 let groupChars = []; if (reqText.includes('any ') || reqText.includes('qualquer ')) { const keywords = ['uchiha', 'hyuuga', 'sand', 'sound', 'akatsuki', 'leaf', 'mist', 'minato', 'jounin', 'jinchuuriki']; keywords.forEach(kw => { if (reqText.includes(kw)) { const matches = characters.filter(c => (!rewardChar || c.id !== rewardChar.id) && !mandatoryChars.includes(c) && (((c.lore||'').toLowerCase().includes(kw)) || ((c.name||'').toLowerCase().includes(kw)))); groupChars = [...groupChars, ...matches.slice(0, 3)]; } }); }
                 let allRequired = [...new Set([...mandatoryChars, ...groupChars])]; while (allRequired.length > 0) { teams.push(allRequired.splice(0, 3)); }
             }
+            // Completa as vagas vazias (se a missão só pedir 1 ou 2 chars) com Suportes (Curandeiros)
             let usedHealerIds = []; teams.forEach(team => { if (team.length < 3) { let healers = characters.filter(c => { if (currentMission.reward_text && currentMission.reward_text.toLowerCase().includes((c.name||'').toLowerCase())) return false; if (team.some(t => t.id === c.id)) return false; let baseName = (c.name||'').replace(/\(S\)/gi, '').trim(); let hasClone = team.some(t => (t.name||'').replace(/\(S\)/gi, '').trim() === baseName); if (hasClone) return false; return c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/.test((s.description||'').toLowerCase())); }); while (team.length < 3 && healers.length > 0) { let h = healers.find(x => !usedHealerIds.includes(x.id)) || healers[0]; team.push(h); usedHealerIds.push(h.id); healers = healers.filter(x => x.id !== h.id); } } });
+            
             let finalHtml = `<h3 style="color:#fff; margin-top:20px;">📋 Estratégia de Conclusão:</h3>`;
             teams.forEach((team, index) => {
                 let charAnalyses = []; team.forEach(char => { let roles = []; let descStr = char.skills ? char.skills.map(s => (s.description||'').toLowerCase()).join(' ') : ''; if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura/sustentação"); if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle"); if (/(damage reduction|invulnerable|destructible defense)/.test(descStr)) roles.push("defesa"); if (/(piercing|affliction)/.test(descStr)) roles.push("dano inevitável"); let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "ataques diretos"; charAnalyses.push(`<strong>${char.name}</strong> em ${roleText}`); });
@@ -527,41 +630,139 @@
             document.getElementById('simulated-team-area').innerHTML = finalHtml;
         }
 
-        function generateMetaSynergy(team, isMeta) {
-            let charAnalyses = []; team.forEach(char => { let roles = []; let descStr = char.skills ? char.skills.map(s => (s.description||'').toLowerCase()).join(' ') : ''; if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura e sustentação"); if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle absoluto"); if (/(damage reduction|invulnerable|destructible defense)/.test(descStr)) roles.push("defesa impenetrável"); if (/(piercing|affliction) damage/.test(descStr)) roles.push("dano massivo"); let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "pressão ofensiva bruta"; charAnalyses.push(`<strong>${char.name}</strong> focado em ${roleText}`); });
-            let intro = isMeta ? "Composição de Tier S (Meta) para vitórias." : "Formação equilibrada perfeitamente.";
-            return `${intro} Nesta composição: ${charAnalyses.join(', ')}.`;
+        // ==========================================
+        // 8. ABA 3 e 4: FUNÇÕES DE GERAÇÃO INTELIGENTE COM TEMAS (NOVO!)
+        // ==========================================
+        
+        // Avalia o que os personagens do time fazem para escrever o pequeno parágrafo no final (Relatório Tático)
+        function generateMetaSynergy(team, isMeta, theme = 'misto') {
+            let charAnalyses = []; 
+            team.forEach(char => { 
+                let roles = []; 
+                let descStr = char.skills ? char.skills.map(s => (s.description||'').toLowerCase()).join(' ') : ''; 
+                
+                if (/\b(heal|heals|healing|restores)\b/.test(descStr)) roles.push("cura e sustentação"); 
+                if (/\b(stun|stuns|stunned|stunning)\b/.test(descStr)) roles.push("controle (stuns)"); 
+                if (/(damage reduction|invulnerable|destructible defense|counter|reflect)/.test(descStr)) roles.push("defesa/counter"); 
+                if (/(piercing|affliction) damage/.test(descStr)) roles.push("dano massivo"); 
+                if (/\ball enemies\b/.test(descStr)) roles.push("dano em área (AOE)");
+                
+                let isPhys = char.skills && char.skills.some(s => s.classes && s.classes.some(cl => cl.includes('Physical')));
+                if(isPhys) roles.push("dano físico bruto");
+
+                let roleText = roles.length > 0 ? [...new Set(roles)].slice(0, 2).join(" e ") : "pressão ofensiva"; 
+                charAnalyses.push(`<strong>${char.name}</strong> em ${roleText}`); 
+            });
+            
+            let intro = isMeta ? "Composição Meta" : "Formação Clássica";
+            
+            // Texto dinâmico dependendo do botão de TEMA clicado
+            let focusText = "";
+            if(theme === 'fisico') focusText = " focada em esmagar com Dano Físico.";
+            else if(theme === 'aoe') focusText = " focada em devastar com Dano em Área (AOE).";
+            else if(theme === 'counter') focusText = " focada em punir com Reflexos e Counters.";
+            else focusText = " perfeitamente balanceada (Misto).";
+
+            return `${intro}${focusText} Destaques: ${charAnalyses.join(', ')}.`;
         }
 
-        function generateStreakTeams() {
+        // Função que aciona quando clica num dos 4 botões na ABA DE STREAKS (Meta)
+        function generateStreakTeams(theme = 'misto') {
             if(typeof characters === 'undefined' || characters.length === 0) return;
-            function pickTeamsFromPool(pool, count, isMeta) {
-                let healers = pool.filter(c => c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/i.test(s.description||''))); let stunners = pool.filter(c => c.skills && c.skills.some(s => /\b(stun|stuns|stunned|stunning)\b/i.test(s.description||''))); let tanks = pool.filter(c => c.skills && c.skills.some(s => /(damage reduction|invulnerable|destructible defense)/i.test(s.description||''))); let dps = pool.filter(c => c.skills && c.skills.some(s => /(piercing|affliction) damage/i.test(s.description||'')));
-                if(healers.length === 0) healers = pool; if(stunners.length === 0) stunners = pool; if(tanks.length === 0) tanks = pool; if(dps.length === 0) dps = pool;
+            
+            // O CORAÇÃO DO GERADOR: Separa as piscinas baseadas no tema para extrair o melhor time
+            function pickTeamsFromPool(pool, count, isMeta, chosenTheme) {
+                // Filtros padrões de utilidade
+                let healers = pool.filter(c => c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/i.test(s.description||''))); 
+                let stunners = pool.filter(c => c.skills && c.skills.some(s => /\b(stun|stuns|stunned|stunning)\b/i.test(s.description||''))); 
+                let tanks = pool.filter(c => c.skills && c.skills.some(s => /(damage reduction|invulnerable|destructible defense)/i.test(s.description||''))); 
+                let dps = pool.filter(c => c.skills && c.skills.some(s => /(piercing|affliction) damage/i.test(s.description||'')));
+
+                // Filtros novos para os Temas que você pediu
+                let physicals = pool.filter(c => c.skills && c.skills.some(s => s.classes && s.classes.some(cl => cl.includes('Physical'))));
+                let aoes = pool.filter(c => c.skills && c.skills.some(s => /\ball enemies\b/i.test(s.description||'')));
+                let counters = pool.filter(c => c.skills && c.skills.some(s => /\b(counter|reflect|counters|reflects)\b/i.test(s.description||'')));
+
+                // Prevenção de travamento (Se a piscina for vazia, puxa da global)
+                if(healers.length === 0) healers = pool; if(stunners.length === 0) stunners = pool; 
+                if(tanks.length === 0) tanks = pool; if(dps.length === 0) dps = pool;
+                if(physicals.length === 0) physicals = pool; if(aoes.length === 0) aoes = pool; if(counters.length === 0) counters = pool;
+
                 let poolTeams = []; let usedSignatures = new Set(); let attempts = 0;
                 while(poolTeams.length < count && attempts < 200) {
                     attempts++; let team = [];
-                    let r1 = healers[Math.floor(Math.random() * healers.length)] || pool[0]; let r2 = (attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)]; r2 = r2 || pool[1] || pool[0]; let r3 = dps[Math.floor(Math.random() * dps.length)] || pool[2] || pool[0];
-                    if(r1) team.push(r1); if(r2 && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (r2.name||'').replace(/\(S\)/gi, '').trim())) team.push(r2); if(r3 && team.length < 3 && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (r3.name||'').replace(/\(S\)/gi, '').trim())) team.push(r3);
-                    while(team.length < 3) { let fill = pool[Math.floor(Math.random() * pool.length)]; if(fill && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (fill.name||'').replace(/\(S\)/gi, '').trim())) team.push(fill); }
-                    let sig = [...team].sort((a,b) => a.id - b.id).map(c => c.id).join('-'); if(!usedSignatures.has(sig)) { usedSignatures.add(sig); poolTeams.push({ chars: team, isMeta: isMeta }); }
-                } return poolTeams;
+                    
+                    // LÓGICA 1: TEMA DANO FÍSICO (2 Físicos + 1 Suporte)
+                    if (chosenTheme === 'fisico') {
+                        team.push(physicals[Math.floor(Math.random() * physicals.length)]);
+                        team.push(physicals[Math.floor(Math.random() * physicals.length)]);
+                        team.push(healers[Math.floor(Math.random() * healers.length)]);
+                    } 
+                    // LÓGICA 2: TEMA DANO EM ÁREA / AOE (2 AOEs + 1 Tank/Healer)
+                    else if (chosenTheme === 'aoe') {
+                        team.push(aoes[Math.floor(Math.random() * aoes.length)]);
+                        team.push(aoes[Math.floor(Math.random() * aoes.length)]);
+                        team.push(tanks[Math.floor(Math.random() * tanks.length)]);
+                    } 
+                    // LÓGICA 3: TEMA COUNTER / REFLEXO (2 Counters + 1 Healer)
+                    else if (chosenTheme === 'counter') {
+                        team.push(counters[Math.floor(Math.random() * counters.length)]);
+                        team.push(counters[Math.floor(Math.random() * counters.length)]);
+                        team.push(healers[Math.floor(Math.random() * healers.length)]);
+                    } 
+                    // LÓGICA 4: TEMA MISTO / PADRÃO (1 Cura + 1 Tank/Stun + 1 DPS)
+                    else {
+                        team.push(healers[Math.floor(Math.random() * healers.length)]);
+                        team.push((attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)]);
+                        team.push(dps[Math.floor(Math.random() * dps.length)]);
+                    }
+
+                    // Limpa o time para remover Clones (Anti-Paradoxo) e duplicações acidentais
+                    let finalTeam = [];
+                    for(let c of team) {
+                        if(c && !finalTeam.some(ft => (ft.name||'').replace(/\(S\)/gi, '').trim() === (c.name||'').replace(/\(S\)/gi, '').trim())) {
+                            finalTeam.push(c);
+                        }
+                    }
+
+                    // Se a limpeza deletou alguém, preenche com um aleatório de alto nível
+                    while(finalTeam.length < 3) { 
+                        let fill = pool[Math.floor(Math.random() * pool.length)]; 
+                        if(fill && !finalTeam.some(ft => (ft.name||'').replace(/\(S\)/gi, '').trim() === (fill.name||'').replace(/\(S\)/gi, '').trim())) {
+                            finalTeam.push(fill); 
+                        } 
+                    }
+                    
+                    // Registra a assinatura (ID1-ID2-ID3) para não gerar times repetidos na lista
+                    let sig = [...finalTeam].sort((a,b) => a.id - b.id).map(c => c.id).join('-'); 
+                    if(!usedSignatures.has(sig)) { usedSignatures.add(sig); poolTeams.push({ chars: finalTeam, isMeta: isMeta, theme: chosenTheme }); }
+                } 
+                return poolTeams;
             }
-            let metaChars = [...characters].sort((a, b) => b.id - a.id).slice(0, 50); let metaTeams = pickTeamsFromPool(metaChars, 5, true);
-            let classicTeams = pickTeamsFromPool([...characters], 5, false);
+            
+            // Separa os Meta (Top 50 recentes) e Clássicos (Todos) e junta as listas
+            let metaChars = [...characters].sort((a, b) => b.id - a.id).slice(0, 50); 
+            let metaTeams = pickTeamsFromPool(metaChars, 5, true, theme);
+            let classicTeams = pickTeamsFromPool([...characters], 5, false, theme);
             let allTeams = [...metaTeams, ...classicTeams];
+            
+            // Imprime as equipes na tela
             let html = '';
             allTeams.forEach((item, index) => {
-                let team = item.chars; let synergyDesc = generateMetaSynergy(team, item.isMeta); 
-                let title = item.isMeta ? `🔥 #${index + 1} - Esquadrão Meta Atual` : `🎲 #${index + 1} - Esquadrão Clássico/Global`; let borderColor = item.isMeta ? 'var(--meta-color)' : 'var(--classic-color)'; let shadowColor = item.isMeta ? 'rgba(233, 30, 99, 0.5)' : 'rgba(0, 188, 212, 0.5)';
+                let team = item.chars; let synergyDesc = generateMetaSynergy(team, item.isMeta, item.theme); 
+                let title = item.isMeta ? `🔥 #${index + 1} - Esquadrão Meta Atual` : `🎲 #${index + 1} - Esquadrão Clássico/Global`; 
+                let borderColor = item.isMeta ? 'var(--meta-color)' : 'var(--classic-color)'; 
+                let shadowColor = item.isMeta ? 'rgba(233, 30, 99, 0.5)' : 'rgba(0, 188, 212, 0.5)';
                 html += `<div class="strat-summary" style="border-left-color: ${borderColor}; margin-top: 0; background: #160a12;"><h4 style="margin:0 0 10px 0; color: ${borderColor};">${title}</h4><p style="font-size: 0.85em; line-height: 1.5; color: #bbb; margin-bottom: 15px;">${synergyDesc}</p><div class="rec-slots" style="justify-content: space-around;">${team.map(c => `<div class="rec-slot" style="border-color: ${borderColor}; box-shadow: 0 0 10px ${shadowColor}; background-image: url('${c.img || ''}');" title="${c.name || ''}"><div class="rec-name">${c.name || ''}</div></div>`).join('')}</div></div>`;
             });
             document.getElementById('streaks-container').innerHTML = html;
         }
 
         // ==========================================
-        // NOVA ABA: CONSTRUTOR DE TIMES (TEAM BUILDER)
+        // 9. LÓGICA DA ABA 4: TEAM BUILDER (CONSTRUTOR COM TEMAS)
         // ==========================================
+        
+        // Filtro isolado para buscar ninjas pra usar como "base" da equipe
         function filterBuilderRoster() {
             const s = document.getElementById('search-builder').value.toLowerCase();
             filteredBuilderCharacters = characters.filter(c => (c.name || '').toLowerCase().includes(s));
@@ -575,18 +776,14 @@
 
             filteredBuilderCharacters.forEach(c => {
                 const d = document.createElement('div'); d.className = 'char-portrait';
-                if (builderTeam.includes(c)) d.classList.add('selected-builder'); // Usa uma borda e opacidade de seleção
+                if (builderTeam.includes(c)) d.classList.add('selected-builder'); // Adiciona cor azul claro pra indicar que está no painel acima
                 d.style.backgroundImage = `url('${c.img ? c.img : 'https://via.placeholder.com/60?text=?'}')`;
                 
-                // Ao clicar, adiciona ou remove do Construtor (Máximo 2)
+                // Clicar adiciona o ninja aos "Seus Escolhidos" (Max de 2)
                 d.onclick = () => {
-                    if (builderTeam.includes(c)) {
-                        builderTeam.splice(builderTeam.indexOf(c), 1);
-                    } else if (builderTeam.length < 2) {
-                        builderTeam.push(c);
-                    }
-                    renderBuilderRoster();
-                    renderBuilderSlots();
+                    if (builderTeam.includes(c)) { builderTeam.splice(builderTeam.indexOf(c), 1); } 
+                    else if (builderTeam.length < 2) { builderTeam.push(c); }
+                    renderBuilderRoster(); renderBuilderSlots();
                 };
                 grid.appendChild(d);
             });
@@ -605,53 +802,75 @@
             }
         }
 
-        function buildCustomTeams() {
+        // Acionado pelos 4 botões temáticos. Descobre quem combina com os 1 ou 2 que você já escolheu.
+        function buildCustomTeams(theme = 'misto') {
             const resultsArea = document.getElementById('builder-results');
             if (builderTeam.length === 0) {
                 resultsArea.innerHTML = '<p style="color:#f44336; text-align:center; margin-top:50px; font-weight:bold;">⚠️ Selecione pelo menos 1 personagem na lista para criarmos os parceiros!</p>';
                 return;
             }
 
-            // Mapeando a piscina geral
             let pool = [...characters];
             let healers = pool.filter(c => c.skills && c.skills.some(s => /\b(heal|heals|healing|restores)\b/i.test(s.description||'')));
             let stunners = pool.filter(c => c.skills && c.skills.some(s => /\b(stun|stuns|stunned|stunning)\b/i.test(s.description||'')));
             let tanks = pool.filter(c => c.skills && c.skills.some(s => /(damage reduction|invulnerable|destructible defense)/i.test(s.description||'')));
             let dps = pool.filter(c => c.skills && c.skills.some(s => /(piercing|affliction) damage/i.test(s.description||'')));
 
-            if(healers.length===0) healers = pool; if(stunners.length===0) stunners = pool; if(tanks.length===0) tanks = pool; if(dps.length===0) dps = pool;
+            let physicals = pool.filter(c => c.skills && c.skills.some(s => s.classes && s.classes.some(cl => cl.includes('Physical'))));
+            let aoes = pool.filter(c => c.skills && c.skills.some(s => /\ball enemies\b/i.test(s.description||'')));
+            let counters = pool.filter(c => c.skills && c.skills.some(s => /\b(counter|reflect|counters|reflects)\b/i.test(s.description||'')));
 
-            let generatedTeams = [];
-            let attempts = 0;
-            let usedSigs = new Set();
+            if(healers.length===0) healers = pool; if(stunners.length===0) stunners = pool; if(tanks.length===0) tanks = pool; if(dps.length===0) dps = pool;
+            if(physicals.length===0) physicals = pool; if(aoes.length===0) aoes = pool; if(counters.length===0) counters = pool;
+
+            let generatedTeams = []; let attempts = 0; let usedSigs = new Set();
 
             while(generatedTeams.length < 3 && attempts < 100) {
                 attempts++;
-                let team = [...builderTeam]; // Começa com os bonecos do usuário
+                let team = [...builderTeam]; // Começa com os escolhidos
                 
-                // Analisa o que já tem na equipe para não repetir papéis (se possível)
+                // Mapeia o que já tem na equipe para evitar duplicações de função
                 let hasHeal = team.some(c => healers.includes(c));
-                let hasStun = team.some(c => stunners.includes(c));
-                let hasTank = team.some(c => tanks.includes(c));
-                let hasDps  = team.some(c => dps.includes(c));
+                let themeCount = 0;
+                
+                if(theme === 'fisico') themeCount = team.filter(c => physicals.includes(c)).length;
+                if(theme === 'aoe') themeCount = team.filter(c => aoes.includes(c)).length;
+                if(theme === 'counter') themeCount = team.filter(c => counters.includes(c)).length;
 
+                // Completa a vaga 2 e 3 que estiver vazia
                 while(team.length < 3) {
                     let fillCand;
-                    if (!hasHeal) { fillCand = healers[Math.floor(Math.random() * healers.length)]; hasHeal = true; }
-                    else if (!hasStun && !hasTank) { 
-                        fillCand = (attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)]; 
-                        hasStun = true; hasTank = true; 
+                    
+                    if (theme === 'fisico') {
+                        if (themeCount < 2) { fillCand = physicals[Math.floor(Math.random() * physicals.length)]; themeCount++; }
+                        else if (!hasHeal) { fillCand = healers[Math.floor(Math.random() * healers.length)]; hasHeal = true; }
+                        else { fillCand = pool[Math.floor(Math.random() * pool.length)]; }
+                    } 
+                    else if (theme === 'aoe') {
+                        if (themeCount < 2) { fillCand = aoes[Math.floor(Math.random() * aoes.length)]; themeCount++; }
+                        else if (!hasHeal) { fillCand = healers[Math.floor(Math.random() * healers.length)]; hasHeal = true; }
+                        else { fillCand = pool[Math.floor(Math.random() * pool.length)]; }
+                    } 
+                    else if (theme === 'counter') {
+                        if (themeCount < 2) { fillCand = counters[Math.floor(Math.random() * counters.length)]; themeCount++; }
+                        else if (!hasHeal) { fillCand = healers[Math.floor(Math.random() * healers.length)]; hasHeal = true; }
+                        else { fillCand = pool[Math.floor(Math.random() * pool.length)]; }
+                    } 
+                    // Tema Misto Padrão
+                    else {
+                        let hasStun = team.some(c => stunners.includes(c)); let hasTank = team.some(c => tanks.includes(c)); let hasDps  = team.some(c => dps.includes(c));
+                        if (!hasHeal) { fillCand = healers[Math.floor(Math.random() * healers.length)]; hasHeal = true; }
+                        else if (!hasStun && !hasTank) { fillCand = (attempts % 2 === 0) ? stunners[Math.floor(Math.random() * stunners.length)] : tanks[Math.floor(Math.random() * tanks.length)]; hasStun = true; hasTank = true; }
+                        else if (!hasDps) { fillCand = dps[Math.floor(Math.random() * dps.length)]; hasDps = true; }
+                        else { fillCand = pool[Math.floor(Math.random() * pool.length)]; }
                     }
-                    else if (!hasDps) { fillCand = dps[Math.floor(Math.random() * dps.length)]; hasDps = true; }
-                    else { fillCand = pool[Math.floor(Math.random() * pool.length)]; }
 
-                    // Verifica clone ex: Naruto vs Naruto (S)
+                    // Anti-Clone Blindado
                     if (fillCand && !team.some(c => (c.name||'').replace(/\(S\)/gi, '').trim() === (fillCand.name||'').replace(/\(S\)/gi, '').trim())) {
                         team.push(fillCand);
                     }
                 }
 
-                // Cria assinatura única do time
                 let sig = [...team].sort((a,b) => a.id - b.id).map(c => c.id).join('-');
                 if (!usedSigs.has(sig) && team.length === 3) {
                     usedSigs.add(sig);
@@ -659,10 +878,10 @@
                 }
             }
 
-            // Exibe na tela
+            // Mostra na tela
             let html = '<h3 style="color:var(--builder-color); margin-top:0;">🤝 Parceiros Ideais Encontrados</h3>';
             generatedTeams.forEach((team, index) => {
-                let synergyDesc = generateMetaSynergy(team, false); 
+                let synergyDesc = generateMetaSynergy(team, false, theme); 
                 html += `
                     <div class="strat-summary" style="border-left-color: var(--builder-color); margin-top: 15px; background: #0a1116;">
                         <h4 style="margin:0 0 10px 0; color: var(--builder-color);">Combinação #${index + 1}</h4>
@@ -677,6 +896,7 @@
             resultsArea.innerHTML = html;
         }
 
+        // Aciona o Init para ligar o Motor quando o site carrega
         window.onload = init;
     </script>
 </body>
